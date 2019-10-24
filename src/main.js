@@ -3,6 +3,9 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import 'mavon-editor/dist/css/index.css'
+import mavonEditor from 'mavon-editor'
+Vue.use(mavonEditor)
 
 Vue.config.productionTip = false
 
