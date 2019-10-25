@@ -1,1 +1,6 @@
-//button, button-primary, button-success, button-info, button-warning, button-danger
+import FdCounter from './Counter.vue'
+FdCounter.install = function (Vue) {
+    Vue.component(FdCounter.name, FdCounter)
+}
+
+export default FdCounter

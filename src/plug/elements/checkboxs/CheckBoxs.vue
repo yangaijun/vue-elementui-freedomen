@@ -41,6 +41,7 @@ import base from '../../mixins/base.js';
 export default {
     //prop, value, config: {}, filter, disabled, link?to router, $data
     props: ['item'],
+    name: 'fdcheck',
     mixins: [base],
     data() {
         return {}
@@ -77,9 +78,8 @@ export default {
             else if (typeof this.item.value === 'string' || typeof this.item.value === 'number') {
                 this.item.value = [this.item.value + '']
             } else {
-                throw new Error('not support type of the value, just support: string, array, number')
+                throw new Error('not support type of the value, just support: string, array, number => to array')
             }
-            
         }
     }
 }

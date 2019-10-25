@@ -37,6 +37,7 @@ import base from '../../mixins/base.js';
 export default {
     //prop, value, config: {}, filter, disabled, link?to router, $data
     props: ['item'],
+    name: 'fdradio',
     mixins: [base],
     data() {
         return {}

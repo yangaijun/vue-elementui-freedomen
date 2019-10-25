@@ -2,7 +2,7 @@
     <el-input-number
         v-model="item.value"
         @change="change" 
-        :disabled="mixin_disabled(item.disabled, item.value, item.data)"
+        :disabled="mixin_disabled(item.disabled, item.value, item.$data)"
         :controls-position="item.config && item.config.controlsPosition"
         :min="min()"
         :max="max()"
@@ -17,6 +17,7 @@ export default {
     //prop, value, config: {}, filter, disabled, link?to router, $data
     props: ['item'],
     mixins: [base],
+    name: 'fdcounter',
     data() {
         return {}
     },
