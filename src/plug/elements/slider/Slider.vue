@@ -4,6 +4,7 @@
         @change="change"
         :min="min()"
         :max="max()"
+        :style="mixin_style(item.style, item.value, item.data)"
         :disabled="mixin_disabled(item.disabled, item.value, item.data)">
     </el-slider>
 </template>

@@ -6,6 +6,7 @@
         :active-value="activeValue"
         :inactive-value="inactiveValue"
         :disabled="!!mixin_disabled(item.disabled, item.value, item.data)"
+        :style="mixin_style(item.style, item.value, item.data)"
         @change="change">
     </el-switch>
 </template>
@@ -31,7 +32,7 @@ export default {
     methods: {
         change() {
             this.mixin_event({
-                type: 'click',
+                type: 'change',
                 prop: this.item.prop,
                 value: this.item.value
             })

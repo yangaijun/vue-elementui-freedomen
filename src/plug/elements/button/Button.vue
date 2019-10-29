@@ -3,6 +3,7 @@
         :type="buttonType(item.type)" 
         @click="click" 
         :disabled="mixin_disabled(item.disabled, item.value, item.data)"
+        :style="mixin_style(item.style, item.value, item.data)"
         :plain="item.config && item.config.plain"
         :round="item.config && item.config.round"
     >
@@ -28,6 +29,7 @@ export default {
     methods: {
         buttonType(type) {
             return {
+                'button-text': 'text',
                 'button-primary': 'primary',
                 'button-success': 'success',
                 'button-info': 'info',

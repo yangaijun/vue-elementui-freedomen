@@ -5,6 +5,7 @@
         v-model="item.value"
         :disabled="mixin_disabled(item.disabled, item.value, item.data)"
         :placeholder="item.placeholder" 
+        :style="mixin_style(item.style, item.value, item.data)"
     >
     </el-input>
 </template>

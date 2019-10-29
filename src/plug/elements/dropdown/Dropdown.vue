@@ -1,14 +1,16 @@
 <template>
-    <el-input-number
-        v-model="item.value"
-        @change="change" 
-        :disabled="mixin_disabled(item.disabled, item.value, item.$data)"
-        :controls-position="item.config && item.config.controlsPosition"
-        :style="mixin_style(item.style, item.value, item.data)"
-        :min="min()"
-        :max="max()"
-    >
-    </el-input-number>
+    <el-dropdown>
+      <span class="el-dropdown-link">
+        {{item.label}}<i class="el-icon-arrow-down el-icon--right"></i>
+      </span>
+      <el-dropdown-menu slot="dropdown">
+        <el-dropdown-item  v-for="option in mixin_options(item.options)" :key="option.value">
+            黄金糕
+
+        </el-dropdown-item>
+        
+      </el-dropdown-menu>
+    </el-dropdown>
 </template>
 <script>
 import base from '../../mixins/base.js';
@@ -18,7 +20,7 @@ export default {
     //prop, value, config: {}, filter, disabled, link?to router, $data
     props: ['item'],
     mixins: [base],
-    name: 'fdcounter',
+    name: 'fddate',
     data() {
         return {}
     },

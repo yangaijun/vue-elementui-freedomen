@@ -14,25 +14,44 @@ import Fdselect from './select';
 import FdSlider from './slider';
 import FdSwitch from './switch';
 import FdSpan from './span'
-
+import FdDate from './date'
+import util from '../utils/util.js'
 export default {
     name: 'elements',
     props: ['item'], 
     components: {
-        FdButton, FdCheckBoxs, FdCounter, FdInput, FdProgress, FdRadios, FdRate, Fdselect, FdSlider, FdSwitch, FdSpan
+        FdButton, 
+        FdCheckBoxs, 
+        FdCounter, 
+        FdInput, 
+        FdProgress, 
+        FdRadios, 
+        FdRate, 
+        Fdselect, 
+        FdSlider, 
+        FdSwitch, 
+        FdSpan, 
+        FdDate
     },
-    created() {  
-        if (this.item.type == 'form-item')
-            this.component = null
-        else 
-            this.component = 'fd-' + this.item.type
-    }, 
+    computed: {
+        component() {
+            return this.getType(this.item.type)
+        }
+    },
     data () {
-        return {  
-            component: null
+        return {   
         }
     },  
     methods: { 
+        getType(type) {
+            const prefix = 'fd-' 
+            if (typeof type === 'string') {
+                return prefix + type.split('-')[0]
+            } else if (typeof type === 'function') {
+                return this.getType(type({value: this.item.value, data: this.item.$data}))
+            }
+            return null
+        },
         event(params){
             this.$emit('event', params);
         }

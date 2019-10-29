@@ -10,6 +10,7 @@
                 :key="option.value"
                 :label="option.value"
                 :disabled="mixin_disabled(item.disabled, option.value, item.$data)"
+                :style="mixin_style(item.style, option.value, item.data)"
                 @change="change">
                 {{option.label}}
             </el-checkbox-button>
@@ -24,6 +25,7 @@
                 :key="option.value"
                 :label="option.value"
                 :disabled="mixin_disabled(item.disabled, option.value, item.$data)"
+                :style="mixin_style(item.style, option.value, item.data)"
                 @change="change">
                     {{option.label}}
             </el-checkbox>

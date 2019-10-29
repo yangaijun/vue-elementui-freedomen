@@ -8,6 +8,7 @@
                 v-for="option in mixin_options(item.options)"
                 :key="option.value"
                 :label="option.value"
+                :style="mixin_style(item.style, options.value, item.data)"
                 :disabled="mixin_disabled(item.disabled, option.value, item.$data)">
                 {{option.label}}
             </el-radio-button>
@@ -20,6 +21,7 @@
                 v-for="option in mixin_options(item.options)"
                 :key="option.value"
                 :label="option.value"
+                :style="mixin_style(item.style, options.value, item.data)"
                 :disabled="mixin_disabled(item.disabled, option.value, item.$data)">
                     {{option.label}}
             </el-radio>

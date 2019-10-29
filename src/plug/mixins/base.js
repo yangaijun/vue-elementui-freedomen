@@ -15,6 +15,12 @@ export default {
             }
             return filter
         },
+        mixin_style(style, value, data) {
+            if (typeof style === 'function') {
+                return style({value: value, data: data})
+            }
+            return style
+        },
         mixin_disabled(disabled, value, data) {
             if (typeof disabled === 'function') {
                 return disabled({value: value, data: data})

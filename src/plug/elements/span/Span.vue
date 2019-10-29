@@ -1,7 +1,10 @@
 <template>
-    <div :class="item.class">
+    <span 
+        :class="item.class"
+        :style="mixin_style(item.style, item.value, item.data)"
+    >
         {{mixin_filter(item.filter, item.value, item.$data)}}
-    </div>
+    </span>
 </template>
 <script>
 import base from '../../mixins/base.js';

@@ -1,5 +1,9 @@
 <template>
-    <el-progress :percentage="item.value"></el-progress>
+    <el-progress 
+        :percentage="item.value"
+        :style="mixin_style(item.style, item.value, item.data)"
+    >
+    </el-progress>
 </template>
 <script>
 import base from '../../mixins/base.js';

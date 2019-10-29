@@ -1,5 +1,5 @@
 <template>
-    <div class="hello">
+    <div >
         <!-- <Button :item="item" @event="event" />
         <Input :item='input' @event="event"/>
         <Counter :item='counter' @event="event" />
@@ -12,6 +12,8 @@
         <Progress :item='progress' @event='event'/> -->
         <!-- <Region :columns="columns" :data="data" @event='event'/> -->
         <Form :columns="formColumns" :data="formData" @event="event" />
+        <Search :columns="searchColumns" :data="searchData" @event="event" />
+        <Table :data="tableData" :columns="tableColumns" @event="event"/>
     </div>
 </template>
 <script>
@@ -28,13 +30,48 @@ import Slider from '../plug/elements/slider';
 import Progress from '../plug/elements/progress';
 import Region from '../plug/core/region/Region';
 import Form from '../plug/components/form/Form';
+import Search from '../plug/components/search/Search';
+import Table from '../plug/components/table/Table';
+
 export default {
   components: {
-    vueJsonEditor, Button, Input, Counter, Select, CheckBoxs, Radios, ElSwitch, Rate, Slider, Progress, Region, Form
+    vueJsonEditor, Button, Input, Counter, Select, CheckBoxs, Radios, ElSwitch, Rate, Slider, Progress, Region, Form, Search, Table
   },
   name: 'HelloWorld',
   data () {
     return {
+      tableData: [
+        {haha: 'fjklds', haha2: '不是你的', test: 0},
+        {haha: 'wrarr', haha2: '不玩就逄了', test: 1}
+      ],
+      tableColumns: [
+        {prop: 'haha', label: '一号', render: ({data}) => {
+          return [
+            {type: () => data.test ? 'span' : 'input', prop: 'haha'}
+          ]
+        }},
+        {prop: 'haha2', label: '二号', render: ({data}) => {
+            return [
+              {type: 'span', filter: ({data}) => {
+                return data.test ? '真' : '假'}
+              },
+              {type: 'switch', prop: 'test'}
+            ]
+        }},
+        {label: '操作', render: ({data}) => {
+          return [
+            {type: 'button-text', value: '好的', prop: 'isOver'},
+            {type: 'button-text', value: '好的3', prop: 'isO4ver', style: 'color:red'}
+          ]
+        }}
+      ],
+      searchColumns: [
+        {type: 'input', prop: 'name', value:'dd', label: '姓名'},
+        {type: 'input', prop: 'dd', value:'dd', label: '姓名'},
+        {type: 'date-datetime', prop: 'ddddd', label: '姓名'},
+        {type: 'button', prop: '$submit', value: '提交'},
+      ],
+      searchData: {dd: 100},
       formColumns: [
         {type: 'input', prop: 'name', value:'dd', label: '姓名', rule: 'empty,age'},
         {type: 'input', prop: 'age', label: '年龄', rule: 'age'},
@@ -122,11 +159,8 @@ export default {
   },
   methods: {
     event(params ) { 
-      if (params.prop == 'b' && params.value == '2') {
-        this.data.a = 998
-      } else if (params.prop == 'a' && params.value == 'nihao') {
-        this.data.b = 6
-      }
+      console.log(params)
+      
     }
   }
 }
