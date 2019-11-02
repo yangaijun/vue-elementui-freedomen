@@ -1,6 +1,6 @@
-import FdDate from './Date.vue'
-FdDate.install = function (Vue) {
-    Vue.component(FdDate.name, FdDate)
+import FdDropdown from './Dropdown.vue'
+FdDropdown.install = function (Vue) {
+    Vue.component(FdDropdown.name, FdDropdown)
 }
 
-export default FdDate
+export default FdDropdown

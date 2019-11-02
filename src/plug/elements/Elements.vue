@@ -15,7 +15,12 @@ import FdSlider from './slider';
 import FdSwitch from './switch';
 import FdSpan from './span'
 import FdDate from './date'
+import FdDropdown from './dropdown'
+import FdImg from './img'
+import FdIcon from './icon'
+
 import util from '../utils/util.js'
+
 export default {
     name: 'elements',
     props: ['item'], 
@@ -31,17 +36,16 @@ export default {
         FdSlider, 
         FdSwitch, 
         FdSpan, 
-        FdDate
+        FdDate,
+        FdDropdown,
+        FdImg,
+        FdIcon
     },
     computed: {
         component() {
             return this.getType(this.item.type)
         }
     },
-    data () {
-        return {   
-        }
-    },  
     methods: { 
         getType(type) {
             const prefix = 'fd-' 
@@ -52,13 +56,9 @@ export default {
             }
             return null
         },
-        event(params){
+        event(params) {
             this.$emit('event', params);
         }
-    },
-    mounted() {
-
     }
-
 }
 </script>

@@ -8,7 +8,9 @@
                 :sortable='column.sortable' 
                 :show-overflow-tooltip='(config && config.showTip === false) ? false : true' 
                 :prop="column.prop" :label="column.label" 
-                v-for="(column, index) in columns" :key="index" 
+                v-for="(column, index) in columns"
+                v-if="Authorized(column)" 
+                :key="index" 
                 :width="column.width"> 
                     <template slot-scope="scope">
                         <region 
@@ -46,6 +48,7 @@
  * }, page: {}
  */
 import Region from '../../core/region/Region';
+import external from '../../config/external.js'
 export default {
     props: {
         data: Array,
@@ -53,16 +56,19 @@ export default {
         config: Object,
         page: Object
     },
+    name: 'FdTable',
     components: {
         Region
     },
     data() {
         return {
-            selectionChange() {
-            }
+            selectionChange() {}
         }
     },
     methods: {
+        Authorized (column) {
+            return  external.Authorized({column: column})
+        },
         event(params) { 
             this.$emit('event', params)
         }

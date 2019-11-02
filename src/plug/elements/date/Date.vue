@@ -9,6 +9,7 @@
                 end: '18:30'
             }"
             @change="change"
+            :style="mixin_style(item.style, item.value, item.data)"
             :placeholder="item.placeholder">
         </el-time-select>
         <el-date-picker
@@ -16,13 +17,15 @@
             v-model="item.value"
             type="datetime"
             @change="change"
+            :style="mixin_style(item.style, item.value, item.data)"
             :placeholder="item.placeholder">
         </el-date-picker>
         <el-date-picker
             v-else
             v-model="item.value"
             type="date"
-            @change="change"
+            @change="change" 
+            :style="mixin_style(item.style, item.value, item.data)"
             :placeholder="item.placeholder">
         </el-date-picker>
     </div>

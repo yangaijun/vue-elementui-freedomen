@@ -2,10 +2,11 @@
     <el-button 
         :type="buttonType(item.type)" 
         @click="click" 
+        :icon="item.icon"
         :disabled="mixin_disabled(item.disabled, item.value, item.data)"
         :style="mixin_style(item.style, item.value, item.data)"
         :plain="item.config && item.config.plain"
-        :round="item.config && item.config.round"
+        :round="item.config && item.config.round" 
     >
         {{mixin_filter(item.filter, item.value, item.$data)}}
     </el-button>

@@ -1,10 +1,9 @@
 <template>
-    <span 
+    <img 
         :class="item.class"
         :style="[defalutStyles[item.type], mixin_style(item.style, item.value, item.data)]"
-    >
-        {{mixin_filter(item.filter, item.value, item.$data)}}
-    </span>
+        :src="mixin_filter(item.filter, item.value, item.$data) || item.value"
+    />
 </template>
 <script>
 import base from '../../mixins/base.js';
@@ -19,16 +18,7 @@ export default {
     //prop, value, config: {}, filter, disabled, link?to router, $data
     props: ['item'],
     mixins: [base],
-    name: 'fdspan',
-    data() {
-        return {
-            
-        }
-    },
-    methods: {
-        change() {
-        }
-    },
+    name: 'fdimg',
     created() {
         this.defalutStyles = external.defaultStyles
     }

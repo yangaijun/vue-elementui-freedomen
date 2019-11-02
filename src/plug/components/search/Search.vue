@@ -1,13 +1,16 @@
 <template>
-    <region 
-        :columns="tempColumns"
-        :data="tempData"
-        @event="event"
-    />
+    <el-form
+    inline>
+        <fd-region 
+            :columns="tempColumns"
+            :data="tempData"
+            @event="event"
+        />
+    </el-form>
 </template>
 <script>
 import util from '../../utils/util.js';
-import Region from '../../core/region/Region';
+import FdRegion from '../../core/region/Region';
 import rule from '../../utils/rule.js';
 /**
  * config: {
@@ -32,8 +35,9 @@ export default {
         },
         config: Object,
     },
+    name: 'FdSearch',
     components: {
-        Region
+        FdRegion
     },
     data() {
         return {
@@ -44,28 +48,18 @@ export default {
     },
     methods: {
         resetColumns(columns) {
-            let newColumns = [...columns]
-            const marginLeft = '8px'
-            newColumns.forEach(column => {
-                if (typeof column.style === 'function');
+            let newColumns = []
+            columns.forEach(column => {
+                if (util.isPlainObject(column)) {
+                    let newItem = [column]
+                    newItem.push({type: 'form-item', prop: column.prop, label: column.label || column.placeholder})
 
-                else if (column.style !== void 0) {
-                    if (util.isPlainObject(column.style) && column.style.maginLeft === void 0) {
-                        column.style.maginLeft = marginLeft
-                    } else if (typeof column.style === 'string' && column.style.indexOf('marginLeft') === -1) {
-                        column.style += `;marginLeft: ${marginLeft};`
-                    }
-                } else {
-                    column.style = `marginLeft: ${marginLeft};`
+                    newColumns.push(newItem)
+                } else if (Array.isArray(column)) {
+                    newColumns.push(column)
                 }
-                
-
-            })
-            console.log(newColumns)
-            newColumns.push({
-                type: 'row'
-            })
-            return newColumns
+            });
+            return newColumns;
         },
         colne(columns) {
             return columns

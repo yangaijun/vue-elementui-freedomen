@@ -1,15 +1,19 @@
 <template>
-    <el-form label-width="100px">
-        <region 
+    <el-form 
+        :label-width="config && config.labelWidth || '100px'" 
+        :inline="config && config.inline"
+        :label-position="config && config.labelPosition">
+        <fd-region 
             :columns="tempColumns"
             :data="tempData"
             @event="event"
-        />
+        >
+        </fd-region>
     </el-form>
 </template>
 <script>
 import util from '../../utils/util.js';
-import Region from '../../core/region/Region';
+import FdRegion from '../../core/region';
 import rule from '../../utils/rule.js';
 /**
  * config: {
@@ -17,11 +21,11 @@ import rule from '../../utils/rule.js';
  *      labelWidth: true,
  *      editable: true/false,
  *      eidtStyle: 'text/disabled'
- * 
  * },
  * data, columns=>{label:string, type: string*, prop: string*, eidt: boolean, rule:function/array/string}
  */
 export default {
+    name: 'FdForm',
     props: {
         columns: {
             type: Array,
@@ -36,7 +40,7 @@ export default {
         config: Object,
     },
     components: {
-        Region
+        FdRegion
     },
     data() {
         return {
@@ -54,7 +58,7 @@ export default {
                     if (column.rule) {
                         newItem.push({type: 'span', class: 'el-form-item__error', filter: () => this.rules[column.prop].message})
                     }
-                    newItem.push({type: 'form-item', label: column.label})
+                    newItem.push({type: 'form-item', prop: column.prop, label: column.label})
 
                     newColumns.push(newItem)
                 } else if (Array.isArray(column)) {
@@ -78,6 +82,11 @@ export default {
         },
         validOne(data, r) { 
             let message = rule.valid(data, r) 
+            // if (message instanceof Promise) {
+            //     message.then(res => {
+
+            //     })
+            // }
             if (message === null || message === void 0 || message === '') {
                 return false
             }
@@ -110,7 +119,6 @@ export default {
                 }
             } else if (params.type === 'change' && this.rules[params.prop] !== void 0) {
                 let message = this.validOne(this.tempData[params.prop], params.prop)
-               
                 if (message) {
                     this.rules[params.prop].message = message
                 } else {

@@ -1,32 +1,50 @@
 <template>
    <div>
-       <template v-for="(column, index) in tempColumns">
-            <fd-elements v-if="isPlainObject(column) && isLegal(column)" @event="event" :key="index" :item="column"/>
-            <div v-else-if="isRow(column)" :key="index" style="flex-direction: row"> 
-                <region :columns='column' :data="data" @event="throwEvent"/>
-            </div>
-            <div v-else-if="isCol(column)" :key="index"> 
-                <region :columns='column' :data="data" @event="throwEvent"/>
-            </div>
-            <el-form-item v-else-if="isFormItem(column)" :label="column[column.length - 1].label" :key="index">
-                <region :columns='column' :data="data" @event="throwEvent"/>
-            </el-form-item>
-       </template>
+    <template v-for="(column, index) in tempColumns">
+        <fd-elements 
+            v-if="isPlainObject(column) && isLegal(column) && Authorized(column)" 
+            @event="event" 
+            :key="index" 
+            :item="column"
+        />
+        <div 
+            v-else-if="isRow(column) && Authorized(column)" 
+            :style="[
+                defalutStyles[column[column.length - 1].type], 
+                mixin_style(column[column.length - 1].style, column[column.length - 1].value, column[column.length - 1].data), 
+                {'flex-direction': 'row'}]" 
+            :key="index" 
+        > 
+            <fd-region :columns='column' :data="data" @event="throwEvent"/>
+        </div>
+        <div 
+            v-else-if="isCol(column) && Authorized(column)" 
+            :style="[
+                defalutStyles[column[column.length - 1].type], 
+                mixin_style(column[column.length - 1].style, column[column.length - 1].value, column[column.length - 1].data)]"
+            :key="index"
+        > 
+            <fd-region :columns='column' :data="data" @event="throwEvent"/>
+        </div>
+        <el-form-item 
+            v-else-if="isFormItem(column) && Authorized(column[column.length - 1])" 
+            :label="column[column.length - 1].label" 
+            :style="mixin_style(column[column.length - 1].style, column[column.length - 1].value, column[column.length - 1].data)"
+            :key="index"
+        >
+            <fd-region :columns='column' :data="data" @event="throwEvent"/>
+        </el-form-item>
+    </template>
    </div>
 </template>
 <script>
 import base from '../../mixins/base.js';
 import FdElements from '../../elements/Elements';
 import util from '../../utils/util.js';
-/**
- * config: {
- *      plain: true 
- *      round: true
- * }
- */
+import external from '../../config/external.js'
+
 export default {
-    //prop, value, config: {}, filter, disabled, link?to router, $data
-    name: 'region',
+    name: 'FdRegion',
     props: {
         columns: {
             required: true,
@@ -56,8 +74,10 @@ export default {
         }
     },
     methods: {
+        Authorized (column) {
+            return  external.Authorized({column: column})
+        },
         getType(column) {
-            //todo
             return column.type
         },
         clone(columns) {
@@ -70,7 +90,7 @@ export default {
         isRow(column) {
             if (Array.isArray(column)) {
                 let type = this.getType(column[column.length - 1])
-                return type === 'row' || type === void 0
+                return type === 'row'
             }
             return false
         },
@@ -96,6 +116,7 @@ export default {
                 this.$set(column, 'value', (data[column.prop] === void 0 || data[column.prop] === null) ? column.value : data[column.prop])
             else
                 column.value = (data[column.prop] === void 0 || data[column.prop] === null) ? column.value : data[column.prop]
+
             column.$data = data
         },
         resetColumns(columns = [], data = {}) {
@@ -123,9 +144,7 @@ export default {
     created() {
         var columns = this.clone(this.columns)
         this.tempColumns = this.resetColumns(columns, this.data)
-    },
-    mounted() {
+        this.defalutStyles = external.defaultStyles
     }
-    
 }
 </script> 
