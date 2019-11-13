@@ -1,6 +1,6 @@
-import FdSwitch from './Switch.vue'
-FdSwitch.install = function (Vue) {
-    Vue.component(FdSwitch.name, FdSwitch)
+import FdUpload from './Upload.vue'
+FdUpload.install = function (Vue) {
+    Vue.component(FdUpload.name, FdUpload)
 }
 
-export default FdSwitch
+export default FdUpload

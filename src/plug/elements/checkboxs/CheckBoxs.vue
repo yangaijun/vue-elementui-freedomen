@@ -67,9 +67,9 @@ export default {
                 return this.item.max({value: this.item.value, data: this.item.$data})
             }
             return this.item.max 
-        },
+        }
     },
-    mounted() {
+    created() {
         if (this.item.value === void 0) {
             this.$set(this.item, 'value', [])
         } else {
@@ -77,12 +77,15 @@ export default {
                 this.item.value = this.item.value.map(value => {
                     return value + ''
                 })
-            else if (typeof this.item.value === 'string' || typeof this.item.value === 'number') {
+            else if (typeof this.item.value === 'string') {
+                this.item.value = this.item.value.split(',')
+            } else if (typeof this.item.value === 'number') {
                 this.item.value = [this.item.value + '']
             } else {
                 throw new Error('not support type of the value, just support: string, array, number => to array')
             }
-        }
+        } 
+        this.item.$data[this.item.prop] = this.item.value
     }
 }
 </script>

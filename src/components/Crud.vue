@@ -1,0 +1,87 @@
+<template>
+    <div>
+        <fd-search :columns="searchColumns" @event="searchEvent" />
+        <fd-table :columns="tableColumns" @event="tableEvent" :data="tableData" :page="page" />
+        <fd-form :columns="formColumns" @event="formEvent" :data="formData" @submit="submit" />
+    </div>
+</template>
+<script>
+
+export default {
+  name: 'Crud',
+  data () {
+    return {
+        searchColumns: [
+            {type: 'select-remote', prop: 'remote', options: (query) => {
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        resolve({1: '文件', 2: '视频'})
+                    }, 200)
+                })
+            }},
+            {type: 'input', prop: 'name', label: '姓名', placeholder: '请输入姓名'},
+            {type: 'select', prop: 'sex', label: '性别', options: '男,女'},
+            {type: 'button-primary', prop: 'search', value: '查询'},
+            {type: 'button', prop: '$reset', value: '重置'}
+        ],
+        tableColumns: [
+            {label: '姓名', prop: 'name'},
+            {label: '性别', prop: 'gender', filter: {1: '男', 2: '女'}},
+            {label: '操作', render: ({data}) =>{
+                return [
+                    {type: 'button-text', prop: 'delete', value: '删除'},
+                    {type: 'button-text', prop: 'edit', value: '编辑', load: () => data.gender == 1},
+                    {type: 'button-text', prop: 'detail', value: '详情'},
+                ]
+            }}
+        ],
+        tableData: [
+            {name: '赵匡胤', gender: 1},
+            {name: '白马', gender: 2},
+            {name: '王子', gender: 1},
+        ],
+        page: {
+            pageNo: 1,
+            pageSize: 10,
+            total: 998
+        },
+        formColumns: [
+            {label: '姓名', prop: 'name', type: 'input', rule: 'must'},
+            {label: '性别', prop: 'gender', type: 'radios', options: {1: '男', 2: '女'}},
+            {type: 'upload', prop: 'gg', label: '完全人', filter: ({value}) => `http://www.jasobim.com:8085${value}`, config: {action: 'http://www.jasobim.com:8085/api/files/uploadFiles'}},
+            [
+                {type: 'button-primary', value: '提交', prop: '$submit'},
+                {type: 'button', value: '重置', prop: '$reset'},
+                {type: 'formitem'}
+            ]
+        ],
+        formData: {calca: '', calcb: '', result: '', gg: ['/uploadFiles/projectfiles/c8e5dfa78e702594f826afcab6e7f2a6.jpg', '/uploadFiles/projectfiles/5ccb4026deea49bbae21ce344f55ccab.jpg']}
+    }
+  },
+methods: {
+    searchEvent(params) {  
+        if (params.prop == 'search') {
+            console.log(params)
+        }
+    },
+    tableEvent(params) {
+        if (params.prop == 'detail') {
+            alert('详情')
+        } else if (params.prop == 'edit') {
+            this.formData = params.row
+        }
+        console.log(params)
+    },
+    submit(params) {
+        console.log(params)
+        this.page.total = 250
+    },
+    formEvent(params) {
+        console.log(params)
+    }
+  }
+}
+</script>
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+</style>

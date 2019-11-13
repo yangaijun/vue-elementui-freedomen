@@ -1,7 +1,7 @@
-import FdCheckBoxs from './CheckBoxs.vue'
+import FdCheck from './CheckBoxs.vue'
 
-FdCheckBoxs.install = function (Vue) {
-    Vue.component(FdCheckBoxs.name, FdCheckBoxs)
+FdCheck.install = function (Vue) {
+    Vue.component(FdCheck.name, FdCheck)
 }
 
-export default FdCheckBoxs
+export default FdCheck

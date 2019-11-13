@@ -1,48 +1,29 @@
 <template>
    <div>
     <template v-for="(column, index) in tempColumns">
+        <FdContains
+            :key="index" 
+            :columns='column'
+            @event="event" 
+            :data="data"
+            v-if="isWhich('column', column)">
+            <fd-region :columns='clearCaontainType(column)' :data="data" @event="throwEvent"/>
+        </FdContains>
         <fd-elements 
-            v-if="isPlainObject(column) && isLegal(column) && Authorized(column)" 
+            v-else-if="isWhich('obj', column)" 
             @event="event" 
             :key="index" 
             :item="column"
         />
-        <div 
-            v-else-if="isRow(column) && Authorized(column)" 
-            :style="[
-                defalutStyles[column[column.length - 1].type], 
-                mixin_style(column[column.length - 1].style, column[column.length - 1].value, column[column.length - 1].data), 
-                {'flex-direction': 'row'}]" 
-            :key="index" 
-        > 
-            <fd-region :columns='column' :data="data" @event="throwEvent"/>
-        </div>
-        <div 
-            v-else-if="isCol(column) && Authorized(column)" 
-            :style="[
-                defalutStyles[column[column.length - 1].type], 
-                mixin_style(column[column.length - 1].style, column[column.length - 1].value, column[column.length - 1].data)]"
-            :key="index"
-        > 
-            <fd-region :columns='column' :data="data" @event="throwEvent"/>
-        </div>
-        <el-form-item 
-            v-else-if="isFormItem(column) && Authorized(column[column.length - 1])" 
-            :label="column[column.length - 1].label" 
-            :style="mixin_style(column[column.length - 1].style, column[column.length - 1].value, column[column.length - 1].data)"
-            :key="index"
-        >
-            <fd-region :columns='column' :data="data" @event="throwEvent"/>
-        </el-form-item>
     </template>
    </div>
 </template>
 <script>
 import base from '../../mixins/base.js';
 import FdElements from '../../elements/Elements';
+import FdContains from '../../containers/Contains'
 import util from '../../utils/util.js';
 import external from '../../config/external.js'
-
 export default {
     name: 'FdRegion',
     props: {
@@ -55,14 +36,15 @@ export default {
         }
     },
     components: { 
-        FdElements
+        FdElements,
+        FdContains
     },
     mixins: [base],
     watch: {
         data: {
             handler(nd, od) {
-                if (od) {
-                    this.resetColumns(this.columns, nd)
+                if (od) { 
+                    this.tempColumns = this.resetColumns(this.columns, nd)
                 }
             },
             deep: true
@@ -74,6 +56,31 @@ export default {
         }
     },
     methods: {
+        isWhich(columnOrObj, column) {
+            if (columnOrObj === 'obj') {
+                return this.isPlainObject(column) 
+                    && this.load(column)
+                    && this.Authorized(column) 
+            } else if (columnOrObj === 'column') {
+                return this.isColumn(column) 
+                    && this.load(column)
+                    && this.Authorized(column) 
+            }
+        },
+        isPlainObject(column) {
+            return util.isPlainObject(column)
+        },
+        isColumn(column) {
+            return Array.isArray(column)
+        },
+        load(column) {
+            if (column.load !== void 0 && typeof column.load === 'function') {
+                return column.load({value: column.value, data: this.data, column: column})
+            } else if (column.load !== void 0) {
+                return column.load
+            }
+            return true
+        }, 
         Authorized (column) {
             return  external.Authorized({column: column})
         },
@@ -81,35 +88,7 @@ export default {
             return column.type
         },
         clone(columns) {
-            //some to do 
-            return columns
-        },
-        isPlainObject(column) {
-            return util.isPlainObject(column)
-        },
-        isRow(column) {
-            if (Array.isArray(column)) {
-                let type = this.getType(column[column.length - 1])
-                return type === 'row'
-            }
-            return false
-        },
-        isCol(column) {
-            if (Array.isArray(column)) {
-                let type = this.getType(column[column.length - 1])
-                return type === 'col' || type === void 0
-            }
-            return false
-        },
-        isFormItem(column) {
-            if (Array.isArray(column)) {
-                let type = this.getType(column[column.length - 1])
-                return type === 'form-item' || type === void 0
-            }
-            return false
-        },
-        isLegal(column) {
-            return !['col', 'row', undefined, 'form-item'].includes(column.type)
+            return columns.slice()
         },
         setColumn(column, data) {
             if (column.value === void 0) 
@@ -129,16 +108,25 @@ export default {
             } 
             return columns
         },
-        throwEvent(params) {
-            this.$emit('event', params)
-        },
         event(params) {
             if (params && params.type == 'change') {
                 if (params.prop) {
-                    this.data[params.prop] = params.value
+                    this.data[params.prop] = params.value 
                 }
             }
-            this.$emit('event', {...params, row: this.data})
+            this.$emit('event', {...params, row: util.clone(this.data)})
+        },
+        clearCaontainType(columns) {
+            let column = columns[columns.length - 1]
+            let type = (column.type || '').split('-')[0]
+            // *******************************??????*************************************** //
+            const names = ['row', 'col', 'formitem']
+            if (names.includes(type))
+                return columns.slice(0, columns.length - 1)
+            else return columns
+        },
+        throwEvent(params) {
+            this.$emit('event', params)
         }
     },
     created() {

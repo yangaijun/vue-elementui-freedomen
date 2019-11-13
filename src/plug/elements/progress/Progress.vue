@@ -1,6 +1,6 @@
 <template>
     <el-progress 
-        :percentage="item.value"
+        :percentage="mixin_filter(item.filter, item.value, item.$data)"
         :style="mixin_style(item.style, item.value, item.data)"
     >
     </el-progress>
@@ -14,11 +14,14 @@ export default {
     props: ['item'],
     name: 'fdprogress',
     mixins: [base],
-    data() {
-        return {}
-    },
     methods: {
+    },
+    created() {
+        if (this.item.value === void 0) {
+            this.$set(this.item, 'value', 0)
+        }
+        this.item.$data[this.item.prop] = this.item.value
     }
-  
+    
 }
 </script>

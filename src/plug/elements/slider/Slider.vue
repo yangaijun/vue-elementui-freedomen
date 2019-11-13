@@ -44,6 +44,12 @@ export default {
                 value: this.item.value
             })
         }
+    },
+    created() {
+        if (this.item.value === void 0) {
+            this.$set(this.item, 'value', this.min())
+        } 
+        this.item.$data[this.item.prop] = this.item.value
     }
 }
 </script>

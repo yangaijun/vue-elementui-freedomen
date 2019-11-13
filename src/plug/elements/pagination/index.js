@@ -1,6 +1,6 @@
-import FdInput from './Input.vue'
-FdInput.install = function (Vue) {
-    Vue.component(FdInput.name, FdInput)
+import FdPagination from './Pagination.vue'
+FdPagination.install = function (Vue) {
+    Vue.component(FdPagination.name, FdPagination)
 }
 
-export default FdInput
+export default FdPagination

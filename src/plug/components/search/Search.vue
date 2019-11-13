@@ -1,6 +1,5 @@
 <template>
-    <el-form
-    inline>
+    <el-form inline>
         <fd-region 
             :columns="tempColumns"
             :data="tempData"
@@ -52,7 +51,7 @@ export default {
             columns.forEach(column => {
                 if (util.isPlainObject(column)) {
                     let newItem = [column]
-                    newItem.push({type: 'form-item', prop: column.prop, label: column.label || column.placeholder})
+                    newItem.push({type: 'formitem', prop: column.prop, label: column.label || column.placeholder})
 
                     newColumns.push(newItem)
                 } else if (Array.isArray(column)) {
@@ -64,9 +63,22 @@ export default {
         colne(columns) {
             return columns
         },
+        reset() {
+            let newObj = {} 
+            for (let key in this.firstData) {
+                newObj[key] = this.firstData[key]
+            }
+            this.tempData = newObj
+        },
         event(params) { 
+            if (params.prop == '$reset')
+                this.reset()
+
             this.$emit('event', params)
         }
+    },
+    mounted() {
+        this.firstData = util.clone(this.data)  
     },
     created() {
         let columns = this.colne(this.columns)

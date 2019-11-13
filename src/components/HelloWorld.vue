@@ -1,9 +1,8 @@
 <template>
     <div >
-      <el-button type="primary">主要按钮</el-button>
         <fd-form :columns="formColumns" :data="formData" @event="event" />
-        <fd-search :columns="searchColumns" :data="searchData" @event="event" />
-        <fd-table :data="tableData" :columns="tableColumns" @event="event"/>
+        <!-- <fd-search :columns="searchColumns" :data="searchData" @event="event" />
+        <fd-table :data="tableData" :columns="tableColumns" @event="event"/> -->
     </div>
 </template>
 <script>
@@ -44,96 +43,45 @@ export default {
       ],
       searchData: {dd: 100},
       formColumns: [
-        {type: 'input', prop: 'm416', value:'dd', label: '姓名', rule: 'empty,age'},
-        {type: 'input', prop: 'age', label: '年龄', rule: 'age'},
+        {type: 'input', prop: 'm416', value:'dd', label: '姓名', rule: ({data}) => data.m416 == '12' && '不可以等于12哦', load: ({value}) => value != 14},
+        {type: 'input', prop: 'age', label: '年龄',  rule: () => {
+            return new Promise((resolve, reject) => {
+              setTimeout(() => {
+                resolve('失败')
+              }, 1000)
+            })
+          }},
         [
           {type: 'counter', prop: 'ddd', value: 1, label: '姓名'},
           {type: 'span-test', value: '--', style: {marginLeft: '20px', marginRight: '20px'}},
           {type: 'counter', prop: 'gggg', value: 2, label: '年龄'},
-          {type: 'form-item',  label: 'test'}
+          {type: 'formitem',  label: 'test', load:({data}) => data.ddd != 6, style: {float: 'left'}}
         ],
         {type: 'dropdown', prop: 'ak', label: '下拉', options: '你的,我的'}, 
+        {type: 'check-boxs', prop: 'radios', options: '近,远',   rule: 'must', label: '家中'},
+        {type: 'check-buttons', prop: 'checkbuttons', options: '近,远', rule: 'must', label: '家中'},
+        {type: 'select', prop: 'select', options: {1: '近', 2: '远', 3: '长'}, rule: 'must', label: '家要中'},
+        {type: 'rate', value: 3, label: '等分', prop: 'df'},
+        {type: 'slider', prop: 'fdslider', label: 'Slider'},
+        {type: 'select-multiple', prop: 'select2', value: '1,2', options: {1: '近', 2: '远', 3: '长'}, rule: 'must', label: '家要中'},
+        {type: 'progress', prop: 'progress', label: 'progress', value: 12, filter: ({data}) => data.fdslider},
         [
+          {type: 'switch', prop: 'switch'},
+          {type: 'span', prop: 'noe', filter: ({data}) => data.switch ? '你的': '我的', style: ({data}) => data.switch && {color: 'blue'}},
+          {type: 'formitem',  label: '滚蛋'}
+        ], [
           {type: 'button-primary', prop: '$submit', value: '提交'},
           {type: 'button', prop: '$reset', value: '重置'},
-          {type: 'form-item'}
         ]
       ],
-      formData: {name: '张一', age: 25},
-      columns: [
-        {type: 'button', value: 'great!'},
-        [
-          {type: 'input', value: '985'},
-          {type: 'counter', value: 25, prop:'counter'},
-          {type: 'col'}
-        ], [
-          {type: 'slider', value: 25, prop: 'slider'},
-          {type: 'input', value: 555, prop: 'text'},
-          {type: 'row'}
-        ]
-      ],
-      data: {a: 12, counter: 1, slider: 23,'333': '666'},
-      form: {
-        type: 'll',
-        prop: 'd',
-        value: 12,
-        '333': '666'
-      },
-      item: {
-        prop: 'button',//defalut
-        type: 'button-warning',
-        value: 'nihao',
-        filter: ({value}) => 'dddddd',
-        disabled: ({value}) => value == 'youyou',
-        config: {
-          round: true
-        }
-      },
-      input: {
-        prop: 'ipnut',
-        type: 'input-area',
-        placeholder: 'heh',
-        disabled: ({value}) => value == 'youyou',
-      },
-      counter: {
-        prop: 'couter', disabled: ({value}) =>value == 10
-      },
-      select: {
-        prop: 'select',
-        placeholder: 'very goo',
-        type: 'select',
-        options: {1: 'name', 2: 'boy'},
-      },
-      checkboxs: {
-        prop: 'checkbox',
-        type: 'check-buttons',
-        options: {1: 'name', 2: 'boy', 3: 'gri'},
-        value:1,
-        max: 1
-      },
-      radios: {
-        prop: 'radios',
-        options: "田,mh",
-        type: 'radio-buttons',
-      },
-      elswitch: {
-        value: 0,
-        disabled: ({value}) => value 
-      },
-      rate: {
-        disabled: ({value}) => value == 3
-      },
-      progress: {value: 1},
-      slider: {
-        value: 10,
-        disabled: ({value}) => value == 3
-      }
+      formData: {fdslider: 18, switch: 1},
     }
   },
   methods: {
-    event(params ) { 
+    event(params ) {  
+      if (params.prop == '$submit')
+        this.formData.m416 = 'wq j '
       console.log(params)
-      
     }
   }
 }

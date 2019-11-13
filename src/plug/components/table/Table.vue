@@ -1,6 +1,11 @@
 <template>
     <div>
-        <el-table  @selection-change='selectionChange' :data="data" :row-style='config && config.rowStyle' :border="(config && config.border === false) ? false : true">
+        <el-table  
+            @selection-change='selectionChange' 
+            :data="data" 
+            :row-style='config && config.rowStyle' 
+            :border="(config && config.border === false) ? false : true">
+
             <el-table-column v-if="config && config.selection" type="selection" width="55" />
             <el-table-column v-if="config && config.index" type="index" width="65" :label="config && config.indexLabel" />
 
@@ -26,15 +31,17 @@
                     </template>
             </el-table-column>
         </el-table>
-        <!-- <div v-if="page" style="text-align:right;">
-            <el-pagination @size-change="pageSizeChange" @current-change="pageNoChange" 
-                :current-page="table.page.pageNo"
-                :page-sizes="basePageTableConfig.page.pageSizes"
-                :page-size="table.page.pageSize"
-                :layout="basePageTableConfig.page.layout"
-                :total="table.page.total">
+       <div v-if="page" style="text-align:right;" class="fd_table_page">
+            <el-pagination
+                @size-change="sizeChange"
+                @current-change="currentChange"
+                :current-page="page.pageNo"
+                :page-sizes="config && item.config.pageSizes || [10, 20, 50, 100]"
+                :page-size="page.pageSize || 10"
+                :layout="config && item.config.layout || 'total, sizes, prev, pager, next, jumper'"
+                :total="page.total || 0">
             </el-pagination>
-        </div> -->
+        </div>
     </div>
 </template>
 <script>
@@ -62,12 +69,26 @@ export default {
     },
     data() {
         return {
-            selectionChange() {}
         }
     },
     methods: {
         Authorized (column) {
             return  external.Authorized({column: column})
+        },
+        sizeChange(pageSize) {
+            this.event({
+                type: 'change',
+                prop: '$pageSize',
+                value: pageSize
+            })
+        },
+        selectionChange() {},
+        currentChange(pageNo) {
+            this.event({
+                type: 'change',
+                prop: '$pageNo',
+                value: pageNo
+            })
         },
         event(params) { 
             this.$emit('event', params)

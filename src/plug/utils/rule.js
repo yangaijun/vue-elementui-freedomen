@@ -37,13 +37,12 @@ const rules = {
     idcard: { label: '请正确身份证号码', regular: /^\d{8,18}|[0-9x]{8,18}|[0-9X]{8,18}?$/ },
     //account
     account: { label: '仅允许字母开头，字母数字下划线组合5-16长度', regular: /^[a-zA-Z][a-zA-Z0-9_]{4,15}$/ },
-
 }
 
-function valid(value, rule) {
+function valid(value, rule, data) {
     let tempRule
     if (rule instanceof Function) {
-        return rule(value)
+        return rule({value: value, data: data})
     } else if (Array.isArray(rule)) {
         tempRule = rule
     } else if (typeof rule === 'string') {
@@ -68,5 +67,5 @@ function valid(value, rule) {
 }
 
 export default {
-    valid: valid
+    valid: valid 
 }

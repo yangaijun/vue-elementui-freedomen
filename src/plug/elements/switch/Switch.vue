@@ -41,11 +41,15 @@ export default {
     mounted() {
         if (this.item.config && this.item.config.activeValue !== void 0) {
             this.activeValue = this.item.config.activeValue
-        }
-
+        } 
         if (this.item.config && this.item.config.inactiveValue !== void 0) {
             this.inactiveValue = this.item.config.inactiveValue
         }
+
+        if (this.item.value === void 0) {
+            this.$set(this.item, 'value', this.inactiveValue)
+        } 
+        this.item.$data[this.item.prop] = this.item.value
     }
 }
 </script>

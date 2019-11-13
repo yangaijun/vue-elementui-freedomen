@@ -42,6 +42,16 @@ export default {
     components: {
         FdRegion
     },
+    watch: {
+        tempData(nd, od) { 
+            if (od) { 
+                this.resetColumns(this.columns, nd)
+            }
+        },
+        data(nd, od) { 
+            this.tempData = nd
+        }
+    },
     data() {
         return {
             tempColumns: [],
@@ -56,9 +66,11 @@ export default {
                 if (util.isPlainObject(column)) {
                     let newItem = [column]
                     if (column.rule) {
-                        newItem.push({type: 'span', class: 'el-form-item__error', filter: () => this.rules[column.prop].message})
+                        newItem.push(
+                            {type: 'span', class: 'el-form-item__error', filter: () => this.rules[column.prop].message} 
+                        )
                     }
-                    newItem.push({type: 'form-item', prop: column.prop, label: column.label})
+                    newItem.push({type: 'formitem', prop: column.prop, label: column.label})
 
                     newColumns.push(newItem)
                 } else if (Array.isArray(column)) {
@@ -75,18 +87,23 @@ export default {
                     //如果是form-item没有prop  是不是可以用index来？
                     rules[column.prop] = {
                         rule: column.rule,
+                        loading: false,
                         message: ''
                     }
                 }
             }
         },
-        validOne(data, r) { 
-            let message = rule.valid(data, r) 
-            // if (message instanceof Promise) {
-            //     message.then(res => {
-
-            //     })
-            // }
+        validOne(data, r, ruleObj) { 
+            let message = rule.valid(data, r, this.data) 
+            if (message instanceof Promise) { 
+                ruleObj.loading = true
+                
+                message.then(res => {
+                    ruleObj.loading = false
+                    ruleObj.message = res 
+                })
+                return 
+            }
             if (message === null || message === void 0 || message === '') {
                 return false
             }
@@ -95,7 +112,7 @@ export default {
         valid() {
             let error = false
             for (let r in this.rules) {
-                let message = this.validOne(this.tempData[r], this.rules[r].rule)
+                let message = this.validOne(this.tempData[r], this.rules[r].rule, this.rules[r])
                 if (message !== false) {
                     error = true
                     this.rules[r].message = message
@@ -103,22 +120,30 @@ export default {
                     this.rules[r].message = ''
                 }
             }
-            return error
+            return !error
         },
-        colne(columns) {
+        reset() {
+            let newObj = {} 
+            for (let key in this.firstData) {
+                newObj[key] = this.firstData[key]
+            }
+            this.tempData = newObj
+            for (let r in this.rules) {
+                this.rules[r].message = ''
+            } 
+        },
+        clone(columns) {
             return columns
         },
         event(params) { 
             if (params.prop == '$submit') {
-                if (!this.valid()) {
+                if (this.valid()) {
                     this.$emit('submit', this.tempData)
                 }
             } else if (params.prop == '$reset') {
-                for (let r in this.rules) {
-                    this.rules[r].message = ''
-                }
+                this.reset()
             } else if (params.type === 'change' && this.rules[params.prop] !== void 0) {
-                let message = this.validOne(this.tempData[params.prop], params.prop)
+                let message = this.validOne(this.tempData[params.prop], this.rules[params.prop].rule, this.rules[params.prop])
                 if (message) {
                     this.rules[params.prop].message = message
                 } else {
@@ -128,11 +153,14 @@ export default {
             this.$emit('event', params)
         }
     },
-    created() {
-        let columns = this.colne(this.columns)
+    mounted() {
+        this.firstData = util.clone(this.data)  
+    },
+    created() {  
+        let columns = this.clone(this.columns)
         let rules = {}
         this.resetRules(columns, rules)
-        this.rules = rules
+        this.rules = rules 
         this.tempColumns = this.resetColumns(columns)
         this.tempData = this.data
     }

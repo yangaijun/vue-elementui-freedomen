@@ -5,7 +5,31 @@
         :allow-create="item.config && item.config.allowCreate"
         :filterable="item.config && item.config.filterable === false ? false : true"
         :clearable="item.config && item.config.clearable"
-        
+        v-if="item.type === 'select-remote'"
+        :loading="loading"
+        reserve-keyword
+        remote
+        @change="change"  
+        :remote-method="remoteMethod"
+    >
+        <el-option
+            v-for="option in mixin_options(options)"
+            :key="option.value"
+            :label="option.label"
+            :value="option.value"
+            :disabled="mixin_disabled(item.disabled, option.value, item.$data)"
+            :style="mixin_style(item.style, option.value, item.data)"
+        >
+        </el-option>
+    </el-select>
+
+    <el-select
+        v-model="item.value"
+        :placeholder="item.placeholder"
+        :allow-create="item.config && item.config.allowCreate"
+        :filterable="item.config && item.config.filterable === false ? false : true"
+        :clearable="item.config && item.config.clearable"
+        v-else
         :multiple="item.type === 'select-multiple'"
         @change="change" 
     >
@@ -34,7 +58,10 @@ export default {
     mixins: [base],
     name: 'fdselect',
     data() {
-        return {}
+        return {
+            loading: false,
+            options: []
+        }
     },
     methods: {
         change() {
@@ -43,21 +70,41 @@ export default {
                 prop: this.item.prop,
                 value: this.item.value
             })
+        },
+        remoteMethod(query) {
+            if (query !== '')
+                this.loading = true
+            let promise = this.item.options(query)
+            promise && promise.then(_options => {
+                this.loading = false
+                this.options = _options
+            })
         }
     },
     mounted() {
+        if (this.item.type === 'select-remote' && typeof this.item.options !== 'function')
+            console.warn('remote type the options must be promise: resolve([{label:,value:}]/{1:2}/"a,b,c")')
+
         if (this.item.value === void 0) {
             this.$set(this.item, 'value', this.item.type == 'select-multiple' ? [] : '')
         } else {
             if (this.item.type == 'select-multiple') {
-                this.item.value = this.item.value.map(value => {
-                    return value + ''
-                })
+                if (Array.isArray(this.item.value))
+                    this.item.value = this.item.value.map(value => {
+                        return value
+                    })
+                else if (typeof this.item.value === 'string') {
+                    this.item.value = this.item.value.split(',')
+                } else if (typeof this.item.value === 'number') {
+                    this.item.value = [this.item.value + '']
+                } else {
+                    throw new Error('not support type of the value, just support: string, array, number => to array')
+                }
             } else {
                 this.item.value += ''
             }
-          
         }
+        this.item.$data[this.item.prop] = this.item.value
     }
 }
 </script>
