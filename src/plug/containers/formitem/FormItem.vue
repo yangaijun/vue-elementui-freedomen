@@ -29,9 +29,9 @@ export default {
     methods: {
         style() {
             let column = this.columns[this.columns.length - 1]
-            let type = column.type
+            let type = util.getType(column)
 
-            if (type && type.indexOf('col') === 0)
+            if (type && type.indexOf('col') === 3)
                 return [external.defaultStyles[type], this.mixin_style(column.style, column.value, column.$data)]
             else 
                 return null

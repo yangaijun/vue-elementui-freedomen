@@ -12,6 +12,7 @@ import FdRegion from '../core/region'
 
 import util from '../utils/util.js'
 const names = ['fd-row', 'fd-col', 'fd-formitem']
+const PREFIX = 'fd-'
 
 export default {
     name: 'contains',
@@ -32,8 +33,8 @@ export default {
             if (columns.length === 0)
                 return null
             let column = columns[columns.length - 1]
-            let type = 'fd-' + (column.type || '').split('-')[0]
 
+            let type = util.getType(column)
             if (names.includes(type))
                 return type
             else return 'fd-col'

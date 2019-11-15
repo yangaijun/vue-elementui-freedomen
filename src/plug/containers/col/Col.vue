@@ -9,6 +9,7 @@
 import FdRegion from '../../core/region'
 import external from '../../config/external.js'
 import base from '../../mixins/base.js';
+import util from '../../utils/util.js'
 
 export default {
     name: 'fdcol',
@@ -17,25 +18,23 @@ export default {
     components: { 
         FdRegion
     }, 
-    data() {
-        return {
-            tempColumns: []
-        }
-    },
     methods: {
+        getType() {
+
+        },
         style() {
             let column = this.columns[this.columns.length - 1]
-            let type = column.type
-
-            if (type && type.indexOf('col') === 0)
-                return [external.defaultStyles[type], this.mixin_style(column.style, column.value, column.$data)]
+            let type =  util.getType(column)
+            if (type && type.indexOf('col') === 3)
+                return [
+                    external.defaultStyles[type], 
+                    {display: 'flex', 'flex-direaction': 'column', '-webkit-flex-direction': 'column'}, 
+                    this.mixin_style(column.style, column.value, column.$data)
+                ]
             else 
                 return null
         },
         
-    },
-    created() {
-        console.log(FdRegion)
     }
 }
 </script> 

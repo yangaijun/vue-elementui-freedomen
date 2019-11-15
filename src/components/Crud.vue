@@ -1,8 +1,45 @@
 <template>
     <div>
-        <fd-search :columns="searchColumns" @event="searchEvent" />
+        <fd-search :columns="searchColumns" @event="searchEvent"/>
         <fd-table :columns="tableColumns" @event="tableEvent" :data="tableData" :page="page" />
         <fd-form :columns="formColumns" @event="formEvent" :data="formData" @submit="submit" />
+        <fd-region 
+            :columns="[
+                {type: 'span', value: '你好中国'},
+                {type: 'input', prop: 'input', value: 2, style: 'width: 280px'},
+                [
+                    {type: 'span', value: '选择一下:'},
+                    {type: 'select', prop: 'select', options: '9527,m416'},
+                    {type: 'col'}
+                ],
+                [
+                    {type: 'span', value: '选择一下:'},
+                    {type: 'select', prop: 'select', options: '9527,m416'},
+                    {type: 'row'}
+                ],
+                [
+                    {type: 'span', value: '选择一下:'},
+                    {type: 'select', prop: 'select', options: '9527,m416'},
+                ],
+            ]"
+        />
+        <fd-table 
+            :columns="[
+                {label: '姓名', prop: 'name', type: ({data}) => data.edit ? 'input': 'span'},
+                {label: '性别', prop: 'gender', type: ({data}) => data.edit ? 'select': 'span', filter: {1: '男', 2: '女'}, options: {1: '男', 2: '女'}},
+                {label: '操作', render: ({data}) =>{
+                    return [
+                        {type: 'switch', prop: 'edit'},
+                        {type: 'button-text', prop: 'save', value: '保存', load: ({data}) => data.edit}
+                    ]
+                }}
+            ]" 
+            :data="[{name: '大头一一一一五一',gender: 1,edit: 0}]" 
+            @event="(params) => {
+                if (params.prop == 'save')
+                    params.row.edit = 0
+            }"
+        />
     </div>
 </template>
 <script>
@@ -10,7 +47,7 @@
 export default {
   name: 'Crud',
   data () {
-    return {
+    return { 
         searchColumns: [
             {type: 'select-remote', prop: 'remote', options: (query) => {
                 return new Promise((resolve) => {
@@ -19,9 +56,10 @@ export default {
                     }, 200)
                 })
             }},
+            {type: 'date-date', prop: 'date', placeholder: '请选择日期'},
             {type: 'input', prop: 'name', label: '姓名', placeholder: '请输入姓名'},
             {type: 'select', prop: 'sex', label: '性别', options: '男,女'},
-            {type: 'button-primary', prop: 'search', value: '查询'},
+            {type: 'button-primary', prop: 'search', value: '查询', disabled: ({data}) => data.name == '12'},
             {type: 'button', prop: '$reset', value: '重置'}
         ],
         tableColumns: [
@@ -70,7 +108,6 @@ methods: {
         } else if (params.prop == 'edit') {
             this.formData = params.row
         }
-        console.log(params)
     },
     submit(params) {
         console.log(params)

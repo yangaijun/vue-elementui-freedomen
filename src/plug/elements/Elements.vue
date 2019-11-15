@@ -19,7 +19,6 @@ import FdDropdown from './dropdown'
 import FdImg from './img'
 import FdIcon from './icon'
 import FdUpload from './upload'
-import FdPagination from './pagination'
 
 import util from '../utils/util.js'
 
@@ -42,24 +41,14 @@ export default {
         FdDropdown,
         FdImg,
         FdIcon,
-        FdUpload,
-        FdPagination
+        FdUpload
     },
     computed: {
         component() {
-            return this.getType(this.item.type)
+            return util.getType(this.item)
         }
     },
     methods: { 
-        getType(type) {
-            const prefix = 'fd-' 
-            if (typeof type === 'string') {
-                return prefix + type.split('-')[0]
-            } else if (typeof type === 'function') {
-                return this.getType(type({value: this.item.value, data: this.item.$data}))
-            }
-            return null
-        },
         event(params) {
             this.$emit('event', params);
         }

@@ -9,15 +9,15 @@ Vue.use(ElementUI)
 // import 'mavon-editor/dist/css/index.css'
 // import mavonEditor from 'mavon-editor'
 // Vue.use(mavonEditor)
-import Plug from './plug'
+import Freedomen from './plug'
 
-Plug.privileges.Authorized = function({column}) {
+Freedomen.privileges.Authorized = function({column}) {
   // if (column.prop == 'edit')
   //   return false
   return true
 }
 
-Vue.use(Plug) 
+Vue.use(Freedomen) 
 // import external from './plug/config/external'
 // external.privileges = function(column) {
 //   if (column.prop == 'm416')

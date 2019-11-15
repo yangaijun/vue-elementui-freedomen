@@ -21,7 +21,20 @@ function clone(data) {
     }
     return model;
 } 
+
+const PREFIX = 'fd-'
+function getType(column) {
+  let type = column.type
+  if (typeof type === 'string') {
+      return PREFIX + type.split('-')[0]
+  } else if (typeof type === 'function') {
+      return getType({...column, type: type({value: column.value, data: column.$data})})
+  }
+  return ''
+}
+
 export default {
     isPlainObject: isPlainObject,
-    clone: clone
+    clone: clone,
+    getType: getType
 }

@@ -1,22 +1,22 @@
 <template>
-   <div>
-    <template v-for="(column, index) in tempColumns">
-        <FdContains
-            :key="index" 
-            :columns='column'
-            @event="event" 
-            :data="data"
-            v-if="isWhich('column', column)">
-            <fd-region :columns='clearCaontainType(column)' :data="data" @event="throwEvent"/>
-        </FdContains>
-        <fd-elements 
-            v-else-if="isWhich('obj', column)" 
-            @event="event" 
-            :key="index" 
-            :item="column"
-        />
-    </template>
-   </div>
+    <span>
+        <template v-for="(column, index) in tempColumns" >
+            <FdContains
+                :key="index" 
+                :columns='column'
+                @event="event" 
+                :data="data"
+                v-if="isWhich('column', column)">
+                <fd-region :columns='clearContainType(column)' :data="data" @event="throwEvent"/>
+            </FdContains>
+            <fd-elements 
+                v-else-if="isWhich('obj', column)" 
+                @event="event" 
+                :key="index" 
+                :item="column"
+            />
+        </template>
+    </span>
 </template>
 <script>
 import base from '../../mixins/base.js';
@@ -24,6 +24,7 @@ import FdElements from '../../elements/Elements';
 import FdContains from '../../containers/Contains'
 import util from '../../utils/util.js';
 import external from '../../config/external.js'
+
 export default {
     name: 'FdRegion',
     props: {
@@ -33,6 +34,9 @@ export default {
         },
         data: {
             type: Object, 
+            default: () => {
+                return {}
+            }
         }
     },
     components: { 
@@ -116,7 +120,7 @@ export default {
             }
             this.$emit('event', {...params, row: util.clone(this.data)})
         },
-        clearCaontainType(columns) {
+        clearContainType(columns) {
             let column = columns[columns.length - 1]
             let type = (column.type || '').split('-')[0]
             // *******************************??????*************************************** //

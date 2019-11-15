@@ -4,7 +4,7 @@
         :type="inputType(item.type)" 
         v-model="item.value"
         :rows="item.config && item.config.rows"
-        :disabled="mixin_disabled(item.disabled, item.value, item.data)"
+        :disabled="mixin_disabled(item.disabled, item.value, item.$data)"
         :placeholder="item.placeholder" 
         :style="mixin_style(item.style, item.value, item.data)"
         :clearable="(item.config && item.config.clearable === false) ? false : true"

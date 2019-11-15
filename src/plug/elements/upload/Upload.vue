@@ -98,7 +98,6 @@ export default {
                 else 
                     return {...el, url: this.getUrl(el.url)}
             }) 
-            console.log(this.fileList)
         }  
     }
 }
