@@ -19,6 +19,8 @@ import FdDropdown from './dropdown'
 import FdImg from './img'
 import FdIcon from './icon'
 import FdUpload from './upload'
+import FdCascader from './cascader'
+import FdTree from './tree'
 
 import util from '../utils/util.js'
 
@@ -41,7 +43,9 @@ export default {
         FdDropdown,
         FdImg,
         FdIcon,
-        FdUpload
+        FdUpload,
+        FdCascader,
+        FdTree
     },
     computed: {
         component() {

@@ -51,7 +51,7 @@ export default {
             columns.forEach(column => {
                 if (util.isPlainObject(column)) {
                     let newItem = [column]
-                    newItem.push({type: 'formitem', prop: column.prop, label: column.label || column.placeholder})
+                    newItem.push({type: 'formitem', prop: column.prop, label: column.label})
 
                     newColumns.push(newItem)
                 } else if (Array.isArray(column)) {

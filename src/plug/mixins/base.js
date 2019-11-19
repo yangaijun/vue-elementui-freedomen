@@ -29,14 +29,14 @@ export default {
         },
         mixin_event(params) {
             this.$emit('event', params)
-        },
+        }, 
         //options ? "a,b,c" || {a: '1', b: '2'} => [{label: 'a', value: 'a'}]
         mixin_options(options) {
             if (isPlainObject(options)) {
                 let newOptions = []
                 for (let key in options) {
                     newOptions.push({
-                        value: key,
+                        value: key + '',
                         label: options[key]
                     })
                 }
@@ -45,7 +45,7 @@ export default {
                 let newOptions = [], tempOptions = options.split(',')
                 for (let key of tempOptions) {
                     newOptions.push({
-                        value: key,
+                        value: key + '',
                         label: key
                     })
                 }

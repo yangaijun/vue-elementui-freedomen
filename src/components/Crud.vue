@@ -2,27 +2,9 @@
     <div>
         <fd-search :columns="searchColumns" @event="searchEvent"/>
         <fd-table :columns="tableColumns" @event="tableEvent" :data="tableData" :page="page" />
-        <fd-form :columns="formColumns" @event="formEvent" :data="formData" @submit="submit" />
-        <fd-region 
-            :columns="[
-                {type: 'span', value: '你好中国'},
-                {type: 'input', prop: 'input', value: 2, style: 'width: 280px'},
-                [
-                    {type: 'span', value: '选择一下:'},
-                    {type: 'select', prop: 'select', options: '9527,m416'},
-                    {type: 'col'}
-                ],
-                [
-                    {type: 'span', value: '选择一下:'},
-                    {type: 'select', prop: 'select', options: '9527,m416'},
-                    {type: 'row'}
-                ],
-                [
-                    {type: 'span', value: '选择一下:'},
-                    {type: 'select', prop: 'select', options: '9527,m416'},
-                ],
-            ]"
-        />
+        <fd-form :columns="formColumns" @event="formEvent" :data="formData" @submit="submit">
+        </fd-form>
+        
         <fd-table 
             :columns="[
                 {label: '姓名', prop: 'name', type: ({data}) => data.edit ? 'input': 'span'},
@@ -49,12 +31,10 @@ export default {
   data () {
     return { 
         searchColumns: [
-            {type: 'select-remote', prop: 'remote', options: (query) => {
-                return new Promise((resolve) => {
-                    setTimeout(() => {
-                        resolve({1: '文件', 2: '视频'})
-                    }, 200)
-                })
+            {type: 'select-remote', prop: 'remote', options: (query, resolve) => {
+                setTimeout(() => {
+                    resolve({1: '文件', 2: '视频'})
+                }, 200)
             }},
             {type: 'date-date', prop: 'date', placeholder: '请选择日期'},
             {type: 'input', prop: 'name', label: '姓名', placeholder: '请输入姓名'},
@@ -65,7 +45,7 @@ export default {
         tableColumns: [
             {label: '姓名', prop: 'name'},
             {label: '性别', prop: 'gender', filter: {1: '男', 2: '女'}},
-            {label: '操作', render: ({data}) =>{
+            {label: '操作', render: ({data}) => {
                 return [
                     {type: 'button-text', prop: 'delete', value: '删除'},
                     {type: 'button-text', prop: 'edit', value: '编辑', load: () => data.gender == 1},
@@ -84,6 +64,8 @@ export default {
             total: 998
         },
         formColumns: [
+            {type: 'tree-select', prop: 'tree', value: [1], options: [{label: 'ddd', value: 1, children: [{label: 'dddr', value: 12}]}, {label: 'ddd23', value: 2}]},
+            {label: 'ca', prop: 'dd', type: 'cascader', value:['45', '45'], options: [{label: 'd', value: '45', children: [{label: 'd', value: '45'}, {label: 'ddd4', value: '453'}]}]},
             {label: '姓名', prop: 'name', type: 'input', rule: 'must'},
             {label: '性别', prop: 'gender', type: 'radios', options: {1: '男', 2: '女'}},
             {type: 'upload', prop: 'gg', label: '完全人', filter: ({value}) => `http://www.jasobim.com:8085${value}`, config: {action: 'http://www.jasobim.com:8085/api/files/uploadFiles'}},

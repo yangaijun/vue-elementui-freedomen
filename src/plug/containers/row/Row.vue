@@ -1,6 +1,6 @@
 <template>
     <div 
-    class="fd_row"
+        class="fd_row"
         :style="style()" 
     > 
         <slot></slot>
@@ -35,8 +35,7 @@ export default {
                 ]
             else 
                 return style
-        },
-        
+        }
     } 
 }
 </script> 

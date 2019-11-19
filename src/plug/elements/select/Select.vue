@@ -74,8 +74,11 @@ export default {
         remoteMethod(query) {
             if (query !== '')
                 this.loading = true
-            let promise = this.item.options(query)
-            promise && promise.then(_options => {
+            let promise = new Promise((resolve, reject) => {
+                this.item.options(query, resolve) 
+            }) 
+            
+            promise.then(_options => {
                 this.loading = false
                 this.options = _options
             })

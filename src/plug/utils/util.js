@@ -21,7 +21,12 @@ function clone(data) {
     }
     return model;
 } 
-
+function getUUID() {
+  let rand =  () => {
+      return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+  }
+  return (rand() + rand() + "-" + rand() + "-" + rand() + "-" + rand() + "-" + rand() + rand() + rand());
+} 
 const PREFIX = 'fd-'
 function getType(column) {
   let type = column.type
@@ -36,5 +41,6 @@ function getType(column) {
 export default {
     isPlainObject: isPlainObject,
     clone: clone,
-    getType: getType
+    getType: getType,
+    getUUID: getUUID
 }

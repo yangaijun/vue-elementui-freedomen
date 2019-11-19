@@ -88,9 +88,6 @@ export default {
         Authorized (column) {
             return  external.Authorized({column: column})
         },
-        getType(column) {
-            return column.type
-        },
         clone(columns) {
             return columns.slice()
         },

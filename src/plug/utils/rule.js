@@ -1,3 +1,5 @@
+import util from './util.js'
+
 const rules = {
     // not empty
     must: {
@@ -5,6 +7,9 @@ const rules = {
         regular: value => {
             if (value instanceof Array)
                 return value.length !== 0
+            else if (util.isPlainObject(value)) 
+                return Object.keys(value).length !== 0
+                
             return !!value
         }
     },
