@@ -33,7 +33,11 @@ function getType(column) {
   if (typeof type === 'string') {
       return PREFIX + type.split('-')[0]
   } else if (typeof type === 'function') {
-      return getType({...column, type: type({value: column.value, data: column.$data})})
+      return getType({
+        value: column.value, 
+        data: column.$data, 
+        type: type({value: column.value, data: column.$data})
+      })
   }
   return ''
 }

@@ -12,5 +12,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 
 export default {
     install,
-    privileges: external.privileges
+    privileges: external.privileges,
+    rules: external.addRules,
+    styles: external.addStyles
 }

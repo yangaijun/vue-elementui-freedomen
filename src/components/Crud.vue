@@ -2,8 +2,7 @@
     <div>
         <fd-search :columns="searchColumns" @event="searchEvent"/>
         <fd-table :columns="tableColumns" @event="tableEvent" :data="tableData" :page="page" />
-        <fd-form :columns="formColumns" @event="formEvent" :data="formData" @submit="submit">
-        </fd-form>
+        <fd-form :columns="formColumns" @event="formEvent" :data="formData" @submit="submit"></fd-form>
         
         <fd-table 
             :columns="[
@@ -11,8 +10,7 @@
                 {label: '性别', prop: 'gender', type: ({data}) => data.edit ? 'select': 'span', filter: {1: '男', 2: '女'}, options: {1: '男', 2: '女'}},
                 {label: '操作', render: ({data}) =>{
                     return [
-                        {type: 'switch', prop: 'edit'},
-                        {type: 'button-text', prop: 'save', value: '保存', load: ({data}) => data.edit}
+                        {type: 'switch', prop: 'edit'}
                     ]
                 }}
             ]" 
@@ -64,9 +62,8 @@ export default {
             total: 998
         },
         formColumns: [
-            {type: 'tree-select', prop: 'tree', value: [1], options: [{label: 'ddd', value: 1, children: [{label: 'dddr', value: 12}]}, {label: 'ddd23', value: 2}]},
-            {label: 'ca', prop: 'dd', type: 'cascader', value:['45', '45'], options: [{label: 'd', value: '45', children: [{label: 'd', value: '45'}, {label: 'ddd4', value: '453'}]}]},
-            {label: '姓名', prop: 'name', type: 'input', rule: 'must'},
+            {label: 'ca', prop: 'dd', type: 'cascader', value: ['45', '45'], options: [{label: 'd', value: '45', children: [{label: 'd', value: '45'}, {label: 'ddd4', value: '453'}]}]},
+            {label: '姓名', prop: 'name', type: 'input', rule: 'test'},
             {label: '性别', prop: 'gender', type: 'radios', options: {1: '男', 2: '女'}},
             {type: 'upload', prop: 'gg', label: '完全人', filter: ({value}) => `http://www.jasobim.com:8085${value}`, config: {action: 'http://www.jasobim.com:8085/api/files/uploadFiles'}},
             [
@@ -92,7 +89,6 @@ methods: {
         }
     },
     submit(params) {
-        console.log(params)
         this.page.total = 250
     },
     formEvent(params) {

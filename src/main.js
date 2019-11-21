@@ -16,6 +16,20 @@ Freedomen.privileges.Authorized = function({column}) {
   //   return false
   return true
 }
+Freedomen.rules({
+  test: {
+    label: '有没有问题啊',
+    regular: ({value}) => {
+      return value == 12
+    }
+  }
+})
+Freedomen.styles({
+  'span-test': {
+    color: 'red'
+  }
+})
+
 
 Vue.use(Freedomen) 
 // import external from './plug/config/external'

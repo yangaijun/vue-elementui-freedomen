@@ -120,7 +120,7 @@ export default {
         clearContainType(columns) {
             let column = columns[columns.length - 1]
             let type = (column.type || '').split('-')[0]
-            // *******************************??????*************************************** //
+            // *******************************??????write here???*************************************** //
             const names = ['row', 'col', 'formitem']
             if (names.includes(type))
                 return columns.slice(0, columns.length - 1)

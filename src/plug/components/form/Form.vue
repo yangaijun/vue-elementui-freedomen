@@ -15,15 +15,7 @@
 import util from '../../utils/util.js';
 import FdRegion from '../../core/region';
 import rule from '../../utils/rule.js';
-/**
- * config: {
- *      labelPosition: right/left/top 
- *      labelWidth: true,
- *      editable: true/false,
- *      eidtStyle: 'text/disabled'
- * },
- * data, columns=>{label:string, type: string*, prop: string*, eidt: boolean, rule:function/array/string}
- */
+
 export default {
     name: 'FdForm',
     props: {

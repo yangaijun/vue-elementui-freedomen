@@ -88,7 +88,6 @@ export default {
         }
     },
     created() {
-       
         if (typeof this.item.value === 'string') {
             this.fileList = [{url: this.getUrl(this.item.value)}]
         } else if (Array.isArray(this.item.value)) {

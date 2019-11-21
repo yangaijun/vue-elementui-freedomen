@@ -22,7 +22,6 @@
         >
         </el-option>
     </el-select>
-
     <el-select
         v-model="item.value"
         :placeholder="item.placeholder"
@@ -77,14 +76,14 @@ export default {
             let promise = new Promise((resolve, reject) => {
                 this.item.options(query, resolve) 
             }) 
-            
+
             promise.then(_options => {
                 this.loading = false
                 this.options = _options
             })
         }
     },
-    mounted() {
+    created() {
         if (this.item.type === 'select-remote' && typeof this.item.options !== 'function')
             console.warn('remote type the options must be promise: resolve([{label:,value:}]/{1:2}/"a,b,c")')
 

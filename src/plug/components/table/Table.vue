@@ -21,12 +21,16 @@
                         <region 
                             v-if="column.render"
                             :data="scope.row"
-                            @event="event"
+                            @event="(params) => {
+                                event(params, scope.$index)
+                            }"
                             :columns="column.render({value: scope.row[column.prop], data: scope.row})"/>
                         <region 
                             v-else
                             :data="scope.row"
-                            @event="event"
+                            @event="(params) => {
+                                event(params, scope.$index)
+                            }"
                             :columns="[{type: 'span', ...column}]"/>
                     </template>
             </el-table-column>
@@ -90,8 +94,8 @@ export default {
                 value: pageNo
             })
         },
-        event(params) { 
-            this.$emit('event', params)
+        event(params, index) { 
+            this.$emit('event', {...params, $index: index})
         }
     }
     

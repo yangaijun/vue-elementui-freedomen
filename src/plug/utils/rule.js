@@ -4,7 +4,7 @@ const rules = {
     // not empty
     must: {
         label: '不能为空',
-        regular: value => {
+        regular: ({value}) => {
             if (value instanceof Array)
                 return value.length !== 0
             else if (util.isPlainObject(value)) 
@@ -16,7 +16,7 @@ const rules = {
     //empty
     empty: {
         label: '',
-        regular: value => {
+        regular: ({value}) => {
             if (value instanceof Array)
                 return value.length === 0
             return !value
@@ -43,34 +43,42 @@ const rules = {
     //account
     account: { label: '仅允许字母开头，字母数字下划线组合5-16长度', regular: /^[a-zA-Z][a-zA-Z0-9_]{4,15}$/ },
 }
+function validate(value, rule, data) {
+    if (!rule)
+        return null
 
-function valid(value, rule, data) {
-    let tempRule
     if (rule instanceof Function) {
         return rule({value: value, data: data})
-    } else if (Array.isArray(rule)) {
-        tempRule = rule
-    } else if (typeof rule === 'string') {
-        tempRule = rule.split(',')
+    } else if (util.isPlainObject(rule)) {
+        if (typeof rule.regular === 'function') {
+            return rule.regular({value: value, data: data}) ? null : rule.label
+        } else if (rule.regular instanceof RegExp) {
+            if (!value)
+                return rule.label
+            return rule.regular.test(value) ? null : rule.label
+        }
+    } else {
+        rule = Array.isArray(rule) ? rule : (rule + '').split(',')
     }
     let message = null
-    for (let r of tempRule) {
+    for (let r of rule) {
         if (rules[r] !== void 0) {
+            
             if (typeof rules[r].regular === 'function') {
-                message = rules[r].regular(value) ? null : rules[r].label
+                message = rules[r].regular({value: value, data: data}) ? null : rules[r].label
             } else if (rules[r].regular instanceof RegExp) {
                 message = rules[r].regular.test(value) ? null : rules[r].label
             }
-
-            if (message === null)
+            if (message !== null)
                 break
         } else {
-            console.error("no such rule: " + r)
+            console.error(`no such rule: '${r}'`)
         }
     }
     return message
 }
 
 export default {
-    valid: valid 
+    valid: validate,
+    rules: rules
 }
