@@ -1,46 +1,37 @@
 <template>
-    <el-checkbox
-        :type="buttonType(item.type)" 
-        @click="click" 
-        :disabled="mixin_disabled(item.disabled, item.value, item.data)"
-        :plain="item.config && item.config.plain"
-        :round="item.config && item.config.round"
-    >
-        {{mixin_filter(item.filter, item.value, item.$data)}}
+    <el-checkbox v-model="item.value" @change="change">
+        {{mixin_filter(item.filter, item.label, item.$data)}}
     </el-checkbox>
 </template>
 <script>
 import base from '../../mixins/base.js';
 /**
  * config: {
- *      plain: true 
- *      round: true
+ *      clearable: true 
  * }
  */
 export default {
     //prop, value, config: {}, filter, disabled, link?to router, $data
     props: ['item'],
+    name: 'fdcheckbox',
     mixins: [base],
     data() {
         return {}
     },
     methods: {
-        buttonType(type) {
-            return {
-                'button-primary': 'primary',
-                'button-success': 'success',
-                'button-info': 'info',
-                'button-warning': 'warning',
-                'button-danger': 'danger'
-            }[type]
-        },
-        click() {
+        change() {
             this.mixin_event({
-                type: 'click',
+                type: 'change',
                 prop: this.item.prop,
                 value: this.item.value
             })
         }
+    },
+    created() {
+        if (this.item.value === void 0) {
+            this.$set(this.item, 'value', false)
+        } 
+        this.item.$data[this.item.prop] = this.item.value
     }
 }
 </script>

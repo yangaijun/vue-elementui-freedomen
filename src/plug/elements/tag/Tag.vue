@@ -1,14 +1,13 @@
 <template>
-    <span 
-        :class="item.class"
-        :style="[defalutStyles[item.type], mixin_style(item.style, item.value, item.$data)]"
-    >
+    <el-tag 
+        :closable="item.config && item.config.closable"
+        @close="click"
+        :type="tagType(item.type)" > 
         {{mixin_filter(item.filter, item.value, item.$data)}}
-    </span>
+    </el-tag>
 </template>
 <script>
 import base from '../../mixins/base.js';
-import external from '../../config/external.js'
 /**
  * config: {
  *      plain: true 
@@ -18,17 +17,27 @@ import external from '../../config/external.js'
 export default {
     //prop, value, config: {}, filter, disabled, link?to router, $data
     props: ['item'],
+    name: 'fdtag',
     mixins: [base],
-    name: 'fdspan',
     data() {
         return {}
     },
     methods: {
-        change() {
+        tagType(type) {
+            return {
+                'tag-success': 'success',
+                'tag-info': 'info',
+                'tag-warning': 'warning',
+                'tag-danger': 'danger' 
+            }[type]
+        },
+        click() {
+            this.mixin_event({
+                type: 'close',
+                prop: this.item.prop,
+                value: this.item.value
+            })
         }
-    },
-    created() {
-        this.defalutStyles = external.defaultStyles
     }
 }
 </script>

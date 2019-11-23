@@ -3,6 +3,7 @@
         <el-table  
             @selection-change='selectionChange' 
             :data="data" 
+            :show-header="config && config.showHeader"
             :row-style='config && config.rowStyle' 
             :border="(config && config.border === false) ? false : true">
 
@@ -12,7 +13,8 @@
             <el-table-column 
                 :sortable='column.sortable' 
                 :show-overflow-tooltip='(config && config.showTip === false) ? false : true' 
-                :prop="column.prop" :label="column.label" 
+                :prop="column.prop" 
+                :label="column.label" 
                 v-for="(column, index) in columns"
                 v-if="Authorized(column)" 
                 :key="index" 
@@ -35,14 +37,14 @@
                     </template>
             </el-table-column>
         </el-table>
-       <div v-if="page" style="text-align:right;" class="fd_table_page">
+        <div v-if="page" style="text-align:right;" class="fd_table_page">
             <el-pagination
                 @size-change="sizeChange"
                 @current-change="currentChange"
                 :current-page="page.pageNo"
-                :page-sizes="config && item.config.pageSizes || [10, 20, 50, 100]"
+                :page-sizes="config && config.pageSizes || [10, 20, 50, 100]"
                 :page-size="page.pageSize || 10"
-                :layout="config && item.config.layout || 'total, sizes, prev, pager, next, jumper'"
+                :layout="config && config.layout || 'total, sizes, prev, pager, next, jumper'"
                 :total="page.total || 0">
             </el-pagination>
         </div>
@@ -68,12 +70,9 @@ export default {
         page: Object
     },
     name: 'FdTable',
-    components: {
-        Region
-    },
+    components: { Region },
     data() {
-        return {
-        }
+        return {}
     },
     methods: {
         Authorized (column) {
@@ -86,7 +85,13 @@ export default {
                 value: pageSize
             })
         },
-        selectionChange() {},
+        selectionChange(rows) {
+            this.event({
+                prop: '$selection',
+                type: 'click', 
+                row: rows
+            })
+        },
         currentChange(pageNo) {
             this.event({
                 type: 'change',
@@ -95,11 +100,11 @@ export default {
             })
         },
         event(params, index) { 
-            this.$emit('event', {...params, $index: index})
+            if (index !== void 0) 
+                params.$index = index
+            this.$emit('event', params)
         }
     }
-    
 }
-
 </script>
 

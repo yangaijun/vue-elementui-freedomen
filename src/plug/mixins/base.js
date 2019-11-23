@@ -1,8 +1,5 @@
  
-
-function isPlainObject(value) {
-    return Object.prototype.toString.call(value) === '[object Object]'
-}
+import  util from '../utils/util'
 export default {
     methods: {
         mixin_filter(filter, value, data) {
@@ -10,8 +7,13 @@ export default {
                 return value
             } else if (typeof filter === 'function') {
                 return filter({value: value, data: data})
-            } else if (isPlainObject(filter)) {
+            } else if (util.isPlainObject(filter)) {
                 return filter[value] || filter.$default
+            } else if (typeof filter === 'string') { 
+                let date = new Date(value)
+                if (date == 'Invalid Date')
+                    return value || ''
+                return util.formatDate.format(date, filter)
             }
             return filter
         },
@@ -32,7 +34,7 @@ export default {
         }, 
         //options ? "a,b,c" || {a: '1', b: '2'} => [{label: 'a', value: 'a'}]
         mixin_options(options) {
-            if (isPlainObject(options)) {
+            if (util.isPlainObject(options)) {
                 let newOptions = []
                 for (let key in options) {
                     newOptions.push({

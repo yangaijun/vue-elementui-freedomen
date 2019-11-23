@@ -1,6 +1,6 @@
-import FdSpan from './Span.vue'
-FdSpan.install = function (Vue) {
-    Vue.component(FdSpan.name, FdSpan)
+import FdTag from './Tag.vue'
+FdTag.install = function (Vue) {
+    Vue.component(FdTag.name, FdTag)
 }
 
-export default FdSpan
+export default FdTag

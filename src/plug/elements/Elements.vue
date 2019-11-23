@@ -21,6 +21,9 @@ import FdIcon from './icon'
 import FdUpload from './upload'
 import FdCascader from './cascader'
 import FdTree from './tree'
+import FdTag from './tag'
+import FdCheckbox from './checkbox'
+import FdTags from './tags'
 
 import util from '../utils/util.js'
 
@@ -45,7 +48,10 @@ export default {
         FdIcon,
         FdUpload,
         FdCascader,
-        FdTree
+        FdTree,
+        FdTag,
+        FdCheckbox,
+        FdTags
     },
     computed: {
         component() {

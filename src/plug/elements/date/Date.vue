@@ -3,7 +3,7 @@
         <el-time-select
             v-if="item.type==='date-time'"
             v-model="item.value"
-            :picker-options="{
+            :picker-options="(item.config && item.config.pickerOptions) || {
                 start: '08:30',
                 step: '00:15',
                 end: '18:30'
@@ -51,7 +51,7 @@ export default {
             })
         }
     },
-    mounted() {
+    created() {
         if (this.item.value === void 0) {
             this.$set(this.item, 'value', '')
         }
