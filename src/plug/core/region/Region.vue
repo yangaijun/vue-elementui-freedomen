@@ -1,5 +1,5 @@
 <template>
-    <span>
+    <span class="nope_wrap">
         <template v-for="(column, index) in tempColumns" >
             <FdContains
                 :key="index" 
@@ -23,7 +23,8 @@ import base from '../../mixins/base.js';
 import FdElements from '../../elements/Elements';
 import FdContains from '../../containers/Contains'
 import util from '../../utils/util.js';
-import external from '../../config/external.js'
+import external from '../../config/external.js' 
+import store from '../store'
 
 export default {
     name: 'FdRegion',
@@ -38,7 +39,7 @@ export default {
                 return {}
             }
         }
-    },
+    }, 
     components: { 
         FdElements,
         FdContains
@@ -52,6 +53,11 @@ export default {
                 }
             },
             deep: true
+        }
+    },
+    computed: {
+        store() {
+            return store
         }
     },
     data() {
@@ -79,7 +85,7 @@ export default {
         },
         load(column) {
             if (column.load !== void 0 && typeof column.load === 'function') {
-                return column.load({value: column.value, data: this.data, column: column})
+                return column.load({value: column.value, data: this.data, column: column, store: this.store})
             } else if (column.load !== void 0) {
                 return column.load
             }
@@ -129,7 +135,7 @@ export default {
         throwEvent(params) {
             this.$emit('event', params)
         }
-    },
+    }, 
     created() {
         var columns = this.clone(this.columns)
         this.tempColumns = this.resetColumns(columns, this.data)

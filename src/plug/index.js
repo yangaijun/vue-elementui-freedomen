@@ -1,7 +1,10 @@
 import components from './components.js'
 import external from './config/external.js'
+import store from './core/store'
 
-const install = function(Vue, config = {}) {
+const install = function(Vue) {
+    Vue.observable(store)
+
     components.map(component => {
         Vue.component(component.name, component)
     })

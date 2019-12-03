@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <fd-vuex :store="store" save> 
         <fd-search :columns="searchColumns" @event="searchEvent"/>
         <fd-table :columns="tableColumns" @event="tableEvent" :data="tableData" :page="page" :config="tbConfig"/>
         <fd-form :columns="formColumns" @event="formEvent" :data="formData" @submit="submit"></fd-form>
@@ -7,7 +7,7 @@
             :columns="[
                 {label: '姓名', prop: 'name', type: ({data}) => data.edit ? 'input': 'span'},
                 {label: '性别', prop: 'gender', type: ({data}) => data.edit ? 'select': 'span', filter: {1: '男', 2: '女'}, options: {1: '男', 2: '女'}},
-                {label: '操作', render: ({data}) =>{
+                {label: '操作', render: ({data, store}) =>{
                     return [
                         {type: 'switch', prop: 'edit'}
                     ]
@@ -19,17 +19,18 @@
                     params.row.edit = 0
             }"
         />
-    </div>
+    </fd-vuex>
 </template>
 <script>
-
+import FdNavMenu from '../plug/components/router/Router'
 export default {
   name: 'Crud',
+  components: {FdNavMenu},
   data () {
     return { 
+        store: {gg: true},
         tbConfig: {selection: true},
-        searchColumns: [
-            {type: 'checkbox', label: 'ck', prop: 'ck'},
+        searchColumns: [ 
             {type: 'select-remote', prop: 'remote', options: (query, resolve) => {
                 setTimeout(() => {
                     resolve({1: '文件', 2: '视频'})
@@ -39,10 +40,10 @@ export default {
             {type: 'input', prop: 'name', label: '姓名', placeholder: '请输入姓名'},
             {type: 'select', prop: 'sex', label: '性别', options: '男,女'},
             {type: 'button-primary', prop: 'search', value: '查询', disabled: ({data}) => data.name == '12'},
-            {type: 'button', prop: '$reset', value: '重置'}
+            {type: 'button', prop: '$reset', value: '重置', disabled: ({store}) => store.gg}
         ],
         tableColumns: [
-            {label: '姓名', prop: 'name'},
+            {label: '姓名', prop: 'name', type: ({store}) => store.gg ? 'span' : 'input'},
             {label: '性别', prop: 'gender', filter: {1: '男', 2: '女'}},
             {label: 'tag', prop: 'tag-warn', value: '中车', type: 'tag-danger'},
             {type: 'img', prop: 'img', label: '图片', filter: ({value}) => `http://www.jasobim.com:8085${value}`, previewSrcList:['/uploadFiles/projectfiles/c8e5dfa78e702594f826afcab6e7f2a6.jpg'], style: {width: '220px', height: '120px'}},
@@ -50,7 +51,7 @@ export default {
                 return [
                     {type: 'button-text', prop: 'delete', value: '删除'},
                     {type: 'button-text', prop: 'edit', value: '编辑', load: () => data.gender == 1},
-                    {type: 'button-text', prop: 'detail', value: '详情'},
+                    {type: 'button-text', prop: 'detail', value: '详情', load: ({store}) => store.gg},
                 ]
             }}
         ],
@@ -65,12 +66,24 @@ export default {
             total: 998
         },
         formColumns: [
-            {type: 'tags-create', value:"你好,我不好", prop:'create', label: 'tags', max: 4 },
+            {type: 'tags-create', value:"你好,我不好", prop:'create', label: 'tags', max: 4, load: ({store}) => store.gg},
             {type: 'date-time', prop: 'd'},
             {type: 'span', value: 3, label: '你好', filter: 'yyyy-MM-dd'},
-            {label: 'ca', prop: 'dd', type: 'cascader', value: ['45', '45'], options: [{label: 'd', value: '45', children: [{label: 'd', value: '45'}, {label: 'ddd4', value: '453'}]}]},
+            {label: 'ca', prop: 'dd', type: 'cascader', value: ['45', '45'],  options: (resolve) => {
+                
+                setTimeout(() => {
+                    resolve([{label: 'd', value: '45', children: [{label: 'd', value: '45'}, {label: 'ddd4', value: '453'}]}])
+                }, 2000);
+            } },
             {label: '姓名', prop: 'name', type: 'input', rule: 'test'},
-            {label: '性别', prop: 'gender', type: 'radios', options: {1: '男', 2: '女'}},
+            {label: '性别', prop: 'gender', type: 'radios', options: (resolve) => {
+                
+                setTimeout(() => {
+                    resolve({1: '男', 2: '女', 3: '未知'})
+                }, 2000);
+            }},
+            {label: '性别2', prop: 'gender2', type: 'check-boxs', options: {1: '男', 2: '女'}},
+
             {type: 'img', prop: 'img', label: '图片', filter: ({value}) => `http://www.jasobim.com:8085${value}`, style: {width: '220px', height: '120px'}},
             {type: 'upload', prop: 'gg', label: '完全人', filter: ({value}) => `http://www.jasobim.com:8085${value}`, config: {action: 'http://www.jasobim.com:8085/api/files/uploadFiles'}},
             [
@@ -84,8 +97,8 @@ export default {
   },
 methods: {
     searchEvent(params) {  
-        if (params.prop == 'search') {
-            console.log(params)
+        this.store.gg = !this.store.gg
+        if (params.prop == 'search') { 
         }
     },
     tableEvent(params) {
@@ -99,7 +112,9 @@ methods: {
         this.page.total = 250
     },
     formEvent(params) {
-        console.log(params)
+        if (params.prop == 'edit') {
+            
+        }
     }
   }
 }

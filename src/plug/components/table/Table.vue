@@ -9,7 +9,7 @@
 
             <el-table-column v-if="config && config.selection" type="selection" width="55" />
             <el-table-column v-if="config && config.index" type="index" width="65" :label="config && config.indexLabel" />
-
+            
             <el-table-column 
                 :sortable='column.sortable' 
                 :show-overflow-tooltip='(config && config.showTip === false) ? false : true' 

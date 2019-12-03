@@ -3,7 +3,7 @@
         v-model="item.value"
         :placeholder="item.placeholder"
         :allow-create="item.config && item.config.allowCreate"
-        :filterable="item.config && item.config.filterable === false ? false : true"
+        :filterable="item.config && item.config.filterable"
         :clearable="item.config && item.config.clearable"
         v-if="item.type === 'select-remote'"
         :loading="loading"
@@ -13,7 +13,7 @@
         :remote-method="remoteMethod"
     >
         <el-option
-            v-for="option in mixin_options(options)"
+            v-for="option in mixin_reset_options(options)"
             :key="option.value"
             :label="option.label"
             :value="option.value"
@@ -26,14 +26,14 @@
         v-model="item.value"
         :placeholder="item.placeholder"
         :allow-create="item.config && item.config.allowCreate"
-        :filterable="item.config && item.config.filterable === false ? false : true"
+        :filterable="item.config && item.config.filterable"
         :clearable="item.config && item.config.clearable"
         v-else
         :multiple="item.type === 'select-multiple'"
         @change="change" 
     >
         <el-option
-            v-for="option in mixin_options(item.options)"
+            v-for="option in options"
             :key="option.value"
             :label="option.label"
             :value="option.value"
@@ -62,6 +62,17 @@ export default {
             options: []
         }
     },
+    computed: {
+        externalOptions () {
+            return this.item.options
+        }
+    },
+    watch: {
+        externalOptions() {
+            if (this.item.type !== 'select-remote')
+                this.resetOptions()
+        }
+    },
     methods: {
         change() {
             this.mixin_event({
@@ -81,6 +92,9 @@ export default {
                 this.loading = false
                 this.options = _options
             })
+        },
+        resetOptions() {
+            this.mixin_options(this.item.options)
         }
     },
     created() {
@@ -107,6 +121,9 @@ export default {
             }
         }
         this.item.$data[this.item.prop] = this.item.value
+
+        if (this.item.type !== 'select-remote')
+            this.resetOptions()
     }
 }
 </script>

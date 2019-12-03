@@ -7,6 +7,7 @@
         :style="mixin_style(item.style, item.value, item.data)"
         :min="min()"
         :max="max()"
+        :step="step()"
     >
     </el-input-number>
 </template>

@@ -4,9 +4,9 @@
             v-if="item.type==='date-time'"
             v-model="item.value"
             :picker-options="(item.config && item.config.pickerOptions) || {
-                start: '08:30',
+                start: '06:00',
                 step: '00:15',
-                end: '18:30'
+                end: '22:00'
             }"
             @change="change"
             :style="mixin_style(item.style, item.value, item.data)"

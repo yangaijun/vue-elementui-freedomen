@@ -26,7 +26,6 @@ import FdCheckbox from './checkbox'
 import FdTags from './tags'
 
 import util from '../utils/util.js'
-
 export default {
     name: 'elements',
     props: ['item'], 

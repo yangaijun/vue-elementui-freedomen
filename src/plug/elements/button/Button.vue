@@ -3,11 +3,16 @@
         :type="buttonType(item.type)" 
         @click="click" 
         :icon="item.icon"
+        :loading="item.loading"
+
         :size="item.config && item.config.size"
         :round="item.config && item.config.round"
         :disabled="mixin_disabled(item.disabled, item.value, item.$data)"
         :style="mixin_style(item.style, item.value, item.data)"
         :plain="item.config && item.config.plain"
+        :circle="item.config && item.config.circle"
+        :autofocus="item.config && item.config.autofocus"
+        :native-type="item.config && item.config.nativeType"
     >
         {{mixin_filter(item.filter, item.value, item.$data)}}
     </el-button>

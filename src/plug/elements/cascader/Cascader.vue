@@ -1,10 +1,13 @@
 <template>
     <el-cascader
         :placeholder="item.placeholder"
-        :options="item.options"
+        :options="options"
         v-model="item.value"
         @change="change"
+        :show-all-levels="item.config && item.config.showAllLevels"
+        :props="item.config && item.config.props"
         filterable 
+        clearable
     >
     </el-cascader>
 </template>
@@ -23,7 +26,17 @@ export default {
     name: 'fdcascader',
     mixins: [base],
     data() {
-        return {}
+        return {
+            options: []
+        }
+    },
+    watch: {
+        externalOptions: 'resetOptions'
+    },
+    computed: {
+        externalOptions () {
+            return this.item.options
+        }
     },
     methods: {
         change() {
@@ -33,6 +46,9 @@ export default {
                 value: this.item.value
             })
         },
+        resetOptions() {
+            this.mixin_options(this.item.options, false)
+        },
         click() {
             this.mixin_event({
                 type: 'click',
@@ -41,11 +57,12 @@ export default {
             })
         }
     },
-    mounted() {
+    created() {
         if (this.item.value === void 0) {
             this.$set(this.item, 'value', [])
         }
         this.item.$data[this.item.prop] = this.item.value
+        this.resetOptions()
     }
 }
 </script>

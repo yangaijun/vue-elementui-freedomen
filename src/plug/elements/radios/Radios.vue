@@ -5,7 +5,7 @@
             v-model="item.value"
             @change="change">
             <el-radio-button
-                v-for="option in mixin_options(item.options)"
+                v-for="option in options"
                 :key="option.value"
                 :label="option.value"
                 :style="mixin_style(item.style, option.value, item.data)"
@@ -18,7 +18,7 @@
             v-model="item.value"
             @change="change">
             <el-radio
-                v-for="option in mixin_options(item.options)"
+                v-for="option in options"
                 :key="option.value"
                 :label="option.value"
                 :style="mixin_style(item.style, option.value, item.data)"
@@ -42,16 +42,17 @@ export default {
     name: 'fdradio',
     mixins: [base],
     data() {
-        return {}
+        return {
+            options: []
+        }
+    }, 
+    computed: {
+        externalOptions () {
+            return this.item.options
+        }
     },
     watch: {
-        item: {
-            handler(nd, od) {
-                if (typeof nd.value === 'number') 
-                    this.item.value = nd.value + ''
-            },
-            deep: true
-        }
+        externalOptions: 'resetOptions'
     },
     methods: {
         change() {
@@ -60,6 +61,9 @@ export default {
                 prop: this.item.prop,
                 value: this.item.value
             })
+        },
+        resetOptions() {
+            this.mixin_options(this.item.options)
         }
     },
     created() {
@@ -69,6 +73,8 @@ export default {
             this.item.value = this.item.value + ''
         }
         this.item.$data[this.item.prop] = this.item.value
+
+        this.resetOptions()
     }
 }
 </script>

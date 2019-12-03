@@ -6,7 +6,7 @@
             :max="max()"
             v-model="item.value">
             <el-checkbox-button
-                v-for="option in mixin_options(item.options)"
+                v-for="option in options"
                 :key="option.value"
                 :label="option.value"
                 :disabled="mixin_disabled(item.disabled, option.value, item.$data)"
@@ -21,7 +21,7 @@
             :max="max()"
             v-model="item.value">
             <el-checkbox
-                v-for="option in mixin_options(item.options)"
+                v-for="option in options"
                 :key="option.value"
                 :label="option.value"
                 :disabled="mixin_disabled(item.disabled, option.value, item.$data)"
@@ -46,7 +46,17 @@ export default {
     name: 'fdcheck',
     mixins: [base],
     data() {
-        return {}
+        return {
+            options: []
+        }
+    },
+    watch: {
+        externalOptions: 'resetOptions'
+    },
+    computed: {
+        externalOptions () {
+            return this.item.options
+        }
     },
     methods: {
         change() {
@@ -67,6 +77,9 @@ export default {
                 return this.item.max({value: this.item.value, data: this.item.$data})
             }
             return this.item.max 
+        },
+        resetOptions() {
+            this.mixin_options(this.item.options)
         }
     },
     created() {
@@ -86,6 +99,8 @@ export default {
             }
         } 
         this.item.$data[this.item.prop] = this.item.value
+
+        this.resetOptions()
     }
 }
 </script>

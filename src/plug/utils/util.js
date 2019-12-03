@@ -1,4 +1,5 @@
 
+import store from '../core/store'
 function isPlainObject(obj) {
     return Object.prototype.toString.call(obj) === '[object Object]'
 }
@@ -36,7 +37,7 @@ function getType(column) {
       return getType({
         value: column.value, 
         data: column.$data, 
-        type: type({value: column.value, data: column.$data})
+        type: type({value: column.value, data: column.$data, store: store})
       })
   }
   return ''
