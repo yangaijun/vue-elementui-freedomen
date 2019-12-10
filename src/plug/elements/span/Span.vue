@@ -3,7 +3,7 @@
         :class="item.class"
         :style="[defalutStyles[item.type], mixin_style(item.style, item.value, item.$data)]"
     >
-        {{mixin_filter(item.filter, item.value, item.$data)}}
+        {{ mixin_filter(item.filter, item.value, item.$data) }}
     </span>
 </template>
 <script>

@@ -12,7 +12,7 @@
                 :disabled="mixin_disabled(item.disabled, option.value, item.$data)"
                 :style="mixin_style(item.style, option.value, item.data)"
                 @change="change">
-                {{option.label}}
+                {{ option.label }}
             </el-checkbox-button>
         </el-checkbox-group>
         <el-checkbox-group
@@ -27,7 +27,7 @@
                 :disabled="mixin_disabled(item.disabled, option.value, item.$data)"
                 :style="mixin_style(item.style, option.value, item.data)"
                 @change="change">
-                    {{option.label}}
+                    {{ option.label }}
             </el-checkbox>
         </el-checkbox-group>
     </div>
@@ -99,7 +99,6 @@ export default {
             }
         } 
         this.item.$data[this.item.prop] = this.item.value
-
         this.resetOptions()
     }
 }

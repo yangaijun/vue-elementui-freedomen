@@ -1,6 +1,6 @@
 <template>
     <el-checkbox v-model="item.value" @change="change">
-        {{mixin_filter(item.filter, item.label, item.$data)}}
+        {{ mixin_filter(item.filter, item.label, item.$data) }}
     </el-checkbox>
 </template>
 <script>

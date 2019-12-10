@@ -49,6 +49,7 @@ export default {
             {type: 'img', prop: 'img', label: '图片', filter: ({value}) => `http://www.jasobim.com:8085${value}`, previewSrcList:['/uploadFiles/projectfiles/c8e5dfa78e702594f826afcab6e7f2a6.jpg'], style: {width: '220px', height: '120px'}},
             {label: '操作', render: ({data}) => {
                 return [
+                    <button>d</button>,
                     {type: 'button-text', prop: 'delete', value: '删除'},
                     {type: 'button-text', prop: 'edit', value: '编辑', load: () => data.gender == 1},
                     {type: 'button-text', prop: 'detail', value: '详情', load: ({store}) => store.gg},
@@ -83,7 +84,7 @@ export default {
                 }, 2000);
             }},
             {label: '性别2', prop: 'gender2', type: 'check-boxs', options: {1: '男', 2: '女'}},
-
+            
             {type: 'img', prop: 'img', label: '图片', filter: ({value}) => `http://www.jasobim.com:8085${value}`, style: {width: '220px', height: '120px'}},
             {type: 'upload', prop: 'gg', label: '完全人', filter: ({value}) => `http://www.jasobim.com:8085${value}`, config: {action: 'http://www.jasobim.com:8085/api/files/uploadFiles'}},
             [

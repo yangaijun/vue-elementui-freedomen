@@ -3,7 +3,7 @@
         :closable="item.config && item.config.closable"
         @close="click"
         :type="tagType(item.type)" > 
-        {{mixin_filter(item.filter, item.value, item.$data)}}
+        {{ mixin_filter(item.filter, item.value, item.$data) }}
     </el-tag>
 </template>
 <script>

@@ -52,7 +52,14 @@ export default {
         }
     },
     watch: {
-        externalOptions: 'resetOptions'
+        externalOptions: 'resetOptions',
+        item: {
+            handler(nd, od) {
+                if (typeof nd.value === 'number') 
+                    this.item.value = nd.value + ''
+            },
+            deep: true
+        }
     },
     methods: {
         change() {

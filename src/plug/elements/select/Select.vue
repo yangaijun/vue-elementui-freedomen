@@ -3,10 +3,10 @@
         v-model="item.value"
         :placeholder="item.placeholder"
         :allow-create="item.config && item.config.allowCreate"
-        :filterable="item.config && item.config.filterable"
         :clearable="item.config && item.config.clearable"
         v-if="item.type === 'select-remote'"
         :loading="loading"
+        filterable
         reserve-keyword
         remote
         @change="change"  
@@ -120,9 +120,8 @@ export default {
                 this.item.value += ''
             }
         }
-        this.item.$data[this.item.prop] = this.item.value
-
-        if (this.item.type !== 'select-remote')
+        this.item.$data[this.item.prop] = this.item.value 
+        if (this.item.type != 'select-remote')
             this.resetOptions()
     }
 }

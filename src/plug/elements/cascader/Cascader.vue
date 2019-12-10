@@ -6,6 +6,7 @@
         @change="change"
         :show-all-levels="item.config && item.config.showAllLevels"
         :props="item.config && item.config.props"
+        :change-on-select="item.config && item.config.changeOnSelect"
         filterable 
         clearable
     >
