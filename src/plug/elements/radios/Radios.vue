@@ -57,6 +57,9 @@ export default {
             handler(nd, od) {
                 if (typeof nd.value === 'number') 
                     this.item.value = nd.value + ''
+                    
+                if (this.item.options && typeof this.item.options === 'function') 
+                    this.resetOptions()
             },
             deep: true
         }

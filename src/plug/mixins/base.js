@@ -59,7 +59,7 @@ export default {
         mixin_options(options, deal = true) { 
             if (typeof options === 'function') {
                 let promise = new Promise((resolve) => {
-                    this.item.options(resolve) 
+                    this.item.options({resolve: resolve, data: this.item.$data}) 
                 }) 
                 promise.then(_options => { 
                     if (deal)

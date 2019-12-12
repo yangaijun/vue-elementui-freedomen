@@ -71,6 +71,13 @@ export default {
         externalOptions() {
             if (this.item.type !== 'select-remote')
                 this.resetOptions()
+        },
+        item: {
+            handler () {
+                if (this.item.type !== 'select-remote' && this.item.options && typeof this.item.options === 'function') 
+                    this.resetOptions()
+            },
+            deep: true
         }
     },
     methods: {
@@ -87,7 +94,6 @@ export default {
             let promise = new Promise((resolve, reject) => {
                 this.item.options(query, resolve) 
             }) 
-
             promise.then(_options => {
                 this.loading = false
                 this.options = _options

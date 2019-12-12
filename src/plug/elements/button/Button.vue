@@ -3,8 +3,7 @@
         :type="buttonType(item.type)" 
         @click="click" 
         :icon="item.icon"
-        :loading="item.loading"
-
+        :loading="item.loading" 
         :size="item.config && item.config.size"
         :round="item.config && item.config.round"
         :disabled="mixin_disabled(item.disabled, item.value, item.$data)"

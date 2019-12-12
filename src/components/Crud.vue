@@ -48,8 +48,7 @@ export default {
             {label: 'tag', prop: 'tag-warn', value: '中车', type: 'tag-danger'},
             {type: 'img', prop: 'img', label: '图片', filter: ({value}) => `http://www.jasobim.com:8085${value}`, previewSrcList:['/uploadFiles/projectfiles/c8e5dfa78e702594f826afcab6e7f2a6.jpg'], style: {width: '220px', height: '120px'}},
             {label: '操作', render: ({data}) => {
-                return [
-                    <button>d</button>,
+                return [ 
                     {type: 'button-text', prop: 'delete', value: '删除'},
                     {type: 'button-text', prop: 'edit', value: '编辑', load: () => data.gender == 1},
                     {type: 'button-text', prop: 'detail', value: '详情', load: ({store}) => store.gg},
@@ -67,17 +66,21 @@ export default {
             total: 998
         },
         formColumns: [
+            {type: 'select', prop: 'select1', options: "1,2,4", label: '選擇1'},
+            {type: 'select', prop: 'select2', options: ({resolve, data}) => {
+                resolve(data.select1 + ",45,25")
+            }, label: '選擇2'},
             {type: 'tags-create', value:"你好,我不好", prop:'create', label: 'tags', max: 4, load: ({store}) => store.gg},
             {type: 'date-time', prop: 'd'},
             {type: 'span', value: 3, label: '你好', filter: 'yyyy-MM-dd'},
-            {label: 'ca', prop: 'dd', type: 'cascader', value: ['45', '45'],  options: (resolve) => {
+            {label: 'ca', prop: 'dd', type: 'cascader', value: ['45', '45'],  options: ({resolve, data}) => {
                 
                 setTimeout(() => {
-                    resolve([{label: 'd', value: '45', children: [{label: 'd', value: '45'}, {label: 'ddd4', value: '453'}]}])
+                    resolve([{label: 'd', value: '45', children: [{label: 'd', value: '45'}, {label: 'ddd4', value: '453'}, data.select1 == '1' && {label: 'select1Chnage', value: 's453'}]}])
                 }, 2000);
             } },
             {label: '姓名', prop: 'name', type: 'input', rule: 'test'},
-            {label: '性别', prop: 'gender', type: 'radios', options: (resolve) => {
+            {label: '性别', prop: 'gender', type: 'radios', options: ({resolve}) => {
                 
                 setTimeout(() => {
                     resolve({1: '男', 2: '女', 3: '未知'})
@@ -93,7 +96,7 @@ export default {
                 {type: 'formitem'}
             ]
         ],
-        formData: {calca: '', calcb: '', result: '', img: '/uploadFiles/projectfiles/c8e5dfa78e702594f826afcab6e7f2a6.jpg', gg: ['/uploadFiles/projectfiles/c8e5dfa78e702594f826afcab6e7f2a6.jpg', '/uploadFiles/projectfiles/5ccb4026deea49bbae21ce344f55ccab.jpg']}
+        formData: {calca: '',select1: '1', calcb: '', result: '', img: '/uploadFiles/projectfiles/c8e5dfa78e702594f826afcab6e7f2a6.jpg', gg: ['/uploadFiles/projectfiles/c8e5dfa78e702594f826afcab6e7f2a6.jpg', '/uploadFiles/projectfiles/5ccb4026deea49bbae21ce344f55ccab.jpg']}
     }
   },
 methods: {

@@ -51,7 +51,14 @@ export default {
         }
     },
     watch: {
-        externalOptions: 'resetOptions'
+        externalOptions: 'resetOptions',
+        item: {
+            handler () {
+                if (this.item.options && typeof this.item.options === 'function') 
+                    this.resetOptions()
+            },
+            deep: true
+        }
     },
     computed: {
         externalOptions () {
