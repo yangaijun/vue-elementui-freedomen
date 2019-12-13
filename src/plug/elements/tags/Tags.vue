@@ -1,6 +1,6 @@
 <template>
 <div>
-    <div v-if="item.type == 'tags-create'">
+    <div v-if="mixin_type(item) == 'tags-create'">
         <el-tag
             :key="tag"
             v-for="tag in tempValue"
@@ -52,6 +52,17 @@ export default {
             tempValue: [],
         }
     }, 
+    watch: {
+        selfValue(nd, od) {
+            if (!this.testValue(nd, od))
+                this.tempValue = this.item.value = this.resetValue(nd)
+        }
+    },
+    computed: {
+        selfValue() {
+            return this.item.value
+        }
+    },
     methods: {
         handleClose(tag) {
             this.tempValue.splice(this.tempValue.indexOf(tag), 1)
@@ -79,6 +90,15 @@ export default {
             this.inputVisible = false
             this.inputValue = ''
         },
+        testValue(nd, od) {
+            if (typeof nd === typeof od) {
+                if (Array.isArray(nd) && nd.length && od.length) {
+                    return nd[0] === od[0]
+                }
+                return true
+            } 
+            return false
+        },
         resetValue(value) {
             if (Array.isArray(value))
                 return value
@@ -100,8 +120,7 @@ export default {
         if (this.item.value === void 0)
             this.$set(this.item, 'value', [])
 
-        this.tempValue = this.item.value = this.resetValue(this.item.value)
-        console.log(this.item.value)
+        this.tempValue = this.item.value = this.resetValue(this.item.value) 
     }
 }
 </script>

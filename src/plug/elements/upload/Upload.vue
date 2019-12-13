@@ -44,6 +44,17 @@ export default {
             fileList: []
         }
     },
+    watch: {
+        selfValue(nd, od) {
+            if (!this.testValue(nd, od))
+                this.resetFileList(nd)
+        }
+    },
+    computed: {
+        selfValue() {
+            return this.item.value
+        }
+    },
     methods: {
         change() { 
              this.mixin_event({
@@ -83,21 +94,37 @@ export default {
             }) 
             this.change()
         },
+        testValue(nd, od) {
+            if (typeof nd === typeof od) {
+                if (Array.isArray(nd) && nd.length && od.length) {
+                    return nd[0] === od[0]
+                }
+                return true
+            } 
+            return false
+        }, 
         getUrl(url) {
             return this.mixin_filter(this.item.filter, url, this.item.$data)
+        },
+        resetFileList(value) {
+            if (typeof value === 'string') {
+                this.fileList = [{url: this.getUrl(value)}]
+            } else if (Array.isArray(value)) {
+                this.fileList = value.map(el => {
+                    if (typeof el === 'string') 
+                        return {url: this.getUrl(el)}
+                    else 
+                        return {...el, url: this.getUrl(el.url)}
+                }) 
+            }  
         }
     },
     created() {
-        if (typeof this.item.value === 'string') {
-            this.fileList = [{url: this.getUrl(this.item.value)}]
-        } else if (Array.isArray(this.item.value)) {
-            this.fileList = this.item.value.map(el => {
-                if (typeof el === 'string') 
-                    return {url: this.getUrl(el)}
-                else 
-                    return {...el, url: this.getUrl(el.url)}
-            }) 
-        }  
+        if (this.item.value === void 0) {
+            this.$set(this.item, 'value', [])
+        }
+        this.item.$data[this.item.prop] = this.item.value 
+        this.resetFileList(this.item.value)
     }
 }
 </script>

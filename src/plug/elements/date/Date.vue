@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-time-select
-            v-if="item.type==='date-time'"
+            v-if="mixin_type(item) === 'date-time'"
             v-model="item.value"
             :picker-options="(item.config && item.config.pickerOptions) || {
                 start: '06:00',
@@ -13,7 +13,7 @@
             :placeholder="item.placeholder">
         </el-time-select>
         <el-date-picker
-            v-else-if="item.type==='date-datetime'"
+            v-else-if="mixin_type(item) === 'date-datetime'"
             v-model="item.value"
             type="datetime"
             @change="change"

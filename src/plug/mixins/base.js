@@ -34,6 +34,19 @@ export default {
         mixin_event(params) {
             this.$emit('event', params)
         },  
+        mixin_type(item) { 
+            let type = item.type
+            if (typeof type === 'string') {
+                return type
+            } else if (typeof type === 'function') {
+                return this.mixin_type({
+                    value: item.value, 
+                    data: item.$data, 
+                    type: type({value: item.value, data: item.$data, store: store})
+                })
+            }
+            return '' 
+        },
         mixin_reset_options(options) {
             let newOptions = [] 
             if (util.isPlainObject(options)) { 
@@ -59,7 +72,7 @@ export default {
         mixin_options(options, deal = true) { 
             if (typeof options === 'function') {
                 let promise = new Promise((resolve) => {
-                    this.item.options({resolve: resolve, data: this.item.$data}) 
+                    this.item.options({resolve: resolve, data: this.item.$data, store: store}) 
                 }) 
                 promise.then(_options => { 
                     if (deal)

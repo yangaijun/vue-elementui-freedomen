@@ -22,21 +22,15 @@ export default {
             options: []
         }
     },
-    watch: {
-        externalOptions: 'resetOptions',
+    watch: { 
         item: {
-            handler () {
-                if (this.item.options && typeof this.item.options === 'function') 
+            handler (nd, od) {
+                if (this.item.options && (typeof this.item.options === 'function' || nd.options !== od.options)) 
                     this.resetOptions()
             },
             deep: true
-        }
-    },
-    computed: {
-        externalOptions () {
-            return this.item.options
-        }
-    },
+        } 
+    }, 
     methods: {
         click(value) {
             this.mixin_event({
@@ -46,7 +40,7 @@ export default {
             })
         },
         resetOptions() {
-            this.mixin_options(this.item.optoins)
+            this.mixin_options(this.item.options)
         }
     },
     created() {

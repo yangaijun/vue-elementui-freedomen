@@ -4,7 +4,7 @@
         :placeholder="item.placeholder"
         :allow-create="item.config && item.config.allowCreate"
         :clearable="item.config && item.config.clearable"
-        v-if="item.type === 'select-remote'"
+        v-if="mixin_type(item) === 'select-remote'"
         :loading="loading"
         filterable
         reserve-keyword
@@ -29,7 +29,7 @@
         :filterable="item.config && item.config.filterable"
         :clearable="item.config && item.config.clearable"
         v-else
-        :multiple="item.type === 'select-multiple'"
+        :multiple="mixin_type(item) === 'select-multiple'"
         @change="change" 
     >
         <el-option
@@ -62,22 +62,32 @@ export default {
             options: []
         }
     },
-    computed: {
-        externalOptions () {
-            return this.item.options
-        }
-    },
-    watch: {
-        externalOptions() {
-            if (this.item.type !== 'select-remote')
-                this.resetOptions()
-        },
+    watch: { 
         item: {
-            handler () {
-                if (this.item.type !== 'select-remote' && this.item.options && typeof this.item.options === 'function') 
+            handler (nd, od) {
+                if (
+                    this.item.options 
+                    && (
+                        (this.mixin_type(this.item) !== 'select-remote' && typeof this.item.options === 'function') 
+                        || nd.options !== od.options
+                    )
+                ) {
                     this.resetOptions()
+                }
             },
             deep: true
+        },
+        selfValue(nd, od) {
+            if (typeof nd === 'number') 
+                this.item.value = nd + ''
+            else if (this.mixin_type(this.item) == 'select-multiple' && !this.testValue(nd, od)) {
+                this.resetValue(nd)
+            }
+        }   
+    },
+    computed: {
+        selfValue() {
+            return  this.item.value
         }
     },
     methods: {
@@ -92,7 +102,7 @@ export default {
             if (query !== '')
                 this.loading = true
             let promise = new Promise((resolve, reject) => {
-                this.item.options(query, resolve) 
+                this.item.options({query, resolve}) 
             }) 
             promise.then(_options => {
                 this.loading = false
@@ -101,33 +111,45 @@ export default {
         },
         resetOptions() {
             this.mixin_options(this.item.options)
+        },
+        testValue(nd, od) {
+            if (typeof nd === typeof od) {
+                if (Array.isArray(nd) && nd.length && od.length) {
+                    return nd[0] === od[0]
+                }
+                return true
+            } 
+            return false
+        },
+        resetValue(value) {
+            if (Array.isArray(value))
+                this.item.value = value.map(_value => {
+                    return _value + ''
+                })
+            else if (typeof value === 'string') {
+                this.item.value = value.split(',')
+            } else if (typeof value === 'number') {
+                this.item.value = [value + '']
+            } else {
+                throw new Error('not support type of the value, just support: string, array, number => to array')
+            }
         }
     },
     created() {
-        if (this.item.type === 'select-remote' && typeof this.item.options !== 'function')
+        if (this.mixin_type(this.item) === 'select-remote' && typeof this.item.options !== 'function')
             console.warn('remote type the options must be promise: resolve([{label:,value:}]/{1:2}/"a,b,c")')
 
         if (this.item.value === void 0) {
-            this.$set(this.item, 'value', this.item.type == 'select-multiple' ? [] : '')
+            this.$set(this.item, 'value', this.mixin_type(this.item) == 'select-multiple' ? [] : '')
         } else {
-            if (this.item.type == 'select-multiple') {
-                if (Array.isArray(this.item.value))
-                    this.item.value = this.item.value.map(value => {
-                        return value
-                    })
-                else if (typeof this.item.value === 'string') {
-                    this.item.value = this.item.value.split(',')
-                } else if (typeof this.item.value === 'number') {
-                    this.item.value = [this.item.value + '']
-                } else {
-                    throw new Error('not support type of the value, just support: string, array, number => to array')
-                }
+            if (this.mixin_type(this.item) == 'select-multiple') {
+                this.resetValue(this.item.value)
             } else {
                 this.item.value += ''
             }
         }
         this.item.$data[this.item.prop] = this.item.value 
-        if (this.item.type != 'select-remote')
+        if (this.mixin_type(this.item) !== 'select-remote')
             this.resetOptions()
     }
 }

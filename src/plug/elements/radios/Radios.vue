@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-radio-group
-            v-if="item.type=='radio-buttons'"
+            v-if="mixin_type(item) === 'radio-buttons'"
             v-model="item.value"
             @change="change">
             <el-radio-button
@@ -52,17 +52,7 @@ export default {
         }
     },
     watch: {
-        externalOptions: 'resetOptions',
-        item: {
-            handler(nd, od) {
-                if (typeof nd.value === 'number') 
-                    this.item.value = nd.value + ''
-                    
-                if (this.item.options && typeof this.item.options === 'function') 
-                    this.resetOptions()
-            },
-            deep: true
-        }
+        externalOptions: 'resetOptions'
     },
     methods: {
         change() {

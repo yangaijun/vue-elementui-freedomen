@@ -1,6 +1,6 @@
 <template>
     <el-button 
-        :type="buttonType(item.type)" 
+        :type="buttonType(mixin_type(item))" 
         @click="click" 
         :icon="item.icon"
         :loading="item.loading" 

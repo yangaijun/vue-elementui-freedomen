@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-checkbox-group
-            v-if="item.type=='check-buttons'"
+            v-if="mixin_type(item) == 'check-buttons'"
             :min="min()"
             :max="max()"
             v-model="item.value">
@@ -50,19 +50,23 @@ export default {
             options: []
         }
     },
-    watch: {
-        externalOptions: 'resetOptions',
+    watch: { 
         item: {
-            handler () {
-                if (this.item.options && typeof this.item.options === 'function') 
+            handler (nd, od) {
+                if (this.item.options && (typeof this.item.options === 'function' || nd.options !== od.options)) 
                     this.resetOptions()
             },
             deep: true
-        }
-    },
+        },
+        selfValue(nd, od) {
+            if (!this.testValue(nd, od)) {
+                this.resetValue(nd)
+            }
+        } 
+    }, 
     computed: {
-        externalOptions () {
-            return this.item.options
+        selfValue(nd, od) {
+            return this.item.value
         }
     },
     methods: {
@@ -87,23 +91,35 @@ export default {
         },
         resetOptions() {
             this.mixin_options(this.item.options)
+        },
+        testValue(nd, od) {
+            if (typeof nd === typeof od) {
+                if (Array.isArray(nd) && nd.length && od.length) {
+                    return nd[0] === od[0]
+                }
+                return true
+            } 
+            return false
+        },
+        resetValue(value) {
+            if (Array.isArray(value))
+                this.item.value = value.map(_value => {
+                    return _value + ''
+                })
+            else if (typeof value === 'string') {
+                this.item.value = value.split(',')
+            } else if (typeof value === 'number') {
+                this.item.value = [value + '']
+            } else {
+                throw new Error('not support type of the value, just support: string, array, number => to array')
+            }
         }
     },
     created() {
         if (this.item.value === void 0) {
             this.$set(this.item, 'value', [])
         } else {
-            if (Array.isArray(this.item.value))
-                this.item.value = this.item.value.map(value => {
-                    return value + ''
-                })
-            else if (typeof this.item.value === 'string') {
-                this.item.value = this.item.value.split(',')
-            } else if (typeof this.item.value === 'number') {
-                this.item.value = [this.item.value + '']
-            } else {
-                throw new Error('not support type of the value, just support: string, array, number => to array')
-            }
+            this.resetValue(this.item.value)
         } 
         this.item.$data[this.item.prop] = this.item.value
         this.resetOptions()
