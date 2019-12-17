@@ -42,7 +42,12 @@ function getType(column) {
   }
   return ''
 }
+const contains = ['fd-row', 'fd-col', 'fd-formitem']
 
+function isContains(column) {
+    let type = getType(column)   
+    return contains.includes(type)
+}
 //date format
 const SIGN_REGEXP = /([yMdhsm])(\1*)/g
 const DEFAULT_PATTERN = 'yyyy-MM-dd'
@@ -113,5 +118,6 @@ export default {
     clone: clone,
     getType: getType,
     getUUID: getUUID,
-    formatDate: formatDate
+    formatDate: formatDate,
+    isContains: isContains
 }

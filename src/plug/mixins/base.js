@@ -65,6 +65,8 @@ export default {
                         label: key
                     })
                 } 
+            } else {
+                newOptions = options
             }
             return newOptions || []
         },

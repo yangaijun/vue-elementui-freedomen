@@ -1,7 +1,7 @@
 <template>
     <el-input 
         @change="change" 
-        :type="inputType(item.type)" 
+        :type="inputType(mixin_type(item))" 
         v-model="item.value"
         :rows="item.config && item.config.rows"
         :disabled="mixin_disabled(item.disabled, item.value, item.$data)"

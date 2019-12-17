@@ -46,14 +46,18 @@ export default {
             options: []
         }
     }, 
-    computed: {
-        externalOptions () {
-            return this.item.options
-        }
-    },
-    watch: {
-        externalOptions: 'resetOptions'
-    },
+    watch: { 
+        item: {
+            handler (nd, od) {
+                if (typeof nd.value === 'number')
+					this.item.value = nd.value + ''
+                    
+                if (this.item.options && (typeof this.item.options === 'function' || nd.options !== od.options)) 
+                    this.resetOptions()
+            },
+            deep: true
+        } 
+    }, 
     methods: {
         change() {
             this.mixin_event({

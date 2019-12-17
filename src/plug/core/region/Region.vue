@@ -71,10 +71,12 @@ export default {
                 return this.isPlainObject(column) 
                     && this.load(column)
                     && this.Authorized(column) 
-            } else if (columnOrObj === 'column') {
-                return this.isColumn(column) 
-                    && this.load(column)
-                    && this.Authorized(column) 
+            } else if (columnOrObj === 'column') { 
+                let _t = this.isColumn(column) && this.Authorized(column) 
+                if (column.length && util.isContains(column[column.length - 1])) {
+                    return _t && this.load(column[column.length - 1])
+                } 
+                return _t && column.length
             }
         },
         isPlainObject(column) {

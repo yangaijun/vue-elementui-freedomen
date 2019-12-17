@@ -63,9 +63,12 @@ export default {
                         )
                     }
                     newItem.push({type: 'formitem', prop: column.prop, label: column.label})
-
+                    
                     newColumns.push(newItem)
                 } else if (Array.isArray(column)) {
+                    if (column.length && column[column.length - 1].rule !== void 0) {
+                        column.splice(column.length - 1, 0, {type: 'span', class: 'el-form-item__error', filter: () => this.rules[column[column.length - 1].prop].message})
+                    }
                     newColumns.push(column)
                 }
             });

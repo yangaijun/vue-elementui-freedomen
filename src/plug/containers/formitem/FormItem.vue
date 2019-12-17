@@ -14,10 +14,12 @@
 import util from '../../utils/util.js';
 import FdRegion from '../../core/region'
 import external from '../../config/external.js'
+import base from '../../mixins/base.js';
 
 export default {
     name: 'fdformitem',
     props: ['data', 'columns'],
+    mixins: [base],
     components: { 
         FdRegion
     },
@@ -31,7 +33,7 @@ export default {
             let column = this.columns[this.columns.length - 1]
             let type = util.getType(column)
 
-            if (type && type.indexOf('col') === 3)
+            if (type && type.indexOf('formitem') === 3)
                 return [external.defaultStyles[type], this.mixin_style(column.style, column.value, column.$data)]
             else 
                 return null

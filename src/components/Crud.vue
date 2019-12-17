@@ -66,6 +66,15 @@ export default {
             total: 998
         },
         formColumns: [
+            {type: 'dropdown', options: [{label: 'value', value: 'value'}], label: '请选择'},
+            [
+                {type: 'input', prop: 'i1', style: 'width: 200px'},
+                {type: 'input', prop: 'i2', style: 'width: 200px'},
+                {type: 'formitem', prop: 'up', rule: ({data}) => {
+                    console.log(data.i1 != data.i2 ? '不等？': '')
+                    return data.i1 != data.i2 ? '不等？': ''
+                }}
+            ],
             {type: 'select', prop: 'select1', options: "1,2,4", label: '選擇1'},
             {type: 'select', prop: 'select2', options: ({resolve, data}) => {
                 resolve(data.select1 + ",45,25")
@@ -93,7 +102,12 @@ export default {
             [
                 {type: 'button-primary', value: '提交', prop: '$submit'},
                 {type: 'button', value: '重置', prop: '$reset'},
-                {type: 'formitem'}
+                {type: 'formitem', load: false}
+            ],
+            [
+                {type: 'button-primary', value: '提交', prop: '$submit'},
+                {type: 'button', value: '重置', prop: '$reset'},
+                {type: 'formitem', load: true}
             ]
         ],
         formData: {calca: '',select1: '1', calcb: '', result: '', img: '/uploadFiles/projectfiles/c8e5dfa78e702594f826afcab6e7f2a6.jpg', gg: ['/uploadFiles/projectfiles/c8e5dfa78e702594f826afcab6e7f2a6.jpg', '/uploadFiles/projectfiles/5ccb4026deea49bbae21ce344f55ccab.jpg']}
