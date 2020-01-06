@@ -15,14 +15,7 @@
 </template>
 <script>
 import base from '../../mixins/base.js';
-/**
- * config: {
- *      plain: true 
- *      round: true
- * }
- */
 export default {
-    //prop, value, config: {}, filter, disabled, link?to router, $data
     props: ['item'],
     mixins: [base],
     name: 'fdinput',
@@ -48,7 +41,7 @@ export default {
     created() {
         if (this.item.value === void 0) {
             this.$set(this.item, 'value', '')
-        }
+        } 
         this.item.$data[this.item.prop] = this.item.value
     }
 }

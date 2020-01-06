@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import ElementUI from 'element-ui'
+import Hello from './components/HelloWorld.vue'
 import 'element-ui/lib/theme-chalk/index.css'
 Vue.use(ElementUI)
 // import 'mavon-editor/dist/css/index.css'
@@ -29,7 +30,7 @@ Freedomen.styles({
     color: 'red'
   }
 })
-
+Freedomen.registerElements({Hello})
 
 Vue.use(Freedomen) 
 // import external from './plug/config/external'

@@ -1,7 +1,7 @@
 import components from './components.js'
 import external from './config/external.js'
 import store from './core/store'
-
+import exComponents from './config/components'
 const install = function(Vue) {
     Vue.observable(store)
 
@@ -17,5 +17,6 @@ export default {
     install,
     privileges: external.privileges,
     rules: external.addRules,
-    styles: external.addStyles
+    styles: external.addStyles,
+    registerElements: exComponents.registerElements
 }

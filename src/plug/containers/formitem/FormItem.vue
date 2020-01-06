@@ -1,34 +1,33 @@
 <template>
-    <el-form-item 
-        :style="style()" 
-        :label="columns[columns.length - 1].label" 
-    > 
+    <el-form-item :style="style()" > 
         <span slot="label">  
             <span v-if="hasRule()" class="el-form-item-must" style="color: #f56c6c">*</span>
-            {{columns[columns.length - 1].label}} 
+            <fd-region 
+                v-if="Array.isArray(columns[columns.length - 1].label)"
+                :columns="columns[columns.length - 1].label"
+            />
+            <span v-else>
+                {{columns[columns.length - 1].label}} 
+            </span>
         </span>
         <slot></slot>
     </el-form-item>
 </template>
 <script>
-import util from '../../utils/util.js';
-import FdRegion from '../../core/region'
+import util from '../../utils/util.js'; 
 import external from '../../config/external.js'
 import base from '../../mixins/base.js';
 
 export default {
     name: 'fdformitem',
     props: ['data', 'columns'],
-    mixins: [base],
-    components: { 
-        FdRegion
-    },
+    mixins: [base], 
     data() {
         return {
             tempColumns: []
         }
-    },
-    methods: {
+    },   
+    methods: { 
         style() {
             let column = this.columns[this.columns.length - 1]
             let type = util.getType(column)

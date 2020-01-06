@@ -1,43 +1,60 @@
 <template>
-    <div>
+    <div class="fd_table">
         <el-table  
             @selection-change='selectionChange' 
             :data="data" 
+            :stripe="config && config.stripe"
             :show-header="config && config.showHeader"
             :row-style='config && config.rowStyle' 
+            :row-class-name="config && config.rowClassName"
+            :height="config && config.height"
+            :max-height="config && config.maxHeight"
             :border="(config && config.border === false) ? false : true">
 
             <el-table-column v-if="config && config.selection" type="selection" width="55" />
             <el-table-column v-if="config && config.index" type="index" width="65" :label="config && config.indexLabel" />
-            
-            <el-table-column 
-                :sortable='column.sortable' 
-                :show-overflow-tooltip='(config && config.showTip === false) ? false : true' 
-                :prop="column.prop" 
-                :label="column.label" 
-                v-for="(column, index) in columns"
-                v-if="Authorized(column)" 
-                :key="index" 
-                :width="column.width"> 
+            <template v-for="(column, index) in columns" >
+                <el-table-column 
+                    type="expand"
+                    v-if="Authorized(column) && column.type && column.type === '$expand'" >
                     <template slot-scope="scope">
                         <region 
-                            v-if="column.render"
-                            :data="scope.row"
-                            @event="(params) => {
-                                event(params, scope.$index)
-                            }"
-                            :columns="column.render({value: scope.row[column.prop], data: scope.row})"/>
-                        <region 
-                            v-else
-                            :data="scope.row"
-                            @event="(params) => {
-                                event(params, scope.$index)
-                            }"
-                            :columns="[{type: 'span', ...column}]"/>
+                            :data="scope.row" 
+                            @event="(params) => { 
+                                event(params, scope.$index) 
+                            }"  
+                            :columns="[
+                                {type: 'render', render: ({createElement, store}) => {
+                                    return column.render({value: scope.row[column.prop], createElement, data: scope.row, store})
+                                }}
+                            ]"/>
                     </template>
-            </el-table-column>
+                </el-table-column>
+                <el-table-column 
+                    :sortable='column.sortable' 
+                    :show-overflow-tooltip='(config && config.showTip === false) ? false : true' 
+                    :prop="column.prop" 
+                    :label="column.label"  
+                    v-else-if="Authorized(column)" 
+                    :fixed="column.fixed"
+                    :width="column.width"> 
+                    <template slot-scope="scope">
+                        <region 
+                            :data="scope.row"
+                            @event="(params) => {
+                                event(params, scope.$index)
+                            }"
+                            :columns="column.render 
+                                ? [{type: 'render', render: ({createElement, store}) => {
+                                        return column.render({value: scope.row[column.prop], createElement, data: scope.row, store})
+                                }}] 
+                                : [{type: 'span', ...column}]"
+                            />
+                    </template>
+                </el-table-column>
+            </template> 
         </el-table>
-        <div v-if="page" style="text-align:right;" class="fd_table_page">
+        <div v-if="page" style="text-align:right; margin-top: 8px;" class="fd_table_page">
             <el-pagination
                 @size-change="sizeChange"
                 @current-change="currentChange"
@@ -51,15 +68,6 @@
     </div>
 </template>
 <script>
-/**
- * data: [], columns: [], 
- * config: {
- *  rowStyle: funtcion/object
- *  selection: true 
- *  index: true
- *  showTip: false
- * }, page: {}
- */
 import Region from '../../core/region/Region';
 import external from '../../config/external.js'
 export default {

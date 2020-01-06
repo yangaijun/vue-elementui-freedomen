@@ -1,6 +1,9 @@
 <template>
-    <el-dropdown @command="click">
-        <span class="el-dropdown-link">
+    <el-dropdown @command="click" :size="item.size">
+        <el-button type="primary" v-if="mixin_type(item) == 'dropdown-button'">
+            {{item.label}}<i class="el-icon-arrow-down el-icon--right"></i>
+        </el-button>
+        <span class="el-dropdown-link" v-else>
           {{item.label}}<i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
@@ -13,7 +16,6 @@
 <script>
 import base from '../../mixins/base.js';
 export default {
-    //prop, value, config: {}, filter, disabled, link?to router, $data
     props: ['item'],
     mixins: [base],
     name: 'fddropdown',

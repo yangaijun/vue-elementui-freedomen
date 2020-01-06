@@ -31,13 +31,7 @@
 </template>
 <script>
 import base from '../../mixins/base.js';
-/**
- * config: {
- *      clearable: true 
- * }
- */
 export default {
-    //prop, value, config: {}, filter, disabled, link?to router, $data
     props: ['item'],
     name: 'fdradio',
     mixins: [base],

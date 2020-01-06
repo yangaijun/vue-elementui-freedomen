@@ -4,20 +4,14 @@
         @change="change"
         :min="min()"
         :max="max()"
+        :step="item.step"
         :style="mixin_style(item.style, item.value, item.data)"
         :disabled="mixin_disabled(item.disabled, item.value, item.data)">
     </el-slider>
 </template>
 <script>
 import base from '../../mixins/base.js';
-/**
- * config: {
- *      plain: true 
- *      round: true
- * }
- */
 export default {
-    //prop, value, config: {}, filter, disabled, link?to router, $data
     props: ['item'],
     mixins: [base],
     name: 'fdslider',

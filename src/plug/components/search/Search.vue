@@ -1,5 +1,5 @@
 <template>
-    <el-form inline>
+    <el-form inline class="fd_search">
         <fd-region 
             :columns="tempColumns"
             :data="tempData"
@@ -11,15 +11,6 @@
 import util from '../../utils/util.js';
 import FdRegion from '../../core/region/Region';
 import rule from '../../utils/rule.js';
-/**
- * config: {
- *      labelPosition: right/left/top 
- *      labelWidth: true,
- *      editable: true/false,
- *      eidtStyle: 'text/disabled'
- * },
- * data, columns=>{label:string, type: string*, prop: string*, eidt: boolean, rule:function/array/string}
- */
 export default {
     props: {
         columns: {

@@ -9,9 +9,10 @@ import FdCol from './col'
 import FdRow from './row'
 import FdFormitem from './formitem'
 import FdRegion from '../core/region'
+import FdBadge from './badge'
 
 import util from '../utils/util.js'
-const names = ['fd-row', 'fd-col', 'fd-formitem']
+const names = ['fd-row', 'fd-col', 'fd-formitem', 'fd-badge']
 const PREFIX = 'fd-'
 
 export default {
@@ -21,6 +22,7 @@ export default {
         FdCol,
         FdRegion,
         FdRow,
+        FdBadge,
         FdFormitem
     },
     computed: {

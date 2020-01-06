@@ -22,11 +22,9 @@
         <el-button v-else-if="notMax()" class="button-new-tag" size="small" @click="showInput">{{(item.config && item.config.createLabel) || '+ 新建'}}</el-button>
     </div>
     <div v-else>
-        <el-tag
-            :key="tag"
+        <el-tag :key="tag"
             v-for="tag in tempValue"
-            :disable-transitions="false"
-            >
+            :disable-transitions="false">
                 {{tag}}
         </el-tag>
     </div>
@@ -34,14 +32,7 @@
 </template>
 <script>
 import base from '../../mixins/base.js';
-/**
- * config: {
- *      plain: true 
- *      round: true
- * }
- */
 export default {
-    //prop, value, config: {}, filter, disabled, link?to router, $data
     props: ['item'],
     name: 'fdtags',
     mixins: [base],
@@ -53,7 +44,7 @@ export default {
         }
     }, 
     watch: {
-        selfValue(nd, od) {
+        selfValue(nd, od) { 
             if (!this.testValue(nd, od))
                 this.tempValue = this.item.value = this.resetValue(nd)
         }
@@ -93,7 +84,7 @@ export default {
         testValue(nd, od) {
             if (typeof nd === typeof od) {
                 if (Array.isArray(nd) && nd.length && od.length) {
-                    return nd[0] === od[0]
+                    return nd[0] === od[0] && nd.length === od.length
                 }
                 return true
             } 
@@ -121,6 +112,7 @@ export default {
             this.$set(this.item, 'value', [])
 
         this.tempValue = this.item.value = this.resetValue(this.item.value) 
+        this.item.$data[this.item.prop] = this.item.value
     }
 }
 </script>

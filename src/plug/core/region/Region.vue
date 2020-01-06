@@ -1,20 +1,10 @@
 <template>
     <span class="nope_wrap">
         <template v-for="(column, index) in tempColumns" >
-            <FdContains
-                :key="index" 
-                :columns='column'
-                @event="event" 
-                :data="data"
-                v-if="isWhich('column', column)">
+            <fd-contains v-if="isWhich('column', column)" :key="index" :columns='column' @event="event" :data="data">
                 <fd-region :columns='clearContainType(column)' :data="data" @event="throwEvent"/>
-            </FdContains>
-            <fd-elements 
-                v-else-if="isWhich('obj', column)" 
-                @event="event" 
-                :key="index" 
-                :item="column"
-            />
+            </fd-contains>
+            <fd-elements v-else-if="isWhich('object', column)" @event="event" :key="index" :item="column"/> 
         </template>
     </span>
 </template>
@@ -49,15 +39,16 @@ export default {
         data: {
             handler(nd, od) {
                 if (od) { 
-                    this.tempColumns = this.resetColumns(this.columns, nd)
+                    var columns = this.clone(this.columns)
+                    this.tempColumns = this.resetColumns(columns, nd)
                 }
             },
             deep: true
         }
     },
     computed: {
-        store() {
-            return store
+        store() { 
+            return store 
         }
     },
     data() {
@@ -67,14 +58,19 @@ export default {
     },
     methods: {
         isWhich(columnOrObj, column) {
-            if (columnOrObj === 'obj') {
+            if (columnOrObj === 'object') {
                 return this.isPlainObject(column) 
                     && this.load(column)
                     && this.Authorized(column) 
             } else if (columnOrObj === 'column') { 
                 let _t = this.isColumn(column) && this.Authorized(column) 
-                if (column.length && util.isContains(column[column.length - 1])) {
-                    return _t && this.load(column[column.length - 1])
+
+                if (column.length && util.isContains(column[column.length - 1])) { 
+                    if (this.isPlainObject(column[column.length - 1].$loadRelation)) { 
+                        return _t && this.load(column[column.length - 1].$loadRelation)
+                    } else {
+                        return _t && this.load(column[column.length - 1])
+                    }
                 } 
                 return _t && column.length
             }
@@ -85,19 +81,20 @@ export default {
         isColumn(column) {
             return Array.isArray(column)
         },
-        load(column) {
+        load(column) { 
+            column.$load = true
             if (column.load !== void 0 && typeof column.load === 'function') {
-                return column.load({value: column.value, data: this.data, column: column, store: this.store})
+                column.$load = column.load({value: column.value, data: this.data, column: column, store: this.store})
             } else if (column.load !== void 0) {
-                return column.load
+                column.$load = column.load
             }
-            return true
+            return column.$load
         }, 
         Authorized (column) {
             return  external.Authorized({column: column})
         },
         clone(columns) {
-            return columns.slice()
+            return columns
         },
         setColumn(column, data) {
             if (column.value === void 0) 
@@ -108,12 +105,12 @@ export default {
             column.$data = data
         },
         resetColumns(columns = [], data = {}) {
-            for (let i = 0; i < columns.length; i ++) { 
+            for (let i = 0; i < columns.length; i ++) {  
                 if (Array.isArray(columns[i])) {
                     this.resetColumns(columns[i], data)
                 } else { 
                     this.setColumn(columns[i], data) 
-                } 
+                }
             } 
             return columns
         },
@@ -129,7 +126,7 @@ export default {
             let column = columns[columns.length - 1]
             let type = (column.type || '').split('-')[0]
             // *******************************??????write here???*************************************** //
-            const names = ['row', 'col', 'formitem']
+            const names = ['row', 'col', 'formitem', 'badge']
             if (names.includes(type))
                 return columns.slice(0, columns.length - 1)
             else return columns
@@ -140,6 +137,7 @@ export default {
     }, 
     created() {
         var columns = this.clone(this.columns)
+        
         this.tempColumns = this.resetColumns(columns, this.data)
         this.defalutStyles = external.defaultStyles
     }

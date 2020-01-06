@@ -31,17 +31,10 @@
             </el-checkbox>
         </el-checkbox-group>
     </div>
-    
 </template>
 <script>
 import base from '../../mixins/base.js';
-/**
- * config: {
- *      clearable: true 
- * }
- */
 export default {
-    //prop, value, config: {}, filter, disabled, link?to router, $data
     props: ['item'],
     name: 'fdcheck',
     mixins: [base],
@@ -95,7 +88,7 @@ export default {
         testValue(nd, od) {
             if (typeof nd === typeof od) {
                 if (Array.isArray(nd) && nd.length && od.length) {
-                    return nd[0] === od[0]
+                    return nd[0] === od[0] && nd.length === od.length
                 }
                 return true
             } 

@@ -9,8 +9,7 @@
 <script>
 import external from '../../config/external.js'
 import base from '../../mixins/base.js';
-import util from '../../utils/util.js'
-
+import util from '../../utils/util.js' 
 export default {
     name: 'fdrow',
     props: ['data', 'columns'],
@@ -19,7 +18,7 @@ export default {
         return {
             tempColumns: []
         }
-    },
+    }, 
     methods: {
         style() {
             const style = {flexDirection: 'row'}

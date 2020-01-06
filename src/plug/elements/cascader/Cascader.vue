@@ -5,24 +5,15 @@
         v-model="item.value"
         @change="change"
         :show-all-levels="item.config && item.config.showAllLevels"
-        :props="item.config && item.config.props"
-        :change-on-select="item.config && item.config.changeOnSelect"
+        :props="item.config && item.config.props" 
         filterable 
         clearable
     >
     </el-cascader>
 </template>
 <script>
-/**
- * config: {
- *      plain: true 
- *      round: true
- * }
- */
 import base from '../../mixins/base.js';
-
 export default {
-    //prop, value, config: {}, filter, disabled, link?to router, $data
     props: ['item'],
     name: 'fdcascader',
     mixins: [base],

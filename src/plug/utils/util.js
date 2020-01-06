@@ -42,7 +42,7 @@ function getType(column) {
   }
   return ''
 }
-const contains = ['fd-row', 'fd-col', 'fd-formitem']
+const contains = ['fd-row', 'fd-col', 'fd-formitem', 'fd-badge']
 
 function isContains(column) {
     let type = getType(column)   

@@ -5,8 +5,7 @@
         <slot></slot>
     </div>
 </template>
-<script>
-import FdRegion from '../../core/region'
+<script> 
 import external from '../../config/external.js'
 import base from '../../mixins/base.js';
 import util from '../../utils/util.js'
@@ -14,14 +13,8 @@ import util from '../../utils/util.js'
 export default {
     name: 'fdcol',
     props: ['data', 'columns'],
-    mixins: [base],
-    components: { 
-        FdRegion
-    }, 
+    mixins: [base], 
     methods: {
-        getType() {
-
-        },
         style() {
             let column = this.columns[this.columns.length - 1]
             let type =  util.getType(column)

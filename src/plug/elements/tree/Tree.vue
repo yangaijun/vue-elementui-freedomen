@@ -12,14 +12,7 @@
 <script>
 import base from '../../mixins/base.js';
 import util from '../../utils/util.js'
-/**
- * config: {
- *      clearable: true 
- * }
- * next: options: [{...}, {...}], label: '', value: '', @change => add row
- */
 export default {
-    //prop, value, config: {}, filter, disabled, link?to router, $data
     props: ['item'],
     mixins: [base],
     name: 'fdtree',
