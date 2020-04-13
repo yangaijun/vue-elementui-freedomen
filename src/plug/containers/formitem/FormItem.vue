@@ -1,17 +1,44 @@
 <template>
-    <el-form-item :style="style()" > 
-        <span slot="label">  
-            <span v-if="hasRule()" class="el-form-item-must" style="color: #f56c6c">*</span>
-            <fd-region 
-                v-if="Array.isArray(columns[columns.length - 1].label)"
-                :columns="columns[columns.length - 1].label"
-            />
-            <span v-else>
-                {{columns[columns.length - 1].label}} 
+    <el-col  
+        v-if="!column.inline"
+        :span="column.span"
+        :offset="column.offset"
+        :push="column.push"
+        :pull="column.pull"
+        :xs="column.xs"
+        :sm="column.sm"
+        :md="column.md"
+        :lg="column.lg"
+        :xl="column.xl"
+        :tag="column.tag"
+        >
+        <el-form-item :style="style()" > 
+            <span slot="label">  
+                <span v-if="hasRule()" class="el-form-item-must" style="color: #f56c6c">*</span>
+                <fd-region 
+                    v-if="Array.isArray(columns[columns.length - 1].label)"
+                    :columns="columns[columns.length - 1].label"
+                />
+                <span v-else>
+                    {{columns[columns.length - 1].label}} 
+                </span>
             </span>
-        </span>
-        <slot></slot>
-    </el-form-item>
+            <slot></slot>
+        </el-form-item>
+    </el-col>
+    <el-form-item :style="style()" v-else> 
+            <span slot="label">  
+                <span v-if="hasRule()" class="el-form-item-must" style="color: #f56c6c">*</span>
+                <fd-region 
+                    v-if="Array.isArray(columns[columns.length - 1].label)"
+                    :columns="columns[columns.length - 1].label"
+                />
+                <span v-else>
+                    {{columns[columns.length - 1].label}} 
+                </span>
+            </span>
+            <slot></slot>
+        </el-form-item>
 </template>
 <script>
 import util from '../../utils/util.js'; 
@@ -24,15 +51,15 @@ export default {
     mixins: [base], 
     data() {
         return {
-            tempColumns: []
+            tempColumns: [],
+            column: {}
         }
     },   
     methods: { 
-        style() {
-            let column = this.columns[this.columns.length - 1]
-            let type = util.getType(column)
-
-            if (type && type.indexOf('formitem') === 3)
+        style() { 
+            let type = util.getType(this.column)
+            let column = this.column
+            if (type && type.indexOf('fd-formitem') === 0)
                 return [external.defaultStyles[type], this.mixin_style(column.style, column.value, column.$data)]
             else 
                 return null
@@ -46,7 +73,11 @@ export default {
                     return true
             }
             return false
-        }
-    }
+        } 
+    },
+    created() {
+        this.column = this.columns[this.columns.length - 1]
+        console.log(this.column.inline)
+    },
 }
 </script> 

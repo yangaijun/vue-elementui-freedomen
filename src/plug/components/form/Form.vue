@@ -57,17 +57,18 @@ export default {
     methods: {
         resetColumns(columns) {
             let newColumns = []
+            var inline = this.config && this.config.inline
             columns.forEach(column => {
-                if (util.isPlainObject(column)) {
+                if (util.isPlainObject(column)) {  
                     let newItem = [column]
                     if (column.rule) {
                         newItem.push( 
                             {type: 'icon', value: 'el-icon-loading', load: () => this.rules[column.prop].loading},
                             {type: 'span', class: 'el-form-item__error', filter: () => this.rules[column.prop].message}  
                         )
-                    }
-                    newItem.push({type: 'formitem', prop: column.prop, label: column.label, $loadRelation: column})
-                    newColumns.push(newItem)
+                    } 
+                    newItem.push({...column, type: 'formitem', inline: inline, $loadRelation: column})  
+                    newColumns.push(newItem) 
                 } else if (Array.isArray(column)) {
                     if (column.length && column[column.length - 1].rule !== void 0) {
                         column.splice(
@@ -78,8 +79,12 @@ export default {
                     }
                     newColumns.push(column)
                 }
-            })
-            return newColumns
+            }) 
+            if (!inline) {
+                newColumns.push({type: 'row'}) 
+                newColumns = [newColumns]
+            } 
+            return newColumns 
         },
         resetRules(columns, rules) {
             for (let column of columns) {

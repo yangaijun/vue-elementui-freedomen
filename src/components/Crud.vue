@@ -1,9 +1,10 @@
 <template>
     <fd-vuex :store="store" save>  
-        <!-- <fd-search :columns="searchColumns" @event="searchEvent"/> -->
+        <fd-search :columns="searchColumns" @event="searchEvent"/>
         <fd-table :columns="tableColumns" @event="tableEvent" :data="tableData" :page="page"/>
-        <!-- <fd-form :columns="formColumns" @event="formEvent" :data="formData" @submit="submit"></fd-form> -->
-     <fd-form :columns="formColumns2" @event="formEvent" :data="formData2" @submit="submit"></fd-form>
+        <fd-form :columns="formColumns" @event="formEvent" :data="formData" @submit="submit"></fd-form>
+     <!-- <fd-form :columns="formColumns2" @event="formEvent" :data="formData2" @submit="submit" ></fd-form> -->
+        
         <!-- <fd-table 
             :columns="[
                 {label: '姓名', prop: 'name', type: ({data}) => data.edit ? 'input': 'span'},
@@ -19,30 +20,24 @@
                 if (params.prop == 'save')
                     params.row.edit = 0
             }"
-        /> -->
+        /> --> 
     </fd-vuex>
 </template>
 <script> 
 export default {
-  name: 'Crud',
-  components: {FdNavMenu},
+  name: 'Crud', 
   data () {
     return { 
         store: {gg: true},
         tbConfig: {selection: true},
         formData2: {select: '', giaogiao: {}},
         formColumns2: [
-            {type: 'select', prop: 'select', options: '1,2', label: '请选择'},
-            {type: 'input', prop: 'c', label: '姓名2', rule: 'must'},
-            {type: 'render', label: 'nihao', rule: 'must',  render({data, value}) {
-                
-                return [
-                    {type: 'span', value: data.select},
-                    {type: 'input', value: 'value', prop: 'ainiou'},
-                    {type: 'span', value: "heh3:"},
-                    {type: 'input', value: 'value', prop: 'buaile'}
-                ]
-            }},
+            {type: 'select', prop: 'select', options: '1,2', label: '请选择', span: 12},
+            {type: 'radios-button', label: 'radios',  span: 12, options: {1: 'test', 2: 'freedomen', span: 12, label: '请选择', span: 6}},
+              
+            {type: 'select', prop: 'select', options: '1,2', label: '请选择', span: 12},
+            {type: 'radios-button', label: 'radios',  span: 12, options: {1: 'test', 2: 'freedomen', span: 12, label: '请选择', span: 6}},
+            
             {type: 'render', label: 'nihao', rule: 'must', prop: 'd', render({data, createElement, value}) {
                 return createElement('FdTable', {
                     props: {
@@ -61,7 +56,7 @@ export default {
             {type: 'button', prop: '$submit', value: '提交'}
         ],
         searchColumns: [ 
-            {type: 'select-remote', prop: 'remote', options: (query, resolve) => {
+            {type: 'select-remote', prop: 'remote', options: ({query, resolve}) => {
                 setTimeout(() => {
                     resolve({1: '文件', 2: '视频'})
                 }, 200)

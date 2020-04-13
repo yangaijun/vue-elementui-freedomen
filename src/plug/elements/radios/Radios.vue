@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-radio-group
-            v-if="mixin_type(item) === 'radio-buttons'"
+            v-if="mixin_type(item) === 'radios-button'"
             v-model="item.value"
             @change="change">
             <el-radio-button

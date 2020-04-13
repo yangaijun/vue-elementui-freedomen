@@ -1,10 +1,13 @@
 <template>
-    <div 
-        class="fd_row"
-        :style="style()" 
-    > 
-        <slot></slot>
-    </div>
+    <el-row 
+        :class="column.class" 
+        :gutter="column.gutter"
+        :type="column.rowType"
+        :justify="column.justify"
+        :align="column.align"
+        :tag="column.tag"> 
+        <slot></slot> 
+    </el-row>
 </template>
 <script>
 import external from '../../config/external.js'
@@ -16,25 +19,14 @@ export default {
     mixins: [base],
     data() {
         return {
-            tempColumns: []
+            column: {}
         }
     }, 
-    methods: {
-        style() {
-            const style = {flexDirection: 'row'}
-            let column = this.columns[this.columns.length - 1]
-            let type = util.getType(column.type) 
-
-            if (type && type.indexOf('row') === 3)
-                return [
-                    {display: 'flex', flexDirection: 'row'},
-                    external.defaultStyles[type], 
-                    this.mixin_style(column.style, column.value, column.$data), 
-                    style
-                ]
-            else 
-                return style
-        }
+    created() {
+        let column = this.columns[this.columns.length - 1]
+        let type = util.getType(column) 
+        if (type && type.indexOf('fd-row') === 0)
+            this.column = column
     } 
 }
 </script> 

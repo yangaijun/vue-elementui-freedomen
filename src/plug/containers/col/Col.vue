@@ -1,9 +1,18 @@
 <template>
-    <div 
-        :style="style()" 
-    > 
-        <slot></slot>
-    </div>
+    <el-col 
+        :class="column.class" 
+        :span="column.span"
+        :offset="column.offset"
+        :push="column.push"
+        :pull="column.pull"
+        :xs="column.xs"
+        :sm="column.sm"
+        :md="column.md"
+        :lg="column.lg"
+        :xl="column.xl"
+        :tag="column.tag"> 
+        <slot></slot> 
+    </el-col>
 </template>
 <script> 
 import external from '../../config/external.js'
@@ -14,20 +23,16 @@ export default {
     name: 'fdcol',
     props: ['data', 'columns'],
     mixins: [base], 
-    methods: {
-        style() {
-            let column = this.columns[this.columns.length - 1]
-            let type =  util.getType(column)
-            if (type && type.indexOf('col') === 3)
-                return [
-                    external.defaultStyles[type], 
-                    {display: 'flex', 'flex-direaction': 'column', '-webkit-flex-direction': 'column'}, 
-                    this.mixin_style(column.style, column.value, column.$data)
-                ]
-            else 
-                return null
-        },
-        
-    }
+    data() {
+        return {
+            column: {}
+        }
+    }, 
+    created() {
+        let column = this.columns[this.columns.length - 1]
+        let type = util.getType(column) 
+        if (type && type.indexOf('fd-col') === 0)
+            this.column = column
+    } 
 }
 </script> 

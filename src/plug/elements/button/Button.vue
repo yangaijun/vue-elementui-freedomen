@@ -27,14 +27,15 @@ export default {
     },
     methods: {
         buttonType(type) {
-            return {
+            const typeMap = {
                 'button-text': 'text',
                 'button-primary': 'primary',
                 'button-success': 'success',
                 'button-info': 'info',
                 'button-warning': 'warning',
                 'button-danger': 'danger'
-            }[type]
+            }
+            return typeMap[type]
         },
         click() {
             this.mixin_event({
