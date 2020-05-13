@@ -76,8 +76,7 @@ export default {
         } 
     },
     created() {
-        this.column = this.columns[this.columns.length - 1]
-        console.log(this.column.inline)
+        this.column = this.columns[this.columns.length - 1] 
     },
 }
 </script> 

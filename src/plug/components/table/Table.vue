@@ -16,6 +16,7 @@
             <template v-for="(column, index) in columns" >
                 <el-table-column 
                     type="expand"
+                    :key="index"
                     v-if="Authorized(column) && column.type && column.type === '$expand'" >
                     <template slot-scope="scope">
                         <region 
@@ -31,6 +32,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column 
+                    :key="index"
                     :sortable='column.sortable' 
                     :show-overflow-tooltip='(config && config.showTip === false) ? false : true' 
                     :prop="column.prop" 

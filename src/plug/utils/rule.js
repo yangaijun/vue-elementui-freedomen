@@ -48,7 +48,10 @@ function validate(value, rule, data) {
         return null
 
     if (rule instanceof Function) {
-        return rule({value: value, data: data, store: store})
+        let promise = new Promise((resolve) => {
+            rule({resolve: resolve, value: value, data: data, store: store}) 
+        }) 
+        return promise
     } else if (util.isPlainObject(rule)) {
         if (typeof rule.regular === 'function') {
             return rule.regular({value: value, data: data, store: store}) ? null : rule.label

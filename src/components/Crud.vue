@@ -1,11 +1,15 @@
 <template>
     <fd-vuex :store="store" save>  
-        <fd-search :columns="searchColumns" @event="searchEvent"/>
+        <!-- <fd-search :columns="searchColumns" @event="searchEvent"/>
         <fd-table :columns="tableColumns" @event="tableEvent" :data="tableData" :page="page"/>
-        <fd-form :columns="formColumns" @event="formEvent" :data="formData" @submit="submit"></fd-form>
+        <fd-form :columns="formColumns" @event="formEvent" :data="formData" @submit="submit"></fd-form> -->
+        <fd-form 
+            :columns="columns5"
+        />
+        <vue-ace-editor v-model="content" lang="html" height="500" @init="initEditor"></vue-ace-editor>
      <!-- <fd-form :columns="formColumns2" @event="formEvent" :data="formData2" @submit="submit" ></fd-form> -->
         
-        <!-- <fd-table 
+        <fd-table 
             :columns="[
                 {label: '姓名', prop: 'name', type: ({data}) => data.edit ? 'input': 'span'},
                 {label: '性别', prop: 'gender', type: ({data}) => data.edit ? 'select': 'span', filter: {1: '男', 2: '女'}, options: {1: '男', 2: '女'}},
@@ -20,14 +24,34 @@
                 if (params.prop == 'save')
                     params.row.edit = 0
             }"
-        /> --> 
+        /> 
     </fd-vuex>
 </template>
 <script> 
+import VueAceEditor from 'vue2-ace-editor'
 export default {
   name: 'Crud', 
-  data () {
+  components: {VueAceEditor},
+  data () { 
     return { 
+        columns5: [
+                    {type: 'input', prop: 'input', label: '异步1', placeholder: '输入大于 123', rule: ({resolve, value}) => {
+                        
+                            setTimeout(() => {
+                                resolve(value < 123 && "some ting")
+                            }, 400);
+                        
+                    }},
+                    {type: 'input', prop: 'input2', label: '异步2', placeholder: '输入等于异步1' , rule: ({resolve,value, data}) => {
+                        return new Promise((resolve) => {
+                            setTimeout(() => {
+                                resolve(data.input != value && '不相等哦')
+                            }, 400);
+                        })
+                    }},
+                    {type: 'button-warning', prop: '$submit', value: '校验'}
+                ],
+        content: '<tempalte></tempalte>',
         store: {gg: true},
         tbConfig: {selection: true},
         formData2: {select: '', giaogiao: {}},
@@ -193,6 +217,10 @@ methods: {
         if (params.prop == 'add') {
             this.formData.listData.list.push({prop: '1'})
         }
+    },
+    initEditor() {
+        require('brace/mode/html');
+        require('brace/theme/chrome');
     }
   }
 }

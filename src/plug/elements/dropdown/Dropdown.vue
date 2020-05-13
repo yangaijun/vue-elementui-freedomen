@@ -1,10 +1,10 @@
 <template>
     <el-dropdown @command="click" :size="item.size">
         <el-button type="primary" v-if="mixin_type(item) == 'dropdown-button'">
-            {{item.label}}<i class="el-icon-arrow-down el-icon--right"></i>
+            {{item.text}}<i class="el-icon-arrow-down el-icon--right"></i>
         </el-button>
         <span class="el-dropdown-link" v-else>
-          {{item.label}}<i class="el-icon-arrow-down el-icon--right"></i>
+          {{item.text}}<i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item  v-for="option in options" :key="option.value" :command="option.value">
