@@ -4,15 +4,9 @@
 
 [文档地址](http://115.159.65.195:8080/vefdoc)
 
+[项目DEMO地址](https://github.com/yangaijun/mall-demo)
 
-
-> elementUI 二次开发版本，让开发更简单，更高效 ，可以全局对元素级别权限控制，增删改查更加方便，验证更容易，重复的代码更少，不懂VUE的后台人员更容易使用, 更快速开发。
-
-```bash
-//DEMO  
-//down && npm install
-npm run dev
-```
+> elementUI 二次开发版本，让开发更简单，更高效 ，可以全局对元素级别权限控制，增删改查更加方便，验证更容易，重复的代码更少，不懂VUE的后台人员更容易使用, 更快速开发。freedomen系 并不是封装，还是控制，对组件核心方法进行统一， 加入核心控制器Region来对每个元素组件进行分配、控制、数据处理、相互通信、与事件接收， 所以任何一个满足 最小的统一构造 都是可以无缘接入 元素中，而实现无限扩展。
 
 
 
@@ -20,7 +14,10 @@ npm run dev
 
 ``` bash
 //首先要安装element ui，不会请访问element ui官网
+
 npm install vue-elementui-freedomen
+//yarn add veu-elementui-freedomen
+//cnpm i vue-elementui-freedomen
 
 import ElementUI from 'element-ui'
 import Freedomen from 'vue-elementui-freedomen'
@@ -135,4 +132,6 @@ export default {
 //为本组件核心控制器
 ...
 ```
+
+### 具體介紹還是看文檔吧
 
