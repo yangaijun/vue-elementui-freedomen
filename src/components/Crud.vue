@@ -5,26 +5,13 @@
         <fd-form :columns="formColumns" @event="formEvent" :data="formData" @submit="submit"></fd-form> -->
         <fd-form 
             :columns="columns5"
-        />
-        <vue-ace-editor v-model="content" lang="html" height="500" @init="initEditor"></vue-ace-editor>
-     <!-- <fd-form :columns="formColumns2" @event="formEvent" :data="formData2" @submit="submit" ></fd-form> -->
-        
-        <fd-table 
-            :columns="[
-                {label: '姓名', prop: 'name', type: ({data}) => data.edit ? 'input': 'span'},
-                {label: '性别', prop: 'gender', type: ({data}) => data.edit ? 'select': 'span', filter: {1: '男', 2: '女'}, options: {1: '男', 2: '女'}},
-                {label: '操作', render: ({data, store}) =>{
-                    return [
-                        {type: 'switch', prop: 'edit'}
-                    ]
-                }}
-            ]" 
-            :data="[{name: '大头一一一一五一',gender: 1,edit: 0}]" 
-            @event="(params) => {
-                if (params.prop == 'save')
-                    params.row.edit = 0
-            }"
+            ref="form"
+            @submit="sumit"
         /> 
+        <svg class="svg-icon" aria-hidden="true">
+            <use xlink:href="password"></use>
+        </svg>
+        <el-button @click="click">d  ddsd</el-button>
     </fd-vuex>
 </template>
 <script> 
@@ -43,13 +30,13 @@ export default {
                         
                     }},
                     {type: 'input', prop: 'input2', label: '异步2', placeholder: '输入等于异步1' , rule: ({resolve,value, data}) => {
-                        return new Promise((resolve) => {
+                       
                             setTimeout(() => {
                                 resolve(data.input != value && '不相等哦')
-                            }, 400);
-                        })
+                            }, 400) 
                     }},
-                    {type: 'button-warning', prop: '$submit', value: '校验'}
+                    {type: 'input', rule: 'must', prop: 'ggod'} ,
+                    {type: 'button', value: 'click', prop: '$submit'}
                 ],
         content: '<tempalte></tempalte>',
         store: {gg: true},
@@ -202,12 +189,20 @@ methods: {
         if (params.prop == 'search') { 
         }
     },
+    sumit(data) {
+        console.log(data)
+    },
     tableEvent(params) {
         if (params.prop == 'detail') {
             alert('详情')
         } else if (params.prop == 'edit') {
             this.formData = params.row
         }
+    },
+    click(s) {
+        this.$refs.form.submit().then(data => {
+            console.log(data)
+        })
     },
     submit(params) { 
         console.log(params)

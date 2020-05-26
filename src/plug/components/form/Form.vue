@@ -158,29 +158,40 @@ export default {
                 this.rules[r].message = ''
             } 
         },
+        submit() {
+            if (this.valid()) {
+                //has promise
+                if (this.ruleQueues.length) {
+                    if (!this.submitLoading) {
+                        this.submitLoading = true
+                    } else {
+                        return Promise.reject('')
+                    }
+                    return new Promise((resolve, reject) => {
+                        this.asyncQueue().then(el => { 
+                            if (el.every(el => !el)) 
+                                resolve(this.tempData)
+                            else 
+                                reject('')
+                            this.submitLoading = false
+                        }) 
+                    }) 
+                } 
+            } else {
+                return Promise.reject('')
+            }
+            return Promise.resolve(this.tempData)
+        },
         clone(columns) {
             return columns
-        },
+        }, 
         event(params) { 
             this.$emit('event', params)
 
             if (params.prop == '$submit') { 
-                if (this.valid()) {
-                    if (this.ruleQueues.length) {
-                        if (!this.submitLoading) {
-                            this.submitLoading = true
-                        } else {
-                            return
-                        }
-                        this.asyncQueue().then(el => { 
-                            if (el.every(el => !el)) 
-                                this.$emit('submit', this.tempData)
-                            this.submitLoading = false
-                        }) 
-                    } else {
-                        this.$emit('submit', this.tempData)
-                    }
-                }
+                this.submit().then(data => {
+                    this.$emit('submit', data)
+                }) 
             } else if (params.prop == '$reset') {
                 this.reset()
             } else if (params.type === 'change' && this.rules[params.prop] !== void 0) {
