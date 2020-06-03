@@ -12,7 +12,7 @@
         :xl="column.xl"
         :tag="column.tag"
         >
-        <el-form-item :style="style()" > 
+        <el-form-item :style="style()" :class="errorClass()"> 
             <span slot="label">  
                 <span v-if="hasRule()" class="el-form-item-must" style="color: #f56c6c">*</span>
                 <fd-region 
@@ -26,7 +26,7 @@
             <slot></slot>
         </el-form-item>
     </el-col>
-    <el-form-item :style="style()" v-else> 
+    <el-form-item :style="style()" v-else :class="errorClass()"> 
             <span slot="label">  
                 <span v-if="hasRule()" class="el-form-item-must" style="color: #f56c6c">*</span>
                 <fd-region 
@@ -66,6 +66,15 @@ export default {
         },
         throwEvent(params) {
             this.$emit('event', params)
+        },
+        errorClass() { 
+            if (this.hasRule() && this.columns.length > 2) { 
+                let errorlabels = this.columns[this.columns.length - 2]
+                if (errorlabels.class == 'el-form-item__error' && errorlabels.filter()) {
+                    return 'el-form-item is-error'
+                }
+                
+            }
         },
         hasRule() { 
             for (let column of this.columns) {

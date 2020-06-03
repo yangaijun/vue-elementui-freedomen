@@ -1,23 +1,12 @@
 <template>
     <fd-vuex>  
         <el-button @click="open">打开 </el-button>
-        <el-dialog
-            title="找开" 
-            :visible.sync="visible"
-            :modal="false"
-            width="50%">
-            <el-alert
-                title="提示： 如果页面在路由中拥有子页面，其页面属性将失效，将变为文件夹"
-                type="warning"
-                style="marginBottom: 15px; marginTop: -15px;"
-                show-icon>
-            </el-alert>
-            <fd-form  
+        <fd-form  
                 @event="event"
                 ref="form" 
                 :columns="[
                     {type: 'input', rule: 'must', label: '页面名称', placeholder: '请输入页面名称', prop: 'pageLabel'},
-                    {type: 'input', label: '文件名称', placeholder: '请输入字母, default 页面名称拼音', prop: 'pageFileName'},
+                    {type: 'input', label: '文件名称', placeholder: '请输入字母, default 页面名称拼音', prop: 'pageFileName', rule: testAsyc},
                     {type: 'input', placeholder: '访问路径, default 文件名称', label: '访问路径', prop: 'pagePath'},
                     {type: 'input', placeholder: '图标, ele图标class, 如 el-icon-eleme', label: '图标', prop: 'pageIcon'}, 
                     {type: 'switch', label: '隐藏', prop: 'pageHidden'},
@@ -41,10 +30,6 @@
                 ]" 
                 :data.sync="formData"
                 /> 
-                <span slot="footer" class="dialog-footer"> 
-                    <el-button type="primary" @click="submit">确 定</el-button>
-                </span>
-        </el-dialog> 
     </fd-vuex>
 </template>
 <script> 
@@ -58,8 +43,13 @@ export default {
             resolve("dd,ee")
         }, 800);
     } 
+    let testAsyc = ({data, resolve}) => {
+        setTimeout(() => {
+            resolve('ror')
+        }, 800)
+    }
     return { 
-        visible: false,formData: {auto: 1}, timeOut: timeOut
+        visible: false,formData: {auto: 1}, timeOut: timeOut, testAsyc: testAsyc
     } 
   },
   methods: {
@@ -78,8 +68,7 @@ export default {
                     el.edit = 1
                     el.detail = 1  
                     return el
-                })
-        console.log(this.formData.cols)
+                }) 
       }
   }
 }

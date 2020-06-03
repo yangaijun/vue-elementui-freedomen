@@ -8,8 +8,8 @@
         :placeholder="item.placeholder" 
         :style="mixin_style(item.style, item.value, item.data)"
         :clearable="(item.config && item.config.clearable === false) ? false : true"
-        :prefix-icon="item.prefixIcon"
-        :suffix-icon="item.suffixIcon" 
+        :prefix-icon="icon(item.prefixIcon)"
+        :suffix-icon="icon(item.suffixIcon)" 
     >
     </el-input>
 </template>
@@ -29,6 +29,13 @@ export default {
                 'input-password': 'password',
                 'input-area': 'textarea'
             }[type]
+        },
+        icon(icon) {
+            if (typeof icon == 'function') {
+                return icon({value: this.item.value, data: this.item.$data})
+            } else {
+                return icon
+            }
         },
         change() {
             this.mixin_event({

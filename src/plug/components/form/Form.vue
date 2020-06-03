@@ -43,10 +43,8 @@ export default {
                 this.ruleQueues = []
             }
         },
-        data: {
-            handler(nd, od) { 
-                this.tempData = nd
-            } 
+        data (nd, od) { 
+            this.tempData = nd
         } 
     },
     data() {
@@ -63,9 +61,11 @@ export default {
             columns.forEach(column => {
                 if (util.isPlainObject(column)) {  
                     let newItem = [column]
-                    if (column.rule) {
-                        newItem.push( 
-                            {type: 'icon', value: 'el-icon-loading', load: () => this.rules[column.prop].loading},
+                    if (column.rule) { 
+                        if (column.type == 'input') {
+                            column.suffixIcon = () => { if (this.rules[column.prop].loading) return 'el-icon-loading' }
+                        }
+                        newItem.push(  
                             {type: 'span', class: 'el-form-item__error', filter: () => this.rules[column.prop].message}  
                         )
                     } 
@@ -74,8 +74,7 @@ export default {
                 } else if (Array.isArray(column)) {
                     if (column.length && column[column.length - 1].rule !== void 0) {
                         column.splice(
-                            column.length - 1, 0, 
-                            // {type: 'icon', value: 'el-icon-loading', load: () => this.rules[column[column.length - 1].prop].loading},
+                            column.length - 1, 0,  
                             {type: 'span', class: 'el-form-item__error', filter: () => this.rules[column[column.length - 1].prop].message}
                         )
                     }
