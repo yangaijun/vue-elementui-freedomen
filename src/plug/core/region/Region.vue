@@ -136,8 +136,7 @@ export default {
         }
     }, 
     created() {
-        var columns = this.clone(this.columns)
-        
+        var columns = this.clone(this.columns) 
         this.tempColumns = this.resetColumns(columns, this.data)
         this.defalutStyles = external.defaultStyles
     }

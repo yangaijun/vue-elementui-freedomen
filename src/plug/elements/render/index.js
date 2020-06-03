@@ -4,7 +4,7 @@ const render = {
     name: 'fdrender', 
     props:  {
         item: Object
-    }, 
+    },   
     render: function (createElement){  
         let item = this.item
         let throwEvent = (params) => {  

@@ -43,9 +43,11 @@ export default {
                 this.ruleQueues = []
             }
         },
-        data(nd, od) { 
-            this.tempData = nd
-        }
+        data: {
+            handler(nd, od) { 
+                this.tempData = nd
+            } 
+        } 
     },
     data() {
         return {
@@ -110,8 +112,7 @@ export default {
         validOne(data, r, ruleObj) { 
             if (!r.column.$load) { 
                 return false
-            }
-
+            } 
             let message = rule.valid(data, r.rule, this.data) 
             if (message instanceof Promise) { 
                 if (this.ruleQueues) {
@@ -154,13 +155,13 @@ export default {
                 newObj[key] = this.firstData[key]
             }
             this.tempData = newObj
+            this.$emit('update:data', this.tempData)
             for (let r in this.rules) {
                 this.rules[r].message = ''
             } 
         },
         submit() {
-            if (this.valid()) {
-                //has promise
+            if (this.valid()) { 
                 if (this.ruleQueues.length) {
                     if (!this.submitLoading) {
                         this.submitLoading = true
@@ -177,10 +178,10 @@ export default {
                         }) 
                     }) 
                 } 
+                return Promise.resolve(this.tempData)
             } else {
                 return Promise.reject('')
-            }
-            return Promise.resolve(this.tempData)
+            } 
         },
         clone(columns) {
             return columns
@@ -205,9 +206,10 @@ export default {
         }
     },
     mounted() {
-        this.firstData = util.clone(this.data)  
+        this.firstData = util.clone(this.data) 
+        this.$emit('update:data', this.firstData)   
     },
-    created() {  
+    created() {   
         let columns = this.clone(this.columns)
         let rules = {}
         this.resetRules(columns, rules)

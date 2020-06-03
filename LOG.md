@@ -1,3 +1,45 @@
+### v1.0.5 
+
+* form 添加 submit 方法可以手动调用
+
+  ```js
+  <fd-form
+      :columns="..."
+      ref="form"
+  >
+  <el-button @click='submit'>验证<el-button>
+  methods: {
+      submit() {
+          this.$refs.form.submit().then(data => {
+              console.log('验证成功')
+          }).catch(_ => {
+              console.log('验证失败')
+          })
+      }
+  }
+  ```
+
+  
+
+* form 绑定data 可以使用.sync
+
+  ```js
+  <fd-form
+      :data.sync="formData"
+      :columns="[
+          {type: 'input', prop: 'input'},
+          {type: 'select-mutiple', prop: 'select'}
+      ]"
+  >
+  data() {
+  	return {
+          data: {} //使用sync会改变其中的初始值 为{input: '', select: []}
+      }        
+  }
+  ```
+
+  
+
 ### v1.0.4 更改
 
 * dropdown 属性label 改为 text

@@ -56,7 +56,7 @@
                 </el-table-column>
             </template> 
         </el-table>
-        <div v-if="page" style="text-align:right; margin-top: 8px;" class="fd_table_page">
+        <div v-if="page && page.total" style="text-align:right; margin-top: 8px;" class="fd_table_page">
             <el-pagination
                 @size-change="sizeChange"
                 @current-change="currentChange"
