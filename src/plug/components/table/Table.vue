@@ -3,91 +3,49 @@
         <el-table  
             @selection-change='selectionChange' 
             :data="data" 
-            :stripe="config && config.stripe"
-            :show-header="config && config.showHeader"
-            :row-style='config && config.rowStyle' 
-            :row-class-name="config && config.rowClassName"
-            :height="config && config.height"
-            :max-height="config && config.maxHeight"
-            :border="(config && config.border === false) ? false : true">
-
-            <el-table-column v-if="config && config.selection" type="selection" width="55" />
-            <el-table-column v-if="config && config.index" type="index" width="65" :label="config && config.indexLabel" />
-            <template v-for="(column, index) in columns" >
-                <el-table-column 
-                    type="expand"
-                    :key="index"
-                    v-if="Authorized(column) && column.type && column.type === '$expand'" >
-                    <template slot-scope="scope">
-                        <region 
-                            :data="scope.row" 
-                            @event="(params) => { 
-                                event(params, scope.$index) 
-                            }"  
-                            :columns="[
-                                {type: 'render', render: ({createElement, store}) => {
-                                    return column.render({value: scope.row[column.prop], createElement, data: scope.row, store})
-                                }}
-                            ]"/>
-                    </template>
-                </el-table-column>
-                <el-table-column 
-                    :key="index"
-                    :sortable='column.sortable' 
-                    :show-overflow-tooltip='(config && config.showTip === false) ? false : true' 
-                    :prop="column.prop" 
-                    :label="column.label"  
-                    v-else-if="Authorized(column)" 
-                    :fixed="column.fixed"
-                    :width="column.width"> 
-                    <template slot-scope="scope">
-                        <region 
-                            :data="scope.row"
-                            @event="(params) => {
-                                event(params, scope.$index)
-                            }"
-                            :columns="column.render 
-                                ? [{type: 'render', render: ({createElement, store}) => {
-                                        return column.render({value: scope.row[column.prop], createElement, data: scope.row, store})
-                                }}] 
-                                : [{type: 'span', ...column}]"
-                            />
-                    </template>
-                </el-table-column>
-            </template> 
+            :stripe="(tempConfig && tempConfig.stripe === false) ? false : true"
+            :show-header="tempConfig && tempConfig.showHeader"
+            :row-style='tempConfig && tempConfig.rowStyle' 
+            :row-class-name="tempConfig && tempConfig.rowClassName"
+            :height="tempConfig && tempConfig.height"
+            :max-height="tempConfig && tempConfig.maxHeight"
+            :border="(tempConfig && tempConfig.border === false) ? false : true"> 
+            <el-table-column v-if="tempConfig && tempConfig.selection" type="selection" width="55" />
+            <el-table-column v-if="tempConfig && tempConfig.index" type="index" width="65" :label="tempConfig && tempConfig.indexLabel" />
+            <fd-table-column :columns="columns" :config="tempConfig" @event='event'></fd-table-column> 
         </el-table>
         <div v-if="page && page.total" style="text-align:right; margin-top: 8px;" class="fd_table_page">
             <el-pagination
                 @size-change="sizeChange"
                 @current-change="currentChange"
                 :current-page="page.pageNo"
-                :page-sizes="config && config.pageSizes || [10, 20, 50, 100]"
+                :page-sizes="tempConfig && tempConfig.pageSizes || [10, 20, 50, 100]"
                 :page-size="page.pageSize || 10"
-                :layout="config && config.layout || 'total, sizes, prev, pager, next, jumper'"
+                :layout="tempConfig && tempConfig.layout || 'total, sizes, prev, pager, next, jumper'"
                 :total="page.total || 0">
             </el-pagination>
         </div>
     </div>
 </template>
-<script>
-import Region from '../../core/region/Region';
-import external from '../../config/external.js'
+<script>  
+import FdTableColumn from './TableColumn'
+import merge from '../../mixins/merge'
 export default {
+    name: 'FdTable',
     props: {
         data: Array,
         columns: Array,
         config: Object,
         page: Object
     },
-    name: 'FdTable',
-    components: { Region },
+    mixins: [merge],
+    components: { FdTableColumn }, 
     data() {
-        return {}
+        return {
+            tempConfig: {}
+        }
     },
-    methods: {
-        Authorized (column) {
-            return  external.Authorized({column: column})
-        },
+    methods: { 
         sizeChange(pageSize) {
             this.event({
                 type: 'change',
@@ -109,10 +67,15 @@ export default {
                 value: pageNo
             })
         },
-        event(params, index) { 
-            if (index !== void 0) 
-                params.$index = index
+        event(params) {  
             this.$emit('event', params)
+        }
+    },
+    created() {
+        let config = this.mergeConfig('table', this.config) 
+        if (config) {
+            this.tempConfig = config
+            console.log(this.tempConfig)
         }
     }
 }

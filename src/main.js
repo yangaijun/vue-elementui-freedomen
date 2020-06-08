@@ -24,10 +24,27 @@ Freedomen.rules({
       return value == 12
     }
   }
+}) 
+Freedomen.configs({
+  upload: {
+    action: 'http://www.jasobim.com:8085/api/files/uploadFiles'
+  },
+  form: {
+    labelWidth: '80px'
+  },
+  table: {
+    border: false
+  }
 })
 Freedomen.styles({
   'span-test': {
     color: 'red'
+  },
+  'input-len10': {
+    width: '220px'
+  },
+  'input-len15': {
+    width: '250px'
   }
 })
 Freedomen.registerElements({Hello})

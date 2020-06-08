@@ -20,6 +20,7 @@ export default {
             this.$set(this.item, 'value', 0)
         }
         this.item.$data[this.item.prop] = this.item.value
+        this.mixin_config('progress') 
     }
 }
 </script>

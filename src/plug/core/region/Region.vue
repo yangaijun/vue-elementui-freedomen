@@ -1,5 +1,5 @@
 <template>
-    <span class="nope_wrap">
+    <span> 
         <template v-for="(column, index) in tempColumns" >
             <fd-contains v-if="isWhich('column', column)" :key="index" :columns='column' @event="event" :data="data">
                 <fd-region :columns='clearContainType(column)' :data="data" @event="throwEvent"/>
@@ -9,7 +9,7 @@
     </span>
 </template>
 <script>
-import base from '../../mixins/base.js';
+import base from '../../mixins/base.js'; 
 import FdElements from '../../elements/Elements';
 import FdContains from '../../containers/Contains'
 import util from '../../utils/util.js';
@@ -34,7 +34,7 @@ export default {
         FdElements,
         FdContains
     },
-    mixins: [base],
+    mixins: [base], 
     watch: {
         data: {
             handler(nd, od) {
@@ -47,9 +47,7 @@ export default {
         }
     },
     computed: {
-        store() { 
-            return store 
-        }
+        store: _ => store
     },
     data() {
         return {
@@ -114,7 +112,7 @@ export default {
             } 
             return columns
         },
-        event(params) {
+        event(params) { 
             if (params && params.type == 'change') {
                 if (params.prop) {
                     this.data[params.prop] = params.value 

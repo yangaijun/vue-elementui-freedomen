@@ -31,6 +31,9 @@ export default {
                 value: this.item.value
             })
         }
+    },
+    created() {
+        this.mixin_config('tag') 
     }
 }
 </script>

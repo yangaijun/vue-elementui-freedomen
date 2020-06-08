@@ -44,6 +44,7 @@ export default {
             this.$set(this.item, 'value', this.min())
         } 
         this.item.$data[this.item.prop] = this.item.value
+        this.mixin_config('slider') 
     }
 }
 </script>

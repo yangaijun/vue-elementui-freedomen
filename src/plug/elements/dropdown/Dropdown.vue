@@ -47,6 +47,7 @@ export default {
     },
     created() {
         this.resetOptions()
+        this.mixin_config('dropdown') 
     }
 }
 </script>

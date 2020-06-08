@@ -113,6 +113,7 @@ export default {
 
         this.tempValue = this.item.value = this.resetValue(this.item.value) 
         this.item.$data[this.item.prop] = this.item.value
+        this.mixin_config('tags') 
     }
 }
 </script>

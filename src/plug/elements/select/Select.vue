@@ -144,6 +144,7 @@ export default {
         this.item.$data[this.item.prop] = this.item.value 
         if (this.mixin_type(this.item) !== 'select-remote')
             this.resetOptions()
+        this.mixin_config('select') 
     }
 }
 </script>

@@ -31,12 +31,15 @@ export default {
             })
         }
     },
-    mounted() {
+    mounted() { 
+        this.$refs[this.treeRef].setCheckedKeys(this.item.value);
+    },
+    created() {
         if (this.item.value === void 0) {
             this.$set(this.item, 'value', [])
         }
         this.item.$data[this.item.prop] = this.item.value
-        this.$refs[this.treeRef].setCheckedKeys(this.item.value);
+        this.mixin_config('upload') 
     }
 }
 </script>

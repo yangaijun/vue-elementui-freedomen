@@ -53,6 +53,7 @@ export default {
             this.$set(this.item, 'value', '')
         }
         this.item.$data[this.item.prop] = this.item.value
+        this.mixin_config('date') 
     }
 }
 </script>

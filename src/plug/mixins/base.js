@@ -1,9 +1,17 @@
  
 import  util from '../utils/util'
 import store from '../core/store'
+import merge from './merge'
 
 export default {
-    methods: {
+    mixins: [merge],
+    methods: {  
+        mixin_config(type) {
+            let config = this.mergeConfig(type, this.item.config)
+            if (config) {
+                this.item.config = config
+            }
+        },
         mixin_filter(filter, value, data) {
             if (filter === void 0) {
                 return value
@@ -52,7 +60,7 @@ export default {
                 })
             }
             return '' 
-        },
+        }, 
         mixin_reset_options(options) {
             let newOptions = [] 
             if (util.isPlainObject(options)) { 

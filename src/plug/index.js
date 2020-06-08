@@ -18,5 +18,6 @@ export default {
     privileges: external.privileges,
     rules: external.addRules,
     styles: external.addStyles,
+    configs: external.addConfigs,
     registerElements: exComponents.registerElements
 }

@@ -116,6 +116,7 @@ export default {
         } 
         this.item.$data[this.item.prop] = this.item.value
         this.resetOptions()
+        this.mixin_config('check') 
     }
 }
 </script>

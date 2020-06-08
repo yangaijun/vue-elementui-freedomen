@@ -20,6 +20,9 @@ const defaultStyles = {
         backgroundColor: '#ccc'
     }
 }
+const defaultConfigs = {
+
+}
 
 function addRules(rules = {}) {
     let keys = Object.keys(rules)
@@ -37,10 +40,20 @@ function addStyles(styles = {}) {
         })
     }
 }
+function addConfigs(configs = {}) {
+    let keys = Object.keys(configs)
+    if (keys.length) {
+        keys.forEach(key => {
+            defaultConfigs[key] = configs[key]
+        })
+    }
+}
 export default {
     privileges: privileges,
     Authorized: Authorized,
     defaultStyles: defaultStyles,
+    defaultConfigs: defaultConfigs,
     addRules: addRules, 
-    addStyles: addStyles
+    addStyles: addStyles,
+    addConfigs: addConfigs
 }

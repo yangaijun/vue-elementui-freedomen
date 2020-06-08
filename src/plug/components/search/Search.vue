@@ -62,9 +62,10 @@ export default {
             this.tempData = newObj
         },
         event(params) { 
-            if (params.prop == '$reset')
+            if (params.prop == '$reset') {
                 this.reset()
-
+                params.row = util.clone(this.tempData)
+            }
             this.$emit('event', params)
         }
     },

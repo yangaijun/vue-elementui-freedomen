@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <span>
         <el-upload
             :action="item.config && item.config.action"
             list-type="picture-card" 
@@ -21,7 +21,7 @@
             <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
             <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
         </el-upload> -->
-    </div>
+    </span>
 </template>
 <script>
 import base from '../../mixins/base.js';
@@ -118,6 +118,7 @@ export default {
         }
         this.item.$data[this.item.prop] = this.item.value 
         this.resetFileList(this.item.value)
+        this.mixin_config('upload') 
     }
 }
 </script>

@@ -5,6 +5,8 @@
         :inactive-color="item.config && item.config.inactiveColor"
         :active-value="activeValue"
         :inactive-value="inactiveValue"
+        :active-text="item.config && item.config.activeText"
+        :inactive-text="item.config && item.config.inactiveText"
         :disabled="!!mixin_disabled(item.disabled, item.value, item.data)"
         :style="mixin_style(item.style, item.value, item.data)"
         @change="change">
@@ -43,6 +45,7 @@ export default {
             this.$set(this.item, 'value', this.inactiveValue)
         } 
         this.item.$data[this.item.prop] = this.item.value
+        this.mixin_config('switch') 
     }
 }
 </script>

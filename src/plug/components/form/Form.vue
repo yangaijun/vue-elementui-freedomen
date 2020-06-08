@@ -1,9 +1,9 @@
 <template>
     <el-form 
-        :label-width="config && config.labelWidth || '120px'" 
-        :inline="config && config.inline"
-        :size="config && config.size"
-        :label-position="config && config.labelPosition"
+        :label-width="tempConfig && tempConfig.labelWidth || '120px'" 
+        :inline="tempConfig && tempConfig.inline"
+        :size="tempConfig && tempConfig.size"
+        :label-position="tempConfig && tempConfig.labelPosition"
         class="fd_form">
         <fd-region 
             :columns="tempColumns"
@@ -17,9 +17,10 @@
 import util from '../../utils/util.js';
 import FdRegion from '../../core/region';
 import rule from '../../utils/rule.js';
-
+import merge from '../../mixins/merge'
 export default {
     name: 'FdForm',
+    mixins: [merge],
     props: {
         columns: {
             type: Array,
@@ -51,7 +52,8 @@ export default {
         return {
             tempColumns: [],
             tempData: {},
-            rules: {}
+            rules: {},
+            tempConfig: {}
         }
     },
     methods: {
@@ -215,6 +217,11 @@ export default {
         this.rules = rules  
         this.tempColumns = this.resetColumns(columns)
         this.tempData = this.data
+
+        let config = this.mergeConfig('form', this.config) 
+        if (config) {
+            this.tempConfig = config
+        }
     }
 }
 </script> 
