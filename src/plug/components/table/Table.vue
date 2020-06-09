@@ -74,8 +74,7 @@ export default {
     created() {
         let config = this.mergeConfig('table', this.config) 
         if (config) {
-            this.tempConfig = config
-            console.log(this.tempConfig)
+            this.tempConfig = config 
         }
     }
 }

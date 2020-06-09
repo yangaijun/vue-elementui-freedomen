@@ -27,7 +27,7 @@ Freedomen.rules({
 }) 
 Freedomen.configs({
   upload: {
-    action: 'http://www.jasobim.com:8085/api/files/uploadFiles'
+    action: 'http://localhost:8090/fdapi/Tab/importFile'
   },
   form: {
     labelWidth: '80px'

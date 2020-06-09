@@ -14,9 +14,9 @@
     </el-form>
 </template>
 <script>
-import util from '../../utils/util.js';
-import FdRegion from '../../core/region';
-import rule from '../../utils/rule.js';
+import util from '../../utils/util.js'
+import FdRegion from '../../core/region'
+import rule from '../../utils/rule.js'
 import merge from '../../mixins/merge'
 export default {
     name: 'FdForm',

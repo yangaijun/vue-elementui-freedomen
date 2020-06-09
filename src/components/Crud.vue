@@ -1,9 +1,17 @@
 <template>
     <fd-vuex>  
         <fd-form
-        :columns="[  
-            {type: 'upload',  prop: 'ss', label: 'gg'} 
-        ]">
+        @submit="event"
+            :columns="[  
+                {type: 'upload-pcard',  prop: 'ss', label: 'gg'},
+                {type: 'upload-pcard',  prop: 'ss3', label: 'gg',  value: ['db_detail.jpg'], filter: ({value}) => `https://demo-mall-1256372626.cos.ap-chengdu.myqcloud.com/${value}`, config: {fileSizeRange: new Array(10, 2048), fileTypes: 'jpg, md', onSuccess(response) {
+                    return response
+                }}} ,
+                {type: 'upload-picture',  prop: 'ss4', label: 'gg',rule: 'must', tip: '上传点图片'} ,
+                {type: 'upload-file',  prop: 'ss5', label: 'gg'},
+                {type: 'button-primary', value: '提交', prop: '$submit'}
+            ]"
+        >
 
         </fd-form>
         <el-button @click="open">打开 </el-button>
