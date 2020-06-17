@@ -25,6 +25,8 @@ import FdTag from './tag'
 import FdCheckbox from './checkbox'
 import FdTags from './tags'
 import FdRender from './render'
+import FdBr from './br'
+import FdHr from './hr'
 
 import exComponents from '../config/components'
 const customMap = {}
@@ -56,7 +58,9 @@ export default {
         FdTag,
         FdCheckbox,
         FdTags,
-        FdRender 
+        FdRender,
+        FdBr,
+        FdHr 
     },
     computed: {
         component() {  

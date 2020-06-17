@@ -3,9 +3,10 @@
     <el-autocomplete
         v-if="mixin_type(item) == 'input-remote'"
         v-model="item.value"
-        :fetch-suggestions="options"
+        :fetch-suggestions="options" 
         placeholder="请输入内容"
         @select="change"
+        @change="change"
         :style="[defalutStyles[item.type], mixin_style(item.style, item.value, item.$data)]"
         :prefix-icon="icon(item.prefixIcon)"
         :suffix-icon="icon(item.suffixIcon)" 
@@ -30,16 +31,16 @@
         :suffix-icon="icon(item.suffixIcon)" 
     >
         <fd-region 
-            v-if="item.soltPrepend"
+            v-if="item.slotPrepend"
             slot="prepend"
-            :columns="Array.isArray(item.soltPrepend)?item.soltPrepend:[item.soltPrepend]"
+            :columns="Array.isArray(item.slotPrepend)?item.slotPrepend:[item.slotPrepend]"
             :data="item.$data"
             @event="event"
         />
         <fd-region 
-            v-if="item.soltAppend"
+            v-if="item.slotAppend"
             slot="append"
-            :columns="Array.isArray(item.soltAppend)?item.soltAppend:[item.soltAppend]"
+            :columns="Array.isArray(item.slotAppend)?item.slotAppend:[item.slotAppend]"
             :data="item.$data"
             @event="event"
         />

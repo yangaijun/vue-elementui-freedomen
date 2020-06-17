@@ -9,39 +9,33 @@ const rules = {
                 return value.length !== 0
             else if (util.isPlainObject(value)) 
                 return Object.keys(value).length !== 0
-                
             return !!value
         }
     },
-    //empty
+    //可以为空
     empty: {
         label: '',
         regular: ({value}) => {
             if (value instanceof Array)
                 return value.length === 0
+            else if (util.isPlainObject(value)) 
+                return Object.keys(value).length === 0
             return !value
         }
     },
     //cell phone number
-    cellphone: { label: '请正确输入手机号码', regular: /^1\d{1}[0-9]\d{4,8}$/ },
-    //telphone number
-    telphone: { label: '请正确输入电话号码', regular: /^(0\\d{2}-\\d{8}(-\\d{1,4})?)|(0\\d{3}-\\d{7,8}(-\\d{1,4})?)$/ },
-    //positive integer
-    number: { label: '请输入数字', regular: /^[0-9]*$/ },
-    //float
-    float: { label: '两位小数', regular: /^[0-9]+(.[0-9]{2})?$/ },
-    //email
-    email: { label: '请正确输入email', regular: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/ },
-    //age
-    age: { label: '请正确输入年龄', regular: /^(?:[1-9][0-9]?|1[01][0-9]|120)$/ },
-    //name
-    name: { label: '请正确输入姓名', regular: /^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/ },
-    //url
-    url: { label: '请正确输入链接', regular: /^((ht|f)tps?):\/\/([\w\-]+(\.[\w\-]+)*\/)*[\w\-]+(\.[\w\-]+)*\/?(\?([\w\-\.,@?^=%&:\/~\+#]*)+)?/ },
-    //idcard
+    phone: { label: '请正确输入手机号码', regular: /^1\d{1}[0-9]\d{4,8}$/ },
+    email: { label: '请正确输入email', regular: new RegExp("^\\w+((-\\w+)|(\\.\\w+))*\\@[A-Za-z0-9]+((\\.|-)[A-Za-z0-9]+)*\\.[A-Za-z0-9]+$") }, //ok
+    url: { label: '请正确输入链接', regular: /^((ht|f)tps?):\/\/([\w\-]+(\.[\w\-]+)*\/)*[\w\-]+(\.[\w\-]+)*\/?(\?([\w\-\.,@?^=%&:\/~\+#]*)+)?/ },  
+    number: { label: '请输入数值', regular: new RegExp("^([+-]?)\\d*\\.?\\d+$")}, 
+    int: {label: '请输入整数', regular: new RegExp("^([+]?)\\d*\\.?\\d+$")},
+    intp: {label: '请输入正整数', regular: new RegExp("^([+]?)\\d*$") },
+    intn: {label: '请输入负整数', regular: new RegExp("^-[1-9]\\d*|0$") },
+    zipcode: {label: '请正确输入6位邮编', regular: /^\\d{6}$/}, 
+    ip4:{label: '请正确输入IP', regular: /^(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)$/},
+    age: { label: '请正确输入年龄', regular: /^(?:[1-9][0-9]?|1[01][0-9]|120)$/ }, 
     idcard: { label: '请正确身份证号码', regular: /^\d{8,18}|[0-9x]{8,18}|[0-9X]{8,18}?$/ },
-    //account
-    account: { label: '仅允许字母开头，字母数字下划线组合5-16长度', regular: /^[a-zA-Z][a-zA-Z0-9_]{4,15}$/ },
+    username: { label: '仅允许字母开头，字母数字下划线组合5-16长度', regular: /^[a-zA-Z][a-zA-Z0-9_]{4,15}$/ }
 }
 function validate(value, rule, data) {
     if (!rule)
@@ -66,7 +60,6 @@ function validate(value, rule, data) {
     let message = null
     for (let r of rule) {
         if (rules[r] !== void 0) {
-            
             if (typeof rules[r].regular === 'function') {
                 message = rules[r].regular({value: value, data: data, store: store}) ? null : rules[r].label
             } else if (rules[r].regular instanceof RegExp) {

@@ -20,15 +20,6 @@
   }
   ```
 
-* table 多级表头
-
-  ```js
-  //column 加入children属性
-  columns: [
-      {label: '配送信息', children: [{label: '姓名', prop: 'name'}, {label: '地址', children: [...]}]}
-  ]
-  ```
-
 * input 添加自定义样式
 
   ```js
@@ -76,7 +67,7 @@
           config: {
               tip: '提示信息',
               fileSizeRange: [10, 1024], //可以 [1024], 1024, [1,1024]格式。单个默认上传最大KB, 长度为2的数组即是文件大小区间限制
-              fileTypes: "md,jpg", //可以数据或字符串，上传的文件后缀是其中才可以上传
+              fileTypes: "md,jpg", //可以数组或字符串，上传的文件后缀是其中才可以上传
               action: 'http:...',//文件上传地址
               onSuccess: function (response) {// 如果返回的结果不是数组或字符串，可以通过此处理返回数组或字符串,如['/apple.jpg', 'orange.png'] 或 'orange.png' 或[{url: 'orange.png', id: 1024, ...}], 返回对应的value的格式
                   return response.data
@@ -89,7 +80,8 @@
   ]
   ```
 
-  
+
+* switch 默认开关值改为  true / false
 
 ### v1.0.5 
 

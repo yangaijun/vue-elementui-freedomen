@@ -3,11 +3,12 @@
         <el-radio-group
             v-if="mixin_type(item) === 'radios-button'"
             v-model="item.value"
+            :size="item.config&&item.config.size"
             @change="change">
             <el-radio-button
                 v-for="option in options"
                 :key="option.value"
-                :label="option.value"
+                :label="option.value" 
                 :style="mixin_style(item.style, option.value, item.data)"
                 :disabled="mixin_disabled(item.disabled, option.value, item.$data)">
                 {{option.label}}
@@ -16,11 +17,13 @@
         <el-radio-group
             v-else
             v-model="item.value"
+            :size="item.config&&item.config.size"
             @change="change">
             <el-radio
                 v-for="option in options"
                 :key="option.value"
                 :label="option.value"
+                :border="item.config&&item.config.border"
                 :style="mixin_style(item.style, option.value, item.data)"
                 :disabled="mixin_disabled(item.disabled, option.value, item.$data)">
                     {{option.label}}
@@ -70,8 +73,7 @@ export default {
         } else {
             this.item.value = this.item.value + ''
         }
-        this.item.$data[this.item.prop] = this.item.value
-
+        this.item.$data[this.item.prop] = this.item.value 
         this.resetOptions()
         this.mixin_config('radio') 
     }
