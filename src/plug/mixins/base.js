@@ -33,6 +33,12 @@ export default {
             }
             return style
         },
+        mixin_class(_class, value, data) {
+            if (typeof _class === 'function') {
+                return _class({value: value, data: data, store: store})
+            }
+            return _class
+        },
         mixin_disabled(disabled, value, data) {
             if (typeof disabled === 'function') {
                 return disabled({value: value, data: data, store: store})

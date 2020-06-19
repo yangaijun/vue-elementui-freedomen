@@ -6,6 +6,11 @@ import router from './router'
 import ElementUI from 'element-ui'
 import Hello from './components/HelloWorld.vue'
 import 'element-ui/lib/theme-chalk/index.css'
+import VueVideoPlayer from 'vue-video-player'
+// require videojs style
+import 'video.js/dist/video-js.css'
+Vue.use(VueVideoPlayer)
+
 Vue.use(ElementUI)
 // import 'mavon-editor/dist/css/index.css'
 // import mavonEditor from 'mavon-editor'

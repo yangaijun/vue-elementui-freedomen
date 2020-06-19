@@ -1,6 +1,7 @@
 <template>
     <el-select
         v-model="item.value"
+        :class="mixin_class(item.class, item.value, item.$data)"
         :placeholder="item.placeholder"
         :allow-create="item.config && item.config.allowCreate"
         :clearable="item.config && item.config.clearable"
@@ -25,6 +26,7 @@
     <el-select
         v-model="item.value"
         :placeholder="item.placeholder"
+        :class="mixin_class(item.class, item.value, item.$data)"
         :allow-create="item.config && item.config.allowCreate"
         :filterable="item.config && item.config.filterable"
         :clearable="item.config && item.config.clearable"

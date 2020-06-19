@@ -2,6 +2,7 @@
 <span>
     <el-autocomplete
         v-if="mixin_type(item) == 'input-remote'"
+        :class="mixin_class(item.class, item.value, item.$data)"
         v-model="item.value"
         :fetch-suggestions="options" 
         placeholder="请输入内容"
@@ -11,11 +12,18 @@
         :prefix-icon="icon(item.prefixIcon)"
         :suffix-icon="icon(item.suffixIcon)" 
     >
+        <template v-if="tempItem.scopedSlot" slot-scope="{ item }">
+            <fd-region  
+                :columns="tempColumns(tempItem.scopedSlot)"
+                :data="item" 
+            />
+        </template>
     </el-autocomplete>
     <el-input 
         @change="change" 
         v-else
         :type="inputType(mixin_type(item))" 
+        :class="mixin_class(item.class, item.value, item.$data)"
         v-model="item.value"
         :rows="item.config && item.config.rows"
         :size="item.config && item.config.size" 
@@ -50,13 +58,16 @@
 <script>
 import base from '../../mixins/base.js'
 import store from '../../core/store'
+import util from '../../utils/util'
 import external from '../../config/external.js'
 export default {
     props: ['item'],
     mixins: [base],
     name: 'fdinput',
     data() {
-        return {}
+        return {
+            tempItem: ''
+        }
     },
     methods: {
         inputType(type) {
@@ -80,6 +91,9 @@ export default {
                 value: this.item.value
             })
         },
+        tempColumns(columns) {
+            return util.clone(columns)
+        },
         event(params) {
             this.$emit('event', params)
         },
@@ -94,6 +108,7 @@ export default {
         this.item.$data[this.item.prop] = this.item.value
         this.defalutStyles = external.defaultStyles
         this.mixin_config('input') 
+        this.tempItem = this.item
     }
 }
 </script>

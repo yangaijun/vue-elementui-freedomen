@@ -1,21 +1,30 @@
 <template>
-	<fd-form 
+<div>
+<fd-form 
         :columns="[
-            {type: 'input', prop: 'txt', rule: 'phone', label: 'pho'},
-            {type: 'input', prop: 'txt1', rule: 'number', label: 'nubmer'},
-            {type: 'input', prop: 'txt3', rule: 'intp', label: 'intp'},
-            {type: 'input', prop: 'txt4sss', rule: 'intn', label: 'intn'},
-            {type: 'input', prop: 'txt5va', rule: 'email', label: 'email'},
-
-            {type: 'input', prop: 'txt6 s5', rule: 'username', label: 'dme'},
-            {type: 'input', prop: 'txt32', rule: 'idcard', label: 'idcard'},
-            {type: 'input', prop: 'tx3t', rule: 'ip4', label: 'ipv4'}, 
-            {type: 'button', value: 'submit', prop:'$submit'},
-            {type: 'button', value: 'reset', prop:'$reset'},
+            {type: 'input-remote', prop: 'txt', rule: 'must', label: 'pho', options({query, resolve}) {
+                resolve([{value: 'text3', address: 'ufo'},{value: 'text34432', address: 'ussfdsfafo'},{value: 'texvvvvt3', address: 'uewrewrwefo'}])
+            }, scopedSlot: [
+                {type: 'span', prop: 'value', class: '__text'},
+                {type: 'space',  style: {display: 'inline-block', width: '50%'}, class({data}){
+                    return '___text'
+                }},
+                {type: 'icon', value: 'el-icon-eleme', prop: 'iii'}
+            ]},
+             
 
         ]"
     />
 
+
+    <video-player  class="video-player-box"
+                 ref="videoPlayer"
+                 :options="playerOptions"
+                 :playsinline="true"
+               >
+  </video-player>
+</div>
+	
 </template>
 
 <script> 
@@ -23,13 +32,25 @@ import { codemirror } from 'vue-codemirror'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/theme/base16-dark.css'
 import 'codemirror/mode/javascript/javascript.js' 
+import { videoPlayer } from 'vue-video-player'
 	export default {
         label: '介绍',
         components: {
-            codemirror
+            codemirror,videoPlayer
         },
 		data() {
 			return { 
+                playerOptions: {
+                    // videojs options
+                    muted: true,
+                    language: 'en',
+                    playbackRates: [0.7, 1.0, 1.5, 2.0],
+                    sources: [{
+                        type: "video/mp4",
+                        src: "https://freedomen-1256372626.cos.ap-shanghai.myqcloud.com/video/QQ%E5%BD%95%E5%B1%8F20200619103556.mp4"
+                    }],
+                    poster: "/static/images/author.jpg",
+                },
                 codex: ``,
                 cmOptions: {
                     // codemirror options
@@ -216,5 +237,8 @@ import 'codemirror/mode/javascript/javascript.js'
     .item {  
         margin: 5px;
     }
-    
+    .__text {
+        color: red;
+        width: 100%;
+    }
 </style>

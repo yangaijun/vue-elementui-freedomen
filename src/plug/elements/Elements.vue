@@ -27,6 +27,7 @@ import FdTags from './tags'
 import FdRender from './render'
 import FdBr from './br'
 import FdHr from './hr'
+import FdSpace from './space'
 
 import exComponents from '../config/components'
 const customMap = {}
@@ -60,7 +61,8 @@ export default {
         FdTags,
         FdRender,
         FdBr,
-        FdHr 
+        FdHr,
+        FdSpace 
     },
     computed: {
         component() {  

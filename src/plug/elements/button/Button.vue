@@ -11,6 +11,7 @@
         :plain="item.config && item.config.plain"
         :circle="item.config && item.config.circle"
         :autofocus="item.config && item.config.autofocus"
+        :class="mixin_class(item.class, item.value, item.$data)"
         :native-type="item.config && item.config.nativeType"
     >
         {{mixin_filter(item.filter, item.value, item.$data)}}

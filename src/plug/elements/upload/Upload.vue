@@ -2,6 +2,7 @@
     <el-upload
         :action="item.config && item.config.action"
         :list-type="listType(mixin_type(item))" 
+        :class="mixin_class(item.class, item.value, item.$data)"
         :multiple="item.config && item.config.multiple"
         :data="item.config && item.config.data"
         :headers="item.config && item.config.headers"

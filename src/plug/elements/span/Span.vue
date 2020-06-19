@@ -1,6 +1,6 @@
 <template>
     <span 
-        :class="item.class"
+        :class="mixin_class(item.class, item.value, item.$data)"
         :style="[defalutStyles[item.type], mixin_style(item.style, item.value, item.$data)]"
     >
         {{ mixin_filter(item.filter, item.value, item.$data) }}
@@ -13,13 +13,6 @@ export default {
     props: ['item'],
     mixins: [base],
     name: 'fdspan',
-    data() {
-        return {}
-    },
-    methods: {
-        change() {
-        }
-    },
     created() {
         this.defalutStyles = external.defaultStyles
     }
