@@ -1,3 +1,69 @@
+### v1.0.7
+
+* 添加 flex 布局 fd-div 标签
+
+  ```xml
+  <fd-div row> </fd-div> <!-- flex 行布局 -->
+  <fd-div col> </fd-div> <!-- flex 列布局 -->
+  
+  <fd-div flex="1"></fd-div> <!-- flex = 1 -->
+  <fd-div :flex="2"></fd-div> <!-- flex = 2 -->
+  ```
+
+* 添加换行  br, 线hr ,占位space
+
+  ```js
+  [
+      {type: 'br'}, //换行
+  	{type: 'hr', style, class}, //线
+      {type: 'space', style, class} //占位 div
+  ]
+  ```
+
+* 修复table 事件没有$index
+
+* 修复input的slotPrepend和slotAppend 属性错误
+
+* 添加验证
+
+  ```js
+  /**
+  must: 不能为空
+  empty: 可以为空 'empty,number' 表示可以不填，但是填写了那就得是数值
+  phone: 手机号码
+  email： 邮箱
+  url：链接
+  number： 数值 12,12.5,-12.5,+12.48
+  int： 整数
+  intp: 正整数
+  intn: 负整数
+  zipcode： 邮编
+  age： 年龄
+  idcard： 身份证号码
+  username： 用户名，字母数字下划线组合5-16长度
+  */
+  <fd-form 
+  	:columns="[
+  		{type: 'input', prop: 'testint', rule: 'int'},
+          {type: 'input', prop: 'testnumm', rule: 'empty,number'}
+  	]"
+  />
+  ```
+
+
+* input-remote 添加自定义模版scopedSlot：region columns
+
+  ```js
+  {type: 'input-remote', prop: 'inputRemote', options({resolve}) {
+      resolve({value: '江苏', address: '上海'})
+  }, scopedSlot: [
+      {type: 'span', prop: 'value'},
+      {type: 'span', prop: 'address'}
+  ]}
+  ```
+
+  
+
 ### v1.0.6
 
 * input 添加slotPrepend
