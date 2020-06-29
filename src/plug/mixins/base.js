@@ -46,13 +46,9 @@ export default {
             return disabled
         },
         mixin_event(params) {
-            let pop = true
-            // if (this.item.event) {
-            //     pop = this.item.event({...params, data: this.item.$data}) === void 0 ? true :  false
-            // }
-            if (pop) {
-                this.$emit('event', params)
-            }
+            if (this.item.$params !== void 0)
+                params.$params = this.item.$params
+            this.$emit('event', params)
         },  
         mixin_type(item) { 
             let type = item.type

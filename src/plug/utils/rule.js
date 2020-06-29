@@ -9,18 +9,7 @@ const rules = {
                 return value.length !== 0
             else if (util.isPlainObject(value)) 
                 return Object.keys(value).length !== 0
-            return !!value
-        }
-    },
-    //可以为空
-    empty: {
-        label: '',
-        regular: ({value}) => {
-            if (value instanceof Array)
-                return value.length === 0
-            else if (util.isPlainObject(value)) 
-                return Object.keys(value).length === 0
-            return !value
+            return value !== ''
         }
     },
     //cell phone number
@@ -41,11 +30,10 @@ function validate(value, rule, data) {
     if (!rule)
         return null
 
-    if (rule instanceof Function) {
-        let promise = new Promise((resolve) => {
+    if (typeof rule === 'function') {
+        return new Promise((resolve) => {
             rule({resolve: resolve, value: value, data: data, store: store}) 
         }) 
-        return promise
     } else if (util.isPlainObject(rule)) {
         if (typeof rule.regular === 'function') {
             return rule.regular({value: value, data: data, store: store}) ? null : rule.label

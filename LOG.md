@@ -1,3 +1,24 @@
+### v1.0.9
+
+* 添加事件可传递参数 $params
+
+  ```js
+  <fd-region 
+      :columns="[
+  	    type: 'button', value: 'button', prop: 'button', $params: {name: '传递到事件回调'},
+          {type: 'input', prop: 'input', $params: {id: 1}}
+      ]"
+      @event="(params) => {
+           //params: {$params: {传递的$params}, type: '',...}
+      }"
+  ```
+
+* 修改upload 上传不可以绑定string类型BUG
+
+### v1.0.8 
+
+修改upload tip
+
 ### v1.0.7
 
 * 添加 flex 布局 fd-div 标签

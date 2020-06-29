@@ -27,7 +27,7 @@
                 <el-table-column 
                     :key="index"
                     :sortable='column.sortable' 
-                    :show-overflow-tooltip='(config && config.showTip === false) ? false : true' 
+                    :show-overflow-tooltip='(tempConfig && tempConfig.showTip === false) ? false : true' 
                     :prop="column.prop" 
                     :label="column.label"  
                     v-else-if="Authorized(column)" 

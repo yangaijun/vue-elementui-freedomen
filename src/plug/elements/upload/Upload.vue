@@ -21,7 +21,7 @@
             </div>  
             <i class="el-icon-plus" v-else-if="mixin_type(item) == 'upload-pcard'"></i>
             <el-button  size="small" type="primary" v-else>点击上传</el-button>
-            <div slot="tip" v-if="item.config && item.config.tip" class="el-upload__tip">{{item.tip}}</div> 
+            <div slot="tip" v-if="item.config && item.config.tip" class="el-upload__tip">{{item.config.tip}}</div> 
     </el-upload> 
 </template>
 <script>
@@ -37,6 +37,19 @@ export default {
             fileList: []
         }
     }, 
+    computed: {
+        tempValue () {
+            return this.item.value
+        }
+    },
+    watch: {
+        tempValue(nd, od) {
+            if (!this.innerChange && this.testValueChange(nd, od)) {
+                this.resetFileList(nd)
+            }
+            this.innerChange = false
+        }
+    },
     methods: {
         listType(type) {
             const types = {
@@ -47,7 +60,8 @@ export default {
             return types[type]
         },
         change() { 
-             this.mixin_event({
+            this.innerChange = true
+            this.mixin_event({
                 type: 'change',
                 prop: this.item.prop,
                 value: this.item.value
@@ -130,23 +144,17 @@ export default {
             }) 
             this.change()
         },
-        testValue(nd, od) {
-            if (typeof nd === typeof od) {
-                if (Array.isArray(nd) && nd.length && od.length) {
-                    return nd[0] === od[0] && nd.length === od.length
-                }
-                return true
-            } 
-            return false
+        testValueChange(nd, od) { 
+            return (nd || '').toString() !== (od || '').toString()
         }, 
         getUrl(url) {
             return this.mixin_filter(this.item.filter, url, this.item.$data)
         },
         resetFileList(value) {
             if (typeof value === 'string') {
-                this.item.value = value.split(',') 
+                value = this.item.value = value.split(',') 
             } 
-            if (Array.isArray(value)) {
+            if (Array.isArray(value) && value.length != this.fileList.length) {
                 this.fileList = value.map(el => {
                     if (typeof el === 'string') 
                         return {url: this.getUrl(el)}

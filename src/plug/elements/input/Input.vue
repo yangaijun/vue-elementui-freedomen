@@ -5,7 +5,7 @@
         :class="mixin_class(item.class, item.value, item.$data)"
         v-model="item.value"
         :fetch-suggestions="options" 
-        placeholder="请输入内容"
+        :placeholder="item.placeholder"
         @select="change"
         @change="change"
         :style="[defalutStyles[item.type], mixin_style(item.style, item.value, item.$data)]"
