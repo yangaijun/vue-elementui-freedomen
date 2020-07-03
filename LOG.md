@@ -1,3 +1,34 @@
+### v1.1.0
+
+* upload 添加配置属性是否自动上传autoUpload, 手动上传参数autoUpload: function autoUpload(submit) {}, submit： 提交函数
+
+  ```js
+  {type: 'upload', config: {autoUpload: (uploadSubmit) => {
+      this.uploadSubmit = uploadSubmit
+  }, ...}}
+  methods: {
+  	onSubmit() {
+          this.uploadSubmit()
+      }     
+  }
+  ```
+
+  
+
+* 添加长度验证len
+
+  ```js
+  //长度验证 len, 支持对数组长度验证
+  //len10:25   长度10-25范围
+  //len20   最大20
+  //len10:   最小10
+  //rule: len25   长不超过25整数
+  //rule: "int,len10:" 长度不小于 10 的整数
+  //rule: "int,len10:25" 长度在10~25 的整数
+  ```
+
+  
+
 ### v1.0.9
 
 * 添加事件可传递参数 $params

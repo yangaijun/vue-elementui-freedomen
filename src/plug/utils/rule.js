@@ -11,7 +11,7 @@ const rules = {
                 return Object.keys(value).length !== 0
             return value !== ''
         }
-    },
+    }, 
     //cell phone number
     phone: { label: '请正确输入手机号码', regular: /^1\d{1}[0-9]\d{4,8}$/ },
     email: { label: '请正确输入email', regular: new RegExp("^\\w+((-\\w+)|(\\.\\w+))*\\@[A-Za-z0-9]+((\\.|-)[A-Za-z0-9]+)*\\.[A-Za-z0-9]+$") }, //ok
@@ -47,8 +47,23 @@ function validate(value, rule, data) {
     }
     let message = null
     for (let r of rule) {
-        if (rules[r] !== void 0) {
-            if (typeof rules[r].regular === 'function') {
+        if (typeof r == 'string' && r.indexOf('len') == 0) {
+            let nums = r.substring(3).split(':')
+            let min, max
+            if (nums.length == 1) {
+                max = nums[0]
+            } else {
+                min = nums[0]
+                max = nums[1]
+            }
+            if (min && value.length < min) {
+                message = `长度不能小于${min}`
+            } 
+            if (max && value.length > max) {
+                message = `长度不能超过${max}`
+            }
+        } else if (rules[r] !== void 0) {
+            if (typeof rules[r].regular == 'function') {
                 message = rules[r].regular({value: value, data: data, store: store}) ? null : rules[r].label
             } else if (rules[r].regular instanceof RegExp) {
                 message = rules[r].regular.test(value) ? null : rules[r].label

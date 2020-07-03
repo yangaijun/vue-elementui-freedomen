@@ -1,5 +1,6 @@
 <template> 
     <el-upload
+        :ref="ref"
         :action="item.config && item.config.action"
         :list-type="listType(mixin_type(item))" 
         :class="mixin_class(item.class, item.value, item.$data)"
@@ -13,6 +14,7 @@
         :on-success="onSuccess"
         :file-list="fileList"
         :on-remove="onRemove"
+        :auto-upload="item.config && makeAutoUpload(item.config.autoUpload)"
         :drag="mixin_type(item) == 'upload-file'"
         :before-upload="beforeUpload">  
             <div v-if="mixin_type(item) == 'upload-file'">
@@ -34,12 +36,16 @@ export default {
     data() {
         return {
             imageTypes: [],
-            fileList: []
+            fileList: [] 
         }
     }, 
     computed: {
         tempValue () {
             return this.item.value
+        },
+        ref() {
+            this.uuid = util.getUUID() 
+            return this.uuid
         }
     },
     watch: {
@@ -51,6 +57,16 @@ export default {
         }
     },
     methods: {
+        makeAutoUpload(autoUpload) {
+            if (typeof autoUpload == 'function') {
+                autoUpload(() => {
+                    this.$refs[this.uuid].submit()
+                })
+                return false
+            } else {
+                return true
+            }
+        },
         listType(type) {
             const types = {
                 'upload-pcard':  'picture-card',

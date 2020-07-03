@@ -4,7 +4,7 @@
     <el-button @click="fdata = {rate2: 4,userIcon: ['freedomen.png']}">
         click
     </el-button>
-    <el-button @click="$refs.form.reset()">
+    <el-button @click="uploadSubmit()">
         click
     </el-button>
     <fd-form 
@@ -13,10 +13,17 @@
                 :data="fdata"
                 :columns="[ 
                     {type: 'rate', prop: 'rate2'},
-                    {type: 'input', prop: 'gc', $params: {test: 51}},
+                    {type: 'hr', style: {color: 'red'}},
+                    {type: 'input', prop: 'gc', $params: {test: 51}, rule:'intp,len10:'},
                     {type: 'tag-success', value: '标签1'},
                     {type: 'tag-warning', value: '标签2', filter: ({value}) => 'filter'},
-                    {type: 'upload-pcard', config: {action: 'http://115.159.65.195:8090/fdapi/Tab/importFile'}, prop: 'userIcon', label: '用户图片', rule: 'must', filter: ({data, value}) => {
+                    {type: 'upload-pcard', config: {action: 'http://115.159.65.195:8090/fdapi/Tab/importFile', autoUpload: autoUpload1}, prop: 'userIcon1', label: '用户图片', rule: 'must', filter: ({data, value}) => {
+                        return `https://demo-mall-1256372626.cos.ap-chengdu.myqcloud.com/${value}`
+                    }},
+                    {type: 'upload-pcard', config: {action: 'http://115.159.65.195:8090/fdapi/Tab/importFile', autoUpload: autoUpload2}, prop: 'userIcon2', label: '用户图片', rule: 'must', filter: ({data, value}) => {
+                        return `https://demo-mall-1256372626.cos.ap-chengdu.myqcloud.com/${value}`
+                    }},
+                    {type: 'upload-pcard', config: {action: 'http://115.159.65.195:8090/fdapi/Tab/importFile', autoUpload: autoUpload3}, prop: 'userIcon3', label: '用户图片', rule: 'must', filter: ({data, value}) => {
                         return `https://demo-mall-1256372626.cos.ap-chengdu.myqcloud.com/${value}`
                     }},
                     {type: 'tag-info', value: '标签4'},
@@ -43,11 +50,22 @@ import hljs  from 'highlight.js'
 		methods: {
             event(params) {
                 console.log(params)
+            },
+            autoUpload1(submit) {
+                this.uploadSubmit1 = submit
+            },
+            autoUpload2(submit) {
+                this.uploadSubmit2 = submit
+            },
+            autoUpload3(submit) {
+                this.uploadSubmit3 = submit
+            },
+            uploadSubmit() {
+                this.uploadSubmit1()
+                this.uploadSubmit2()
+                this.uploadSubmit3()
             }
 		},
-		mounted() {  
-            
-        },
         created() {
             marked.setOptions({
                 renderer: new marked.Renderer(),
