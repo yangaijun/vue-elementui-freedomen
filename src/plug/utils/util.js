@@ -13,19 +13,18 @@ function clone(data) {
     } else {
         let model = {} 
         for (let item in data) { 
-
-        if (data[item] instanceof Array) {
-            model[item] = new Array();
-            for (let i = 0; i < data[item].length; i++) {
-                if (isPlainObject(data[item][i])) {
-                model[item].push(clone(data[item][i]));
-                } else {
-                model[item].push(data[item][i])
+            if (data[item] instanceof Array) {
+                model[item] = new Array();
+                for (let i = 0; i < data[item].length; i++) {
+                    if (isPlainObject(data[item][i])) {
+                        model[item].push(clone(data[item][i]));
+                    } else {
+                        model[item].push(data[item][i])
+                    }
                 }
+            } else {
+                model[item] = data[item];
             }
-        } else {
-            model[item] = data[item];
-        }
         }
         return model;
     }

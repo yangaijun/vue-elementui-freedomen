@@ -6,6 +6,7 @@
         :max="max()"
         :step="item.step"
         :style="mixin_style(item.style, item.value, item.data)"
+        :class="mixin_class(item.class, item.value, item.$data)"
         :disabled="mixin_disabled(item.disabled, item.value, item.data)">
     </el-slider>
 </template>

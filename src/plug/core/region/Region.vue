@@ -37,13 +37,23 @@ export default {
     mixins: [base], 
     watch: {
         data: {
-            handler(nd, od) {
+            handler(nd, od) { 
                 if (od) { 
+                    if (this.forceUpdates.length) {
+                        this.forceUpdates.forEach(forceUpdate => {
+                            forceUpdate()
+                        })
+                    }
                     var columns = this.clone(this.columns)
                     this.tempColumns = this.resetColumns(columns, nd)
                 }
             },
             deep: true
+        },
+        columns: {
+            handler(nd, od) { 
+                this.columns = this.tempColumns = this.resetColumns(nd, this.data)
+            }
         }
     },
     computed: {
@@ -51,7 +61,8 @@ export default {
     },
     data() {
         return {
-            tempColumns: []
+            tempColumns: [],
+            forceUpdates: []
         }
     },
     methods: {
@@ -88,7 +99,7 @@ export default {
             }
             return column.$load
         }, 
-        Authorized (column) {
+        Authorized(column) {
             return  external.Authorized({column: column})
         },
         clone(columns) {
@@ -99,10 +110,15 @@ export default {
                 this.$set(column, 'value', (data[column.prop] === void 0 || data[column.prop] === null) ? column.value : data[column.prop])
             else
                 column.value = (data[column.prop] === void 0 || data[column.prop] === null) ? column.value : data[column.prop]
-
+            if (column.type == 'render' && column.forceUpdate === true) {
+                column.forceUpdate = (forceUpdate) => {
+                    this.forceUpdates[this.forceUpdates.length] = forceUpdate
+                } 
+            }
             column.$data = data
         },
         resetColumns(columns = [], data = {}) {
+            this.forceUpdates = []
             for (let i = 0; i < columns.length; i ++) {  
                 if (Array.isArray(columns[i])) {
                     this.resetColumns(columns[i], data)
@@ -113,10 +129,8 @@ export default {
             return columns
         },
         event(params) { 
-            if (params && params.type == 'change') {
-                if (params.prop) {
-                    this.data[params.prop] = params.value 
-                }
+            if (params && params.type == 'change' && params.prop) {
+                this.data[params.prop] = params.value 
             }
             this.$emit('event', {...params, row: util.clone(this.data)})
         },
@@ -134,8 +148,7 @@ export default {
         }
     }, 
     created() {
-        var columns = this.clone(this.columns) 
-        this.tempColumns = this.resetColumns(columns, this.data)
+        this.tempColumns = this.resetColumns(this.clone(this.columns) , this.data)
         this.defalutStyles = external.defaultStyles
     }
 }

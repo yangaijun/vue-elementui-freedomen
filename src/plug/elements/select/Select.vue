@@ -2,6 +2,7 @@
     <el-select
         v-model="item.value"
         :class="mixin_class(item.class, item.value, item.$data)"
+        :style="mixin_style(item.style, item.value, item.data)"
         :placeholder="item.placeholder"
         :allow-create="item.config && item.config.allowCreate"
         :clearable="item.config && item.config.clearable"
@@ -18,8 +19,7 @@
             :key="option.value"
             :label="option.label"
             :value="option.value"
-            :disabled="mixin_disabled(item.disabled, option.value, item.$data)"
-            :style="mixin_style(item.style, option.value, item.data)"
+            :disabled="mixin_disabled(item.disabled, option.value, item.$data)" 
         >
         </el-option>
     </el-select>
@@ -27,6 +27,7 @@
         v-model="item.value"
         :placeholder="item.placeholder"
         :class="mixin_class(item.class, item.value, item.$data)"
+        :style="mixin_style(item.style, item.value, item.data)"
         :allow-create="item.config && item.config.allowCreate"
         :filterable="item.config && item.config.filterable"
         :clearable="item.config && item.config.clearable"
@@ -40,7 +41,6 @@
             :label="option.label"
             :value="option.value"
             :disabled="mixin_disabled(item.disabled, option.value, item.$data)"
-            :style="mixin_style(item.style, option.value, item.data)"
         >
         </el-option>
     </el-select>
@@ -78,7 +78,7 @@ export default {
             else if (this.mixin_type(this.item) == 'select-multiple' && !this.testValue(nd, od)) {
                 this.resetValue(nd)
             }
-        }   
+        } 
     },
     computed: {
         selfValue() {
@@ -132,7 +132,7 @@ export default {
     },
     created() {
         if (this.mixin_type(this.item) === 'select-remote' && typeof this.item.options !== 'function')
-            console.warn('remote type the options must be promise: resolve([{label:,value:}]/{1:2}/"a,b,c")')
+            console.warn('remote type the options must be promise: resolve([{label:,value:}]/{"value":"label"}/"a,b,c")')
 
         if (this.item.value === void 0) {
             this.$set(this.item, 'value', this.mixin_type(this.item) == 'select-multiple' ? [] : '')

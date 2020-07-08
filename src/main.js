@@ -4,9 +4,8 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import ElementUI from 'element-ui'
-import Hello from './components/HelloWorld.vue'
 import 'element-ui/lib/theme-chalk/index.css' 
-import 'highlight.js/styles/github.css'; 
+import Hello from './components/HelloWorld.vue'
  
 
 Vue.use(ElementUI)

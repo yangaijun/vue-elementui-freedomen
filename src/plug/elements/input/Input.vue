@@ -2,12 +2,12 @@
 <span>
     <el-autocomplete
         v-if="mixin_type(item) == 'input-remote'"
-        :class="mixin_class(item.class, item.value, item.$data)"
         v-model="item.value"
         :fetch-suggestions="options" 
         :placeholder="item.placeholder"
         @select="change"
         @change="change"
+        :class="mixin_class(item.class, item.value, item.$data)"
         :style="[defalutStyles[item.type], mixin_style(item.style, item.value, item.$data)]"
         :prefix-icon="icon(item.prefixIcon)"
         :suffix-icon="icon(item.suffixIcon)" 
@@ -23,7 +23,6 @@
         @change="change" 
         v-else
         :type="inputType(mixin_type(item))" 
-        :class="mixin_class(item.class, item.value, item.$data)"
         v-model="item.value"
         :rows="item.config && item.config.rows"
         :size="item.config && item.config.size" 
@@ -33,6 +32,7 @@
         :show-word-limit="!!(item.config && item.config.maxlength)" 
         :disabled="mixin_disabled(item.disabled, item.value, item.$data)"
         :placeholder="item.placeholder" 
+        :class="mixin_class(item.class, item.value, item.$data)"
         :style="[defalutStyles[item.type], mixin_style(item.style, item.value, item.$data)]"
         :clearable="(item.config && item.config.clearable === false) ? false : true"
         :prefix-icon="icon(item.prefixIcon)"

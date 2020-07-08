@@ -1,34 +1,42 @@
 import store from '../../core/store'
-
 const render = {  
     name: 'fdrender', 
     props:  {
         item: Object
     },   
-    render: function (createElement){  
+    methods: {
+        forceUpdate() { 
+            this.$forceUpdate()
+        }
+    },
+    render: function (createElement){     
         let item = this.item
+        if (typeof item.forceUpdate == 'function') {
+            item.forceUpdate(this.forceUpdate)
+        }
+
         let throwEvent = (params) => {  
-            if (this.item.value !== void 0 && this.item.prop) {
+            if (item.value !== void 0 && item.prop) {
                 this.$emit('event', {
-                    prop: this.item.prop,
+                    prop: item.prop,
                     type: params.type,
-                    value: this.item.value,
+                    value: item.value,
                     row: params
                 })
             } else {
                 this.$emit('event', params)
             }
         }
+        
         let _render = item.render({
             data: item.$data, 
             value: item.value,
             store: store,
             createElement
         })
-
         if (Array.isArray(_render)) {
             return createElement('FdRegion', {
-                props: {
+                props: { 
                     data: item.value || item.$data,
                     columns: _render
                 },
@@ -38,7 +46,7 @@ const render = {
                     }
                 }
             })
-        } else {
+        } else {  
             return _render
         } 
     } 

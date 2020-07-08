@@ -10,6 +10,7 @@
             }"
             @change="change"
             :style="mixin_style(item.style, item.value, item.data)"
+            :class="mixin_class(item.class, item.value, item.$data)"
             :placeholder="item.placeholder">
         </el-time-select>
         <el-date-picker
@@ -18,6 +19,7 @@
             type="datetime"
             @change="change"
             :style="mixin_style(item.style, item.value, item.data)"
+            :class="mixin_class(item.class, item.value, item.$data)"
             :placeholder="item.placeholder">
         </el-date-picker>
         <el-date-picker
@@ -26,6 +28,7 @@
             type="date"
             @change="change" 
             :style="mixin_style(item.style, item.value, item.data)"
+            :class="mixin_class(item.class, item.value, item.$data)"
             :placeholder="item.placeholder">
         </el-date-picker>
     </div>

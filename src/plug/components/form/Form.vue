@@ -26,6 +26,12 @@ export default {
             type: Array,
             required: true
         },
+        value: {
+            type: Object,
+            default: function () {
+                return {}
+            }
+        },
         data: {
             type: Object,
             default: function () {
@@ -39,12 +45,12 @@ export default {
     },
     watch: {
         tempData(nd, od) { 
-            if (od) { 
+            if (od) {  
                 this.resetColumns(this.columns, nd)
                 this.ruleQueues = []
             }
         },
-        data (nd, od) { 
+        data (nd, od) {  
             this.tempData = nd
         } 
     },
@@ -150,13 +156,13 @@ export default {
             }
             return !error
         },
-        reset() {
+        reset() { 
             let newObj = {} 
-            for (let key in this.firstData) {
-                newObj[key] = this.firstData[key]
+            for (let key in this.resetData) {
+                newObj[key] = this.resetData[key]
             }
             this.tempData = newObj
-            this.$emit('update:data', this.tempData)
+            this.update(newObj)
             for (let r in this.rules) {
                 this.rules[r].message = ''
             } 
@@ -171,10 +177,8 @@ export default {
                     }
                     return new Promise((resolve, reject) => {
                         this.asyncQueue().then(el => { 
-                            if (el.every(el => !el)) 
-                                resolve(this.tempData)
-                            else 
-                                reject('')
+                            if (el.every(el => !el))  resolve(this.tempData)
+                            else  reject('')
                             this.submitLoading = false
                         }) 
                     }) 
@@ -187,6 +191,9 @@ export default {
         clone(columns) {
             return columns
         }, 
+        update(data) {
+            this.$emit('update:data', data)  
+        },
         event(params) { 
             this.$emit('event', params)
 
@@ -207,17 +214,16 @@ export default {
         }
     },
     mounted() {
-        this.firstData = util.clone(this.data) 
-        this.$emit('update:data', this.firstData)   
+        this.resetData = util.clone(this.tempData) 
+        this.update(util.clone(this.tempData))  
     },
-    created() {   
+    created() {    
         let columns = this.clone(this.columns)
         let rules = {}
         this.resetRules(columns, rules)
         this.rules = rules  
         this.tempColumns = this.resetColumns(columns)
         this.tempData = this.data
-
         let config = this.mergeConfig('form', this.config) 
         if (config) {
             this.tempConfig = config

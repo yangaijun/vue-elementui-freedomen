@@ -2,6 +2,7 @@
     <el-progress 
         :percentage="mixin_filter(item.filter, item.value, item.$data)"
         :style="mixin_style(item.style, item.value, item.data)"
+        :class="mixin_class(item.class, item.value, item.$data)"
         :stroke-width="item.config && item.config.strokeWidth"
         :text-inside="item.config && item.config.textInside"
         :status="item.config && item.config.status"
