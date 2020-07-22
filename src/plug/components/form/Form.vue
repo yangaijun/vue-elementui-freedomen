@@ -26,12 +26,6 @@ export default {
             type: Array,
             required: true
         },
-        value: {
-            type: Object,
-            default: function () {
-                return {}
-            }
-        },
         data: {
             type: Object,
             default: function () {

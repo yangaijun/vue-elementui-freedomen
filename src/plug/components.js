@@ -4,6 +4,7 @@ import FdTable from './components/table'
 import FdVuex from './components/vuex'
 import FdRegion from './core/region'
 import FdDiv from './components/div'
+import FdList from './components/list'
 
 const components = [
     FdForm,
@@ -11,7 +12,8 @@ const components = [
     FdTable,
     FdRegion,
     FdVuex,
-    FdDiv
+    FdDiv,
+    FdList
 ]
 
 export default components

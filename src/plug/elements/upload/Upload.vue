@@ -1,18 +1,19 @@
 <template> 
     <el-upload
-        :ref="ref"
+        :ref="ref" 
         :action="item.config && item.config.action"
         :list-type="listType(mixin_type(item))" 
-        :class="mixin_class(item.class, item.value, item.$data)"
+        :class="[mixin_type(item) == 'upload-avatar' && 'avatar-uploader', mixin_class(item.class, item.value, item.$data)]"
         :multiple="item.config && item.config.multiple"
-        :data="item.config && item.config.data"
-        :headers="item.config && item.config.headers"
-        :name="item.config && item.config.name"
+        :data="getConfig('data')"
+        :headers="getConfig('headers')"
+        :name="getConfig('name')"
         :with-credentials="item.config && item.config.withCredentials"
-        :show-file-list="item.config && item.config.showFileList"
+        :show-file-list="mixin_type(item) == 'upload-avatar' ? false : (item.config && item.config.showFileList)"
         :limit="item.config && item.config.limit"
         :on-success="onSuccess"
         :file-list="fileList"
+        :on-preview="item.config && item.config.onPreview"
         :on-remove="onRemove"
         :auto-upload="item.config && makeAutoUpload(item.config.autoUpload)"
         :drag="mixin_type(item) == 'upload-file'"
@@ -22,7 +23,9 @@
                 <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
             </div>  
             <i class="el-icon-plus" v-else-if="mixin_type(item) == 'upload-pcard'"></i>
-            <el-button  size="small" type="primary" v-else>点击上传</el-button>
+            <i v-else-if="mixin_type(item) == 'upload-avatar' && !imageUrl" class="el-icon-plus avatar-uploader-icon"></i>
+            <img v-if="imageUrl" :src="imageUrl" class="avatar">
+            <el-button  size="small" type="primary" v-else-if="mixin_type(item) == 'upload'">点击上传</el-button>
             <div slot="tip" v-if="item.config && item.config.tip" class="el-upload__tip">{{item.config.tip}}</div> 
     </el-upload> 
 </template>
@@ -36,7 +39,8 @@ export default {
     data() {
         return {
             imageTypes: [],
-            fileList: [] 
+            fileList: [],
+            imageUrl: ''
         }
     }, 
     computed: {
@@ -49,8 +53,10 @@ export default {
         }
     },
     watch: {
-        tempValue(nd, od) {
-            if (!this.innerChange && this.testValueChange(nd, od)) {
+        tempValue(nd, od) { 
+            if (this.mixin_type(this.item) == 'upload-avatar') {
+                this.setUploadAvatarValue()
+            } else if (!this.innerChange && this.testValueChange(nd, od)) {
                 this.resetFileList(nd)
             }
             this.innerChange = false
@@ -71,7 +77,7 @@ export default {
             const types = {
                 'upload-pcard':  'picture-card',
                 'upload-picture':  'picture',
-                'upload-header': 'picture-card' 
+                'upload-avatar': undefined
             }  
             return types[type]
         },
@@ -128,13 +134,24 @@ export default {
                         console.error('typeof upload config "fileTypes": string or array')
                     }
                 }
+                if (this.item.config.beforeUpload) {
+                    return this.item.config.beforeUpload({file: file, data: this.item.$data, value: this.item.value})
+                }
             } 
             return true
         },
         onSuccess(response, file, fileList) { 
             const fn = (data) => { 
                 if (data) {
-                    if (Array.isArray(data))
+                    if (this.mixin_type(this.item) == 'upload-avatar') {
+                        if (typeof data === 'string') {
+                            this.imageUrl = this.getUrl(data)
+                        } else {
+                            this.imageUrl = this.getUrl(data.url)
+                        } 
+                        this.item.value = data
+                    }
+                    else if (Array.isArray(data))
                         this.item.value = this.item.value.concat(data)
                     else {
                         this.item.value.push(data) 
@@ -142,13 +159,15 @@ export default {
                     this.change()
                 }
             }
-            if (this.item.config.onSuccess && typeof this.item.config.onSuccess === 'function') {
+            if (this.item.config && this.item.config.onSuccess && typeof this.item.config.onSuccess === 'function') {
                 fn(this.item.config.onSuccess(response)) 
             } else {
                 fn(response)
             }
         },
         onRemove(file) {  
+            if (!this.item.value)
+                return
             this.item.value = this.item.value.filter(el => {
                 if (file.url) {
                     if (el.url) 
@@ -160,8 +179,8 @@ export default {
             }) 
             this.change()
         },
-        testValueChange(nd, od) { 
-            return (nd || '').toString() !== (od || '').toString()
+        testValueChange(nd = '', od = '') { 
+            return nd.toString() !== od.toString()
         }, 
         getUrl(url) {
             return this.mixin_filter(this.item.filter, url, this.item.$data)
@@ -177,16 +196,61 @@ export default {
                     else 
                         return {...el, url: this.getUrl(el.url)}
                 }) 
-            }  
+            }    
+        },
+        getConfig(key) { 
+            if (this.item.config) {
+                if (typeof this.item.config[key] === 'function') { 
+                    return this.item.config[key]({data: this.item.$data, value: this.item.value})
+                }   
+                else return this.item.config[key]
+            }
+        },
+        setUploadAvatarValue() {
+            if (this.item.value === void 0) {
+                this.$set(this.item, 'value', '')
+            } else if (typeof this.item.value === 'string' && this.item.value) {
+                this.imageUrl = this.getUrl(this.item.value)
+            } else if (this.item.value.url) {
+                this.imageUrl = this.getUrl(this.item.value.url)
+            }
         }
     },
     created() {
-        if (this.item.value === void 0) {
+        if (this.mixin_type(this.item) == 'upload-avatar') {
+            this.setUploadAvatarValue()
+        } else if (this.item.value === void 0) {
             this.$set(this.item, 'value', [])
         }
+
         this.item.$data[this.item.prop] = this.item.value 
         this.resetFileList(this.item.value)
         this.mixin_config('upload')   
     }
 }
-</script>
+</script> 
+<style>
+  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+  }
+</style>

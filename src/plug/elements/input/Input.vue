@@ -33,7 +33,7 @@
         :disabled="mixin_disabled(item.disabled, item.value, item.$data)"
         :placeholder="item.placeholder" 
         :class="mixin_class(item.class, item.value, item.$data)"
-        :style="[defalutStyles[item.type], mixin_style(item.style, item.value, item.$data)]"
+        :style="[defalutStyles[mixin_type(item)], mixin_style(item.style, item.value, item.$data)]"
         :clearable="(item.config && item.config.clearable === false) ? false : true"
         :prefix-icon="icon(item.prefixIcon)"
         :suffix-icon="icon(item.suffixIcon)" 

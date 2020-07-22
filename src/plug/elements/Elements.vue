@@ -17,6 +17,7 @@ import FdSpan from './span'
 import FdDate from './date'
 import FdDropdown from './dropdown'
 import FdImg from './img'
+import FdImgs from './imgs'
 import FdIcon from './icon'
 import FdUpload from './upload'
 import FdCascader from './cascader'
@@ -24,6 +25,7 @@ import FdTree from './tree'
 import FdTag from './tag'
 import FdCheckbox from './checkbox'
 import FdTags from './tags'
+import FdText from './text'
 import FdRender from './render'
 import FdBr from './br'
 import FdHr from './hr'
@@ -52,6 +54,7 @@ export default {
         FdDate,
         FdDropdown,
         FdImg,
+        FdImgs,
         FdIcon,
         FdUpload,
         FdCascader,
@@ -59,6 +62,7 @@ export default {
         FdTag,
         FdCheckbox,
         FdTags,
+        FdText,
         FdRender,
         FdBr,
         FdHr,

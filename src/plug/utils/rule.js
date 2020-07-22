@@ -62,6 +62,10 @@ function validate(value, rule, data) {
             if (max && value.length > max) {
                 message = `长度不能超过${max}`
             }
+        } else if (typeof r == 'string' && r == 'empty') {
+            if (value === '' || value === void 0) {
+                return null
+            }
         } else if (rules[r] !== void 0) {
             if (typeof rules[r].regular == 'function') {
                 message = rules[r].regular({value: value, data: data, store: store}) ? null : rules[r].label

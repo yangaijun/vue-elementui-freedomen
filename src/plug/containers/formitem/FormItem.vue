@@ -78,8 +78,16 @@ export default {
         },
         hasRule() { 
             for (let column of this.columns) {
-                if (column.rule !== void 0)
-                    return true
+                if (column.rule !== void 0) {
+                    if (
+                        (typeof column.rule === 'string' || Array.isArray(column.rule))
+                        && column.rule.includes('empty')
+                    ) {
+                        return false
+                    } else {
+                        return true
+                    }
+                }
             }
             return false
         } 

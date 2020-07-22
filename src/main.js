@@ -13,7 +13,7 @@ Vue.use(ElementUI)
 // import mavonEditor from 'mavon-editor'
 // Vue.use(mavonEditor)
 import Freedomen from './plug'
- 
+  
 Freedomen.privileges.Authorized = function({column}) {
   // if (column.prop == 'edit')
   //   return false
