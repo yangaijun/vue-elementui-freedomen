@@ -74,7 +74,12 @@ export default {
                     newItem.push({...column, type: 'formitem', inline: inline, $loadRelation: column})  
                     newColumns.push(newItem) 
                 } else if (Array.isArray(column)) {
-                    if (column.length && column[column.length - 1].rule !== void 0) {
+                    if (
+                        column.length && column[column.length - 1].rule !== void 0
+                        && !column.find(e => {
+                            return e.class == 'el-form-item__error'
+                        })
+                    ) {
                         column.splice(
                             column.length - 1, 0,  
                             {type: 'span', class: 'el-form-item__error', filter: () => this.rules[column[column.length - 1].prop].message}
@@ -218,6 +223,7 @@ export default {
         this.rules = rules  
         this.tempColumns = this.resetColumns(columns)
         this.tempData = this.data
+        
         let config = this.mergeConfig('form', this.config) 
         if (config) {
             this.tempConfig = config

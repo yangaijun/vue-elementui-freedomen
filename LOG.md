@@ -1,3 +1,76 @@
+### v1.1.3
+
+* input 添加change类型配置, 发生change 事件的触发条件default: change
+
+  ```js
+  {type: 'input', prop: 'i', config: {changeEventType: 'input/focus/blur/change(defalut)/clear'}}
+  ```
+
+
+* date 类添加year,month,dates 类，并完善config
+
+  ```js
+  type添加:date-year,date-month,date-dates
+  config添加: {valueFormat,disabled,clearable,format,size}
+  ```
+
+* select 当options的每个属性的disabled都为真，整体select的disabled属性为真
+
+* 添加新元素 divider 分割线
+
+  ```js
+  {type: 'divider', prop: 'divider', value: 'divider', config: {direction: 'horizontal / vertical', contentPosition: 'left / right / center'}}
+  ```
+
+### v1.1.2
+
+* 添加组件fd-list,   region 列表
+
+  ```js
+  <fd-list :columns="[]" :data="[]" @event="event" />
+  //region list
+  ```
+
+* upload 添加新type   upload-avatar   上传头像，一张图片,  添加onPreview 
+
+  ```js
+  {type: 'upload-avatar'}
+  {type: 'upload-pcard', config: {..., onPreview(){}}}
+  ```
+
+* 添加新元素 text  用法，参数同 span  但config 中可以切换tag
+
+  ```js
+  {type: 'text', prop: 'text', config: {tag: 'p'}}
+  //tag default span, 可以切换为 p, div, ....
+  ```
+
+* 添加新元素imgs,   多张图片
+
+  ```js
+  {type: 'imgs', prop: 'imgs', value: []} //其它参数同img, 只是value 是数组或 , 分割的字符串
+  ```
+
+  
+
+### v1.1.1
+
+* 添加核心组件region columns改变可以更新
+
+* render 添加 forceUpdate 来强制更新 render
+
+  ```js
+  {type: 'render', forceUpdate: true}
+  //可以强制更新render
+  /**
+     render({createElement, data, value}) {
+     	    你希望可以通过  data  的其它属性改变来更新此render //forceUpdate: true
+     }
+  */
+  ```
+
+  
+
 ### v1.1.0
 
 * upload 添加配置属性是否自动上传autoUpload, 手动上传参数autoUpload: function autoUpload(submit) {}, submit： 提交函数

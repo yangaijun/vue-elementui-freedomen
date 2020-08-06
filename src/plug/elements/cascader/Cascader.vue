@@ -1,7 +1,7 @@
 <template>
     <el-cascader
         :placeholder="item.placeholder"
-        :style="mixin_style(item.style, item.value, item.data)"
+        :style="mixin_style(item.style, item.value, item.$data)"
         :class="mixin_class(item.class, item.value, item.$data)"
         :options="options"
         v-model="item.value"

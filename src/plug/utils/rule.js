@@ -1,7 +1,6 @@
 import util from './util.js'
 import store from '../core/store'
 const rules = {
-    // not empty
     must: {
         label: '不能为空',
         regular: ({value}) => {
@@ -12,7 +11,6 @@ const rules = {
             return value !== ''
         }
     }, 
-    //cell phone number
     phone: { label: '请正确输入手机号码', regular: /^1\d{1}[0-9]\d{4,8}$/ },
     email: { label: '请正确输入email', regular: new RegExp("^\\w+((-\\w+)|(\\.\\w+))*\\@[A-Za-z0-9]+((\\.|-)[A-Za-z0-9]+)*\\.[A-Za-z0-9]+$") }, //ok
     url: { label: '请正确输入链接', regular: /^((ht|f)tps?):\/\/([\w\-]+(\.[\w\-]+)*\/)*[\w\-]+(\.[\w\-]+)*\/?(\?([\w\-\.,@?^=%&:\/~\+#]*)+)?/ },  

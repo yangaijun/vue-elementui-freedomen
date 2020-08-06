@@ -11,13 +11,11 @@ export default {
         } 
         if (this.row) {
             style = {
-                display: '-webkit-flex',
                 display: 'flex',
                 flexDirection: 'row'
             }
         } else if (this.col) {
             style = {
-                display: '-webkit-flex',
                 display: 'flex',
                 flexDirection: 'column' 
             }

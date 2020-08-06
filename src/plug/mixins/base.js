@@ -16,7 +16,7 @@ export default {
             if (filter === void 0) {
                 return value
             } else if (typeof filter === 'function') {
-                return filter({value: value, data: data, store: store})
+                return  filter({value: value, data: data, store: store})
             } else if (util.isPlainObject(filter)) {
                 return filter[value] || filter.$default
             } else if (typeof filter === 'string') { 
@@ -24,7 +24,7 @@ export default {
                 if (date == 'Invalid Date')
                     return value || ''
                 return util.formatDate.format(date, filter)
-            }
+            } 
             return filter
         },
         mixin_style(style, value, data) {

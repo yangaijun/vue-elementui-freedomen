@@ -4,17 +4,18 @@
 <script>  
 
 import FdButton from './button'
-import FdCheck from './checkboxs';
-import FdCounter from './counter';
-import FdInput from './input';
-import FdProgress from './progress';
-import FdRadios from './radios';
-import FdRate from './rate';
-import FdSelect from './select';
-import FdSlider from './slider';
-import FdSwitch from './switch';
+import FdCheck from './checkboxs'
+import FdCounter from './counter'
+import FdInput from './input'
+import FdProgress from './progress'
+import FdRadios from './radios'
+import FdRate from './rate'
+import FdSelect from './select'
+import FdSlider from './slider'
+import FdSwitch from './switch'
 import FdSpan from './span'
 import FdDate from './date'
+import FdDivider from './divider'
 import FdDropdown from './dropdown'
 import FdImg from './img'
 import FdImgs from './imgs'
@@ -52,6 +53,7 @@ export default {
         FdSwitch, 
         FdSpan, 
         FdDate,
+        FdDivider,
         FdDropdown,
         FdImg,
         FdImgs,
@@ -89,6 +91,6 @@ export default {
     },
     created() {
         this.initMap()
-    }, 
+    }
 }
 </script>

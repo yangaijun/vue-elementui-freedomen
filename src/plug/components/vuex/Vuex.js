@@ -6,8 +6,7 @@ export default {
         return createElement('div', null, this.$slots.default);
     },
     props: {
-        store: Object,
-        save: Boolean
+        store: Object 
     },
     watch: {
         store: {
@@ -37,10 +36,5 @@ export default {
     },
     created() {
         this.store && this.insertStore(this.store)
-    },
-    destroyed() {
-        // if (!this.save && this.store) {
-        //     this.clearStore(this.store)
-        // }
     }
 } 

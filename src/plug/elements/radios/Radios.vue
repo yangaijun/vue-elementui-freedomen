@@ -9,7 +9,7 @@
                 v-for="option in options"
                 :key="option.value"
                 :label="option.value" 
-                :style="mixin_style(item.style, option.value, item.data)"
+                :style="mixin_style(item.style, option.value, item.$data)"
                 :disabled="mixin_disabled(item.disabled, option.value, item.$data)">
                 {{option.label}}
             </el-radio-button>
@@ -24,13 +24,12 @@
                 :key="option.value"
                 :label="option.value"
                 :border="item.config&&item.config.border"
-                :style="mixin_style(item.style, option.value, item.data)"
+                :style="mixin_style(item.style, option.value, item.$data)"
                 :disabled="mixin_disabled(item.disabled, option.value, item.$data)">
                     {{option.label}}
             </el-radio>
         </el-radio-group>
-    </div>
-    
+    </div> 
 </template>
 <script>
 import base from '../../mixins/base.js';

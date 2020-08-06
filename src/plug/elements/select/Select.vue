@@ -1,13 +1,14 @@
 <template>
     <el-select
+        v-if="mixin_type(item) === 'select-remote'"
         v-model="item.value"
         :class="mixin_class(item.class, item.value, item.$data)"
-        :style="mixin_style(item.style, item.value, item.data)"
+        :style="[defalutStyles[mixin_type(item)], mixin_style(item.style, item.value, item.$data)]"
         :placeholder="item.placeholder"
         :allow-create="item.config && item.config.allowCreate"
         :clearable="item.config && item.config.clearable"
-        v-if="mixin_type(item) === 'select-remote'"
         :loading="loading"
+        :disabled="disabled()"
         filterable
         reserve-keyword
         remote
@@ -24,15 +25,16 @@
         </el-option>
     </el-select>
     <el-select
+        v-else
         v-model="item.value"
         :placeholder="item.placeholder"
         :class="mixin_class(item.class, item.value, item.$data)"
-        :style="mixin_style(item.style, item.value, item.data)"
+        :style="[defalutStyles[mixin_type(item)], mixin_style(item.style, item.value, item.$data)]"
         :allow-create="item.config && item.config.allowCreate"
         :filterable="item.config && item.config.filterable"
         :clearable="item.config && item.config.clearable"
-        v-else
         :multiple="mixin_type(item) === 'select-multiple'"
+        :disabled="disabled()"
         @change="change" 
     >
         <el-option
@@ -47,6 +49,7 @@
 </template>
 <script>
 import base from '../../mixins/base.js';
+import external from '../../config/external.js'
 export default {
     props: ['item'],
     mixins: [base],
@@ -71,7 +74,7 @@ export default {
                 }
             },
             deep: true
-        },
+        }, 
         selfValue(nd, od) {
             if (typeof nd === 'number') 
                 this.item.value = nd + ''
@@ -92,6 +95,16 @@ export default {
                 prop: this.item.prop,
                 value: this.item.value
             })
+        },
+        disabled() {
+            let item = this.item
+            if (item.disabled === void 0)
+                return  
+            for (let option of  this.mixin_reset_options(this.options)) {
+                if (!this.mixin_disabled(item.disabled, option.value, item.$data))
+                    return
+            }
+            return true
         },
         remoteMethod(query) {
             if (query !== '')
@@ -143,6 +156,7 @@ export default {
                 this.item.value += ''
             }
         }
+        this.defalutStyles = external.defaultStyles
         this.item.$data[this.item.prop] = this.item.value 
         if (this.mixin_type(this.item) !== 'select-remote')
             this.resetOptions()

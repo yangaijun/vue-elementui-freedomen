@@ -3,7 +3,6 @@
         :class="mixin_class(item.class, item.value, item.$data)"
         :style="[defalutStyles[item.type], mixin_style(item.style, item.value, item.$data)]" 
     >
-
     </div>
 </template>
 <script> 

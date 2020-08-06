@@ -6,7 +6,7 @@
         default-expand-all
         highlight-current
         @check-change="change"
-        :style="mixin_style(item.style, item.value, item.data)"
+        :style="mixin_style(item.style, item.value, item.$data)"
         :class="mixin_class(item.class, item.value, item.$data)"
         :show-checkbox="item.type === 'tree-select'">
     </el-tree>

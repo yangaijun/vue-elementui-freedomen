@@ -2,10 +2,10 @@
     <el-input-number
         v-model="item.value"
         @change="change" 
-        :disabled="mixin_disabled(item.disabled, item.value, item.$data)"
         :controls-position="item.config && item.config.controlsPosition"
-        :style="mixin_style(item.style, item.value, item.data)"
+        :style="mixin_style(item.style, item.value, item.$data)"
         :class="mixin_class(item.class, item.value, item.$data)"
+        :disabled="mixin_disabled(item.disabled, item.value, item.$data)"
         :min="min()"
         :max="max()"
         :step="step()"

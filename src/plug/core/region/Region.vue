@@ -107,14 +107,14 @@ export default {
         },
         setColumn(column, data) {
             if (column.value === void 0) 
-                this.$set(column, 'value', (data[column.prop] === void 0 || data[column.prop] === null) ? column.value : data[column.prop])
+                this.$set(column, 'value', data[column.prop] === void 0 ? column.value : data[column.prop])
             else
-                column.value = (data[column.prop] === void 0 || data[column.prop] === null) ? column.value : data[column.prop]
-            if (column.type == 'render' && column.forceUpdate === true) {
+                column.value = data[column.prop] === void 0 ? column.value : data[column.prop]
+
+            if (column.type == 'render' && column.forceUpdate === true)
                 column.forceUpdate = (forceUpdate) => {
                     this.forceUpdates[this.forceUpdates.length] = forceUpdate
                 } 
-            }
             column.$data = data
         },
         resetColumns(columns = [], data = {}) {
@@ -149,7 +149,6 @@ export default {
     }, 
     created() {
         this.tempColumns = this.resetColumns(this.clone(this.columns) , this.data)
-        this.defalutStyles = external.defaultStyles
     }
 }
 </script> 

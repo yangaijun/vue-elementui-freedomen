@@ -1,7 +1,7 @@
 <template>
     <el-image 
-        :class="item.class"
         :preview-src-list="item.previewSrcList"
+        :class="mixin_class(item.class, item.value, item.$data)"
         :style="[defalutStyles[item.type], mixin_style(item.style, item.value, item.$data)]"
         :src="mixin_filter(item.filter, item.value, item.$data) || item.value"
     />

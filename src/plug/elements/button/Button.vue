@@ -7,7 +7,7 @@
         :size="item.config && item.config.size"
         :round="item.config && item.config.round"
         :disabled="mixin_disabled(item.disabled, item.value, item.$data)"
-        :style="mixin_style(item.style, item.value, item.data)"
+        :style="mixin_style(item.style, item.value, item.$data)"
         :class="mixin_class(item.class, item.value, item.$data)"
         :plain="item.config && item.config.plain"
         :circle="item.config && item.config.circle"

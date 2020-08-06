@@ -20,7 +20,6 @@
         </template>
     </el-autocomplete>
     <el-input 
-        @change="change" 
         v-else
         :type="inputType(mixin_type(item))" 
         v-model="item.value"
@@ -37,6 +36,11 @@
         :clearable="(item.config && item.config.clearable === false) ? false : true"
         :prefix-icon="icon(item.prefixIcon)"
         :suffix-icon="icon(item.suffixIcon)" 
+        @change="ichange('change')" 
+        @focus="ichange('focus')"
+        @blur="ichange('blur')"
+        @input="ichange('input')"
+        @clear="ichange('clear')"
     >
         <fd-region 
             v-if="item.slotPrepend"
@@ -82,6 +86,15 @@ export default {
                 return icon({value: this.item.value, data: this.item.$data, store: store})
             } else {
                 return icon
+            }
+        },
+        ichange(type) {
+            if (this.item.config && this.item.config.changeEventType) {
+                if (this.item.config.changeEventType === type) {
+                    this.change()
+                }
+            } else if (type === 'change') {
+                this.change()
             }
         },
         change() {

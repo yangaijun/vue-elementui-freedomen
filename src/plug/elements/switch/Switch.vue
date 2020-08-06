@@ -7,8 +7,8 @@
         :inactive-value="item.config && item.config.inactiveValue"
         :active-text="item.config && item.config.activeText"
         :inactive-text="item.config && item.config.inactiveText"
-        :disabled="!!mixin_disabled(item.disabled, item.value, item.data)"
-        :style="mixin_style(item.style, item.value, item.data)"
+        :disabled="!!mixin_disabled(item.disabled, item.value, item.$data)"
+        :style="mixin_style(item.style, item.value, item.$data)"
         @change="change">
     </el-switch>
 </template>

@@ -9,39 +9,38 @@
                 end: '22:00'
             }"
             @change="change"
-            :style="mixin_style(item.style, item.value, item.data)"
+            :size="item.config && item.config.size" 
+            :disabled="mixin_disabled(item.disabled, item.value, item.$data)"
+            :style="[defalutStyles[mixin_type(item)], mixin_style(item.style, item.value, item.$data)]"
             :class="mixin_class(item.class, item.value, item.$data)"
+            :value-format="item.config && item.config.valueFormat"
+            :format="item.config && item.config.format"
+            :clearable="(item.config && item.config.clearable === false) ? false : true"
             :placeholder="item.placeholder">
         </el-time-select>
         <el-date-picker
-            v-else-if="mixin_type(item) === 'date-datetime'"
-            v-model="item.value"
-            type="datetime"
-            @change="change"
-            :style="mixin_style(item.style, item.value, item.data)"
-            :class="mixin_class(item.class, item.value, item.$data)"
-            :placeholder="item.placeholder">
-        </el-date-picker>
-        <el-date-picker
             v-else
             v-model="item.value"
-            type="date"
-            @change="change" 
-            :style="mixin_style(item.style, item.value, item.data)"
+            :type="getDateType()"
+            @change="change"
+            :size="item.config && item.config.size" 
+            :clearable="(item.config && item.config.clearable === false) ? false : true"
+            :disabled="mixin_disabled(item.disabled, item.value, item.$data)"
+            :style="[defalutStyles[mixin_type(item)], mixin_style(item.style, item.value, item.$data)]"
             :class="mixin_class(item.class, item.value, item.$data)"
+            :value-format="item.config && item.config.valueFormat"
+            :format="item.config && item.config.format"
             :placeholder="item.placeholder">
         </el-date-picker>
     </div>
 </template>
 <script>
 import base from '../../mixins/base.js';
+import external from '../../config/external.js'
 export default {
     props: ['item'],
     mixins: [base],
     name: 'fddate',
-    data() {
-        return {}
-    },
     methods: {
         change() {
             this.mixin_event({
@@ -49,12 +48,16 @@ export default {
                 prop: this.item.prop,
                 value: this.item.value
             })
+        },
+        getDateType() {
+            return this.mixin_type(this.item).split('-')[1]
         }
     },
     created() {
         if (this.item.value === void 0) {
             this.$set(this.item, 'value', '')
         }
+        this.defalutStyles = external.defaultStyles
         this.item.$data[this.item.prop] = this.item.value
         this.mixin_config('date') 
     }

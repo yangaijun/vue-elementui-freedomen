@@ -25,11 +25,10 @@ export default {
             required: true
         },
         data: {
-            type: Array,
-            required: true
-        },
-        col: {
-            type: Boolean
+            type: Array, 
+            default () {
+                return []
+            }
         }
     },
     components: {

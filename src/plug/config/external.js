@@ -4,14 +4,12 @@ import rule from '../utils/rule'
 const privileges = {
     Authorized: null
 }
-
 function Authorized(params) {
     if (privileges.Authorized !== null && typeof privileges.Authorized === 'function') {
         return privileges.Authorized(params)
     }
     return true
 }
-
 const defaultStyles = {
     'span-test': {
         color: 'red'
@@ -20,10 +18,7 @@ const defaultStyles = {
         backgroundColor: '#ccc'
     }
 }
-const defaultConfigs = {
-
-}
-
+const defaultConfigs = {}
 function addRules(rules = {}) {
     let keys = Object.keys(rules)
     if (keys.length) {
