@@ -111,7 +111,7 @@ export default {
         },
         asyncQueue() {   
             let promises = this.ruleQueues.map(el => {
-                return rule.valid(el.data, el.rule, this.data)
+                return rule.valid(el.data, el.rule, this.tempData)
             }) 
             return Promise.all(promises)
         },
@@ -119,7 +119,7 @@ export default {
             if (!r.column.$load) { 
                 return false
             } 
-            let message = rule.valid(data, r.rule, this.data) 
+            let message = rule.valid(data, r.rule, this.tempData) 
             if (message instanceof Promise) { 
                 if (this.ruleQueues) {
                     this.ruleQueues.push({
@@ -131,8 +131,7 @@ export default {
                 ruleObj.loading = true 
                 message.then(res => {
                     ruleObj.loading = false
-                    if (res)
-                        ruleObj.message = res 
+                    if (res) ruleObj.message = res 
                 })
                 return false
             }
@@ -144,7 +143,7 @@ export default {
         valid() {
             let error = false
             this.ruleQueues = []
-            for (let r in this.rules) {
+            for (let r in this.rules) { 
                 let message = this.validOne(this.tempData[r], this.rules[r], this.rules[r])
                 if (message !== false) {
                     error = true
