@@ -1,22 +1,14 @@
 <template>
 <div>
-        <el-button @click="button">button</el-button>
-    <fd-form 
-        :data="formData"
+       <fd-table
         :columns="[
-        
-            {type: 'text', value: 'uuu'},
-            {type: 'divider',  config: {direction: 'vertical'}},
-            {type: 'text', value: 'mmm'},
+            {type: 'input', value: 'hh', lable: 'gg', prop: 'test'}
         ]"
-        @event="event"
-    />
-    <fd-search 
-        :columns="[
-            {type: 'input', prop: 'input', placeholder: 'input', span: 12},
-            {type: 'input', prop: 'input2', placeholder: 'input2', span: 12},
-        ]"
-    />
+        :data="[{test: 1},{test: 2}]"
+       >
+
+
+       </fd-table>
 </div>
 </template>
 <script>   
