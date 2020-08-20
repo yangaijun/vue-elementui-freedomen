@@ -9,7 +9,7 @@ import FdCol from './col'
 import FdRow from './row'
 import FdFormitem from './formitem'
 import FdRegion from '../core/region'
-import FdBadge from './badge'
+import FdBadge from './badge' 
 
 import util from '../utils/util.js'
 const names = ['fd-row', 'fd-col', 'fd-formitem', 'fd-badge']
@@ -23,7 +23,7 @@ export default {
         FdRegion,
         FdRow,
         FdBadge,
-        FdFormitem
+        FdFormitem 
     },
     computed: {
         component() {

@@ -1,17 +1,41 @@
 <template>
 <div>
-       <fd-table
-        :columns="[
-            {type: 'input', value: 'hh', lable: 'gg', prop: 'test'}
+    <fd-region
+        @event="dddd"
+        :columns="[ 
+            {type: 'button-primary', value: 'pre', prop: 'pre'},
+            {type: 'button-primary', value: 'next'},
         ]"
-        :data="[{test: 1},{test: 2}]"
-       >
-
-
-       </fd-table>
+    >
+     
+    </fd-region>
+    <fd-search 
+        :columns="[
+            {type: 'input', prop: 'input'},
+            {type: 'button', prop: 'search', value: 'search'}
+        ]"
+        @event="event"
+    />  
+    <fd-search 
+        :columns="[
+            {type: 'input', prop: 'input'},
+            {type: 'button', prop: 'search', value: 'search'}
+        ]"
+        @event="event"
+    /> 
+    <fd-search 
+        :columns="[
+            {type: 'input', prop: 'input'},
+            {type: 'button', prop: 'search', value: 'search'}
+        ]"
+        @event="event"
+    /> 
 </div>
 </template>
+
 <script>   
+    import freedomen from '../plug'
+    const {search} = freedomen.action
 	export default {
         label: '介绍',
         components: { 
@@ -66,11 +90,18 @@
                     this.codeCompxPlus.propList = []
                 }
             },
+            dddd(params) {
+                if (params.prop == 'pre') {
+                    search.doAction({
+                        prop: 'search'
+                    })
+                }
+            },
             event(params) {
                 if (params.prop == 'add') {
                     this.formData.dd.push({})
                 }
-                console.log(params.row)
+                console.log(params)
             }
 		}
 	}

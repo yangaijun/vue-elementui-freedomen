@@ -8,9 +8,11 @@
     </el-form>
 </template>
 <script>
-import util from '../../utils/util.js';
-import FdRegion from '../../core/region/Region';
-import rule from '../../utils/rule.js';
+import util from '../../utils/util.js'
+import FdRegion from '../../core/region/Region'
+import rule from '../../utils/rule.js'
+import { search } from '../../action'
+
 export default {
     props: {
         columns: {
@@ -61,11 +63,11 @@ export default {
             }
             this.tempData = newObj
         },
-        event(params) { 
+        event(params) {  
             if (params.prop == '$reset') {
                 this.reset()
                 params.row = util.clone(this.tempData)
-            }
+            }  
             this.$emit('event', params)
         }
     },
@@ -75,7 +77,12 @@ export default {
     created() {
         let columns = this.colne(this.columns)
         this.tempColumns = this.resetColumns(columns)
-        this.tempData = this.data
+        this.tempData = this.data 
+        this.actionKey = util.getUUID()
+        search.setAction(this.actionKey, this.event, this.data)
+    },
+    destroyed () {
+        search.delAction(this.actionKey)
     }
 }
 </script> 

@@ -1,3 +1,18 @@
+### v1.1.4
+
+* 添加新方法action， 可以全局触发search组件
+
+  ```js
+  import freedomen from 'vue-elementui-freedomen'
+  const { search } = freedomen.action
+  search.doAction({
+      prop: 'search', //must
+      type: 'click',
+      ...
+  })
+  //用途，如某些页面根据一个公用组件切换 所有页面会重新查询
+  ```
+
 ### v1.1.3
 
 * input 添加change类型配置, 发生change 事件的触发条件default: change

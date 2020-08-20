@@ -49,7 +49,7 @@ function getType(column) {
   }
   return ''
 }
-const contains = ['fd-row', 'fd-col', 'fd-formitem', 'fd-badge']
+const contains = ['fd-row', 'fd-col', 'fd-formitem', 'fd-badge', 'fd-bgroup']
 
 function isContains(column) {
     let type = getType(column)   
@@ -62,8 +62,7 @@ function padding(s, len) {
     var len = len - (s + '').length
     for (var i = 0; i < len; i++) s = '0' + s
     return s
-}
-
+} 
 const formatDate = {
     format: function(date, pattern) {
         pattern = pattern || DEFAULT_PATTERN;

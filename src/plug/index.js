@@ -2,6 +2,7 @@ import components from './components.js'
 import external from './config/external.js'
 import store from './core/store'
 import exComponents from './config/components'
+import { search } from './action'
 const install = function(Vue) {
     Vue.observable(store)
 
@@ -19,5 +20,6 @@ export default {
     rules: external.addRules,
     styles: external.addStyles,
     configs: external.addConfigs,
-    registerElements: exComponents.registerElements
+    registerElements: exComponents.registerElements,
+    action: { search }
 }

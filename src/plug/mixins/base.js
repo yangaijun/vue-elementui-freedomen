@@ -1,7 +1,7 @@
  
 import  util from '../utils/util'
 import store from '../core/store'
-import merge from './merge'
+import merge from './merge' 
 
 export default {
     mixins: [merge],
