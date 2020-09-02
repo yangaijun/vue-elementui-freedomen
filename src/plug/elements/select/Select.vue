@@ -160,7 +160,7 @@ export default {
             this.resetOptions()
         this.mixin_config('select') 
 
-        if (typeof this.item.options === 'function') {
+        if (this.mixin_type(this.item) !== 'select-remote' && typeof this.item.options === 'function') {
             this.item.$optionsFresh(this.resetOptions)
         }
     }

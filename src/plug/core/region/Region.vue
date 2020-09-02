@@ -125,19 +125,19 @@ export default {
                     this.forceUpdates[this.forceUpdates.length] = forceUpdate
                 }  
             }
-            if (typeof column.options === 'function') {
+            if (typeof column.options === 'function' && !column.$optionsFresh) {
                 column.$optionsFresh = (resetOptions) => {
                     this.freshOptions[this.freshOptions.length] = resetOptions
                 } 
             }
             column.$data = data
         },
-        resetColumns(columns = [], data) {
-            this.forceUpdates = []
-            this.freshOptions = []
+        resetColumns(columns = [], data, clear = true) {
+            if (clear)
+                this.forceUpdates = [] 
             for (let i = 0; i < columns.length; i ++) {  
                 if (Array.isArray(columns[i])) {
-                    this.resetColumns(columns[i], data)
+                    this.resetColumns(columns[i], data, false)
                 } else { 
                     this.setColumn(columns[i], data) 
                 }
