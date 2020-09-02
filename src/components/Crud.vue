@@ -1,121 +1,78 @@
 <template>
-<div>
-    <fd-region
-        @event="dddd"
-        :columns="[ 
-            {type: 'button-primary', value: 'pre', prop: 'pre'},
-            {type: 'button-primary', value: 'next'},
-        ]"
-    >
-     
-    </fd-region>
-    <fd-search 
-        :columns="[
-            {type: 'input', prop: 'input'},
-            {type: 'button', prop: 'search', value: 'search'}
-        ]"
-        @event="event"
-    />  
-    <fd-search 
-        :columns="[
-            {type: 'input', prop: 'input'},
-            {type: 'button', prop: 'search', value: 'search'}
-        ]"
-        @event="event"
-    /> 
-    <fd-search 
-        :columns="[
-            {type: 'input', prop: 'input'},
-            {type: 'button', prop: 'search', value: 'search'}
-        ]"
-        @event="event"
-    /> 
-</div>
+    <fd-vuex>
+        <fd-form @event="event" :columns="formColumns" :data.sync="formData" @submit="submit"></fd-form>
+       
+        <!-- <fd-list 
+            :data="listData"
+            @event="listEvent"
+            :columns="[
+                {type: 'text', prop: '$index'},
+                {type: 'input', prop: 'input', style: {marginRight: '5px', width: '220px'}},
+                {type: 'button-primary', prop: 'add', value: '添加'},
+                {type: 'button-danger', prop: 'delete', value: '删除', load() {
+                    return listData.length > 1
+                }}
+            ]"
+        />  -->
+    </fd-vuex>
 </template>
-
-<script>   
-    import freedomen from '../plug'
-    const {search} = freedomen.action
-	export default {
-        label: '介绍',
-        components: { 
+<script>
+export default {
+    data() {
+        return  {
+            d: '',
+            listData: [{}],
+            formColumns: [ 
+                {type: 'select', prop: 'province', label: '省', options({resolve}) {
+                    resolve({1: '江苏', 2: '河南', 3: '山东'})
+                }},
+                {type: 'select', prop: 'city', label: '市', options({resolve, data}) {
+                    //老规矩，可以从后台取，可以是静态文件取，格式如何，自行设计
+                    resolve({
+                        1: {11: '苏州', 12: '南京'},
+                        2: {21: '郑州'},
+                        3: {31: '济南'}
+                    }[data.province])
+                }},
+                {type: 'select', prop: 'area', label: '区', options({resolve, data}) {
+                    resolve({
+                        11: '苏州AB,苏州DD',
+                        12: '南京CC,南京UU',
+                        21: '郑州VV,郑州KK',
+                        31: '济南MMM,济南LLL',
+                    }[data.city])
+                }},
+                {type: 'button', prop: '$reset', value: '重置'}
+            ],
+            formData: {
+                 
+            }
+        }
+    },
+    methods: {
+        submit(data) {
+            console.log(data)
         },
-        computed: {
-            cls () {
-                let columns = []
-                for (let i = 0; i < 100; i ++) {
-                    columns.push({
-                        type: 'input',
-                        prop: 'p' + i,
-                        placeholder: 'pleaceh',
-                        style: {width: '220px'}
-                    }) 
-                }
-                return columns
+        event(params) {
+            if (params.prop == 'province') {
+                this.formData.city = ''
+                this.formData.area = ''
+            } else if (params.prop == 'city') {
+                this.formData.area = ''
             }
         },
-		data() {
-			return { 
-                formData: {text: '1'},
-                codeCompxPlus: {cx: {cxDateStart: new Date()}, hytj: {}, mj: [{}], gg: {}, propList: [], prop: {}},
-			}
-        },
-		methods: {
-            button() {
-                this.formData = {text: null}
-            },
-            calcMultiplyData(arr) {
-                let res = [], cur = {}
-                function search(deep = 0) {
-                    if (deep >= arr.length) {
-                        res.push(cur)
-                        cur = Object.assign({}, cur)
-                        return
-                    }
-                    for (let obj of arr[deep]) {
-                        cur[obj.prop] = obj.value
-                        search(deep + 1)
-                    }
-                }
-                search()
-                return res
-            },
-            codeCompxPlusEvent(params) {
-                if (params.prop == 'province') {
-                    this.codeCompxPlus.city = ''
-                     this.codeCompxPlus.area = ''
-                } else if (params.prop == 'city') {
-                    this.codeCompxPlus.area = ''
-                } else if (params.prop == 'type') {
-                    this.codeCompxPlus.propList = []
-                }
-            },
-            dddd(params) {
-                if (params.prop == 'pre') {
-                    search.doAction({
-                        prop: 'search'
-                    })
-                }
-            },
-            event(params) {
-                if (params.prop == 'add') {
-                    this.formData.dd.push({})
-                }
-                console.log(params)
+        listEvent(params) {
+            if (params.prop == 'add') {
+                this.listData.push({})
+            } else if (params.prop == 'delete') {
+                this.listData.splice(params.$index, 1)
             }
-		}
-	}
-
+        }
+    }
+}
 </script>
-<style>
-    .fd_form .fd_form .el-col-24 {
-        margin-top: 8px;
-    }
-    .fd_imgs_item {
-        padding-right: 55px;
-    }
+<style >
     .fd_list .fd_list_item {
-       overflow-x: scroll;
-       width: 100%;
+        margin-top: 5px;
     }
 </style>

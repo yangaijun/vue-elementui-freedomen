@@ -5,7 +5,7 @@
             v-for="(item, index) in data" 
             :key="index">
             <fd-region
-                :data="item"
+                :data="resetData(item, index)"
                 :columns="getColumns()"
                 @event="(params) => {
                     event(params, index)
@@ -37,6 +37,10 @@ export default {
     methods: {
         event(params, index) {
             this.$emit('event', {...params, $index: index})
+        },
+        resetData(data, index) {
+            data.$index = index
+            return data
         },
         getColumns() {
             return util.clone(this.columns)

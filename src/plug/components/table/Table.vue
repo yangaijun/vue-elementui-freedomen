@@ -19,9 +19,9 @@
                     v-if="Authorized(column) && column.type && column.type === '$expand'">
                     <template slot-scope="scope">
                         <region 
-                            :data="scope.row" 
+                            :data="resetData(scope.row, index)" 
                             @event="(params) => {  event(params, scope.$index) }"  
-                            :columns="[{type: 'render', render: ({createElement, store}) => column.render({value: scope.row[column.prop], createElement, data: scope.row, store})}]"/>
+                            :columns="[{type: 'render', render: ({createElement, store}) => column.render({value: scope.row[column.prop], createElement, data: resetData(scope.row, index), store})}]"/>
                     </template>
                 </el-table-column>
                 <el-table-column 
@@ -35,10 +35,10 @@
                     :width="column.width"> 
                     <template slot-scope="scope">
                         <region 
-                            :data="scope.row"
+                            :data="resetData(scope.row, index)"
                             @event="(params) => { event(params, scope.$index) }"
                             :columns="column.render 
-                                ? [{type: 'render', render: ({createElement, store}) =>  column.render({value: scope.row[column.prop], createElement, data: scope.row, store})}] 
+                                ? [{type: 'render', render: ({createElement, store}) =>  column.render({value: scope.row[column.prop], createElement, data: resetData(scope.row, index), store})}] 
                                 : [{type: 'span', ...column}]"
                             />
                     </template>
@@ -85,6 +85,10 @@ export default {
                 prop: '$pageSize',
                 value: pageSize
             })
+        },
+        resetData(row, index) {
+            row.$index = index
+            return row
         },
         selectionChange(rows) {
             this.event({

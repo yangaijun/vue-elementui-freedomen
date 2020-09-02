@@ -15,7 +15,7 @@ import FdContains from '../../containers/Contains'
 import util from '../../utils/util.js';
 import external from '../../config/external.js' 
 import store from '../store'
-
+import { names } from '../../config/const.js'
 export default {
     name: 'FdRegion',
     props: {
@@ -37,22 +37,27 @@ export default {
     mixins: [base], 
     watch: {
         data: {
-            handler(nd, od) { 
-                if (od) { 
+            handler(nd, od) {     
+                if (od && this.notEq(nd, this.tempData) || this.forceUpdates.length) { 
                     if (this.forceUpdates.length) {
                         this.forceUpdates.forEach(forceUpdate => {
                             forceUpdate()
                         })
+                    }  
+                    if (this.freshOptions.length) {
+                        this.freshOptions.forEach(resetOptions => {
+                            resetOptions && resetOptions()
+                        })
                     }
                     var columns = this.clone(this.columns)
-                    this.tempColumns = this.resetColumns(columns, nd)
-                }
+                    this.tempColumns = this.resetColumns(columns, nd) 
+                } 
             },
             deep: true
         },
         columns: {
-            handler(nd, od) { 
-                this.columns = this.tempColumns = this.resetColumns(nd, this.data)
+            handler(nd, od) {  
+                this.columns = this.tempColumns = this.resetColumns(nd, this.data) 
             }
         }
     },
@@ -62,10 +67,14 @@ export default {
     data() {
         return {
             tempColumns: [],
-            forceUpdates: []
+            forceUpdates: [],
+            freshOptions: []
         }
     },
     methods: {
+        notEq(nd, od) {
+            return JSON.stringify(nd) !== JSON.stringify(od)
+        },
         isWhich(columnOrObj, column) {
             if (columnOrObj === 'object') {
                 return this.isPlainObject(column) 
@@ -111,14 +120,21 @@ export default {
             else
                 column.value = data[column.prop] === void 0 ? column.value : data[column.prop]
 
-            if (column.type == 'render' && column.forceUpdate === true)
+            if (column.type == 'render' && column.forceUpdate === true) {
                 column.forceUpdate = (forceUpdate) => {
                     this.forceUpdates[this.forceUpdates.length] = forceUpdate
+                }  
+            }
+            if (typeof column.options === 'function') {
+                column.$optionsFresh = (resetOptions) => {
+                    this.freshOptions[this.freshOptions.length] = resetOptions
                 } 
+            }
             column.$data = data
         },
-        resetColumns(columns = [], data = {}) {
+        resetColumns(columns = [], data) {
             this.forceUpdates = []
+            this.freshOptions = []
             for (let i = 0; i < columns.length; i ++) {  
                 if (Array.isArray(columns[i])) {
                     this.resetColumns(columns[i], data)
@@ -130,15 +146,15 @@ export default {
         },
         event(params) { 
             if (params && params.type == 'change' && params.prop) {
+                this.tempData = util.clone(this.data)
                 this.data[params.prop] = params.value 
             }
             this.$emit('event', {...params, row: util.clone(this.data)})
         },
         clearContainType(columns) {
             let column = columns[columns.length - 1]
-            let type = (column.type || '').split('-')[0]
-            // *******************************??????write here???*************************************** //
-            const names = ['row', 'col', 'formitem', 'badge']
+            let type = (column.type || '').split('-')[0] 
+            
             if (names.includes(type))
                 return columns.slice(0, columns.length - 1)
             else return columns

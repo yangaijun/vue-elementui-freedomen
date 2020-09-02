@@ -63,9 +63,8 @@ export default {
     watch: { 
         item: {
             handler (nd, od) {
-                if (
-                    this.item.options 
-                    && (
+                if ( this.item.options && 
+                    (
                         (this.mixin_type(this.item) !== 'select-remote' && typeof this.item.options === 'function') 
                         || nd.options !== od.options
                     )
@@ -75,18 +74,17 @@ export default {
             },
             deep: true
         }, 
-        selfValue(nd, od) {
+        selfValue(nd, od) { 
             if (typeof nd === 'number') 
                 this.item.value = nd + ''
-            else if (this.mixin_type(this.item) == 'select-multiple' && !this.testValue(nd, od)) {
+            else if (this.mixin_type(this.item) == 'select-multiple' && !this.testValue(nd, od))
                 this.resetValue(nd)
-            }
         } 
     },
     computed: {
         selfValue() {
             return  this.item.value
-        }
+        } 
     },
     methods: {
         change() {
@@ -161,6 +159,10 @@ export default {
         if (this.mixin_type(this.item) !== 'select-remote')
             this.resetOptions()
         this.mixin_config('select') 
+
+        if (typeof this.item.options === 'function') {
+            this.item.$optionsFresh(this.resetOptions)
+        }
     }
 }
 </script>

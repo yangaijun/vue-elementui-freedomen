@@ -1,5 +1,6 @@
 
 import store from '../core/store'
+import { fdnames } from '../config/const'
 function isPlainObject(obj) {
     return Object.prototype.toString.call(obj) === '[object Object]'
 }
@@ -49,11 +50,9 @@ function getType(column) {
   }
   return ''
 }
-const contains = ['fd-row', 'fd-col', 'fd-formitem', 'fd-badge', 'fd-bgroup']
-
 function isContains(column) {
     let type = getType(column)   
-    return contains.includes(type)
+    return fdnames.includes(type)
 }
 //date format
 const SIGN_REGEXP = /([yMdhsm])(\1*)/g

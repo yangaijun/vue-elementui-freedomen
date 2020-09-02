@@ -12,8 +12,7 @@ import FdRegion from '../core/region'
 import FdBadge from './badge' 
 
 import util from '../utils/util.js'
-const names = ['fd-row', 'fd-col', 'fd-formitem', 'fd-badge']
-const PREFIX = 'fd-'
+import { fdnames } from '../config/const.js' 
 
 export default {
     name: 'contains',
@@ -37,7 +36,7 @@ export default {
             let column = columns[columns.length - 1]
 
             let type = util.getType(column)
-            if (names.includes(type))
+            if (fdnames.includes(type))
                 return type
             else return 'fd-col'
         },

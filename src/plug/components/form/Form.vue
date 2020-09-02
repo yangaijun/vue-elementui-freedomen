@@ -98,8 +98,7 @@ export default {
             for (let column of columns) {
                 if (Array.isArray(column)) {
                     this.resetRules(column, rules)
-                } else if (column.rule !== void 0) {
-                    // use index if no prop of form-item?
+                } else if (column.rule !== void 0) { 
                     rules[column.prop] = {
                         rule: column.rule,
                         column: column,
@@ -156,7 +155,7 @@ export default {
         },
         reset() { 
             let newObj = {} 
-            for (let key in this.resetData) {
+            for (let key in this.resetData) { 
                 newObj[key] = this.resetData[key]
             }
             this.tempData = newObj

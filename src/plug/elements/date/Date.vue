@@ -1,8 +1,8 @@
 <template>
-    <div>
+    <span>
         <el-time-select
             v-if="mixin_type(item) === 'date-time'"
-            v-model="item.value"
+            v-model="theValue"
             :picker-options="(item.config && item.config.pickerOptions) || {
                 start: '06:00',
                 step: '00:15',
@@ -20,7 +20,7 @@
         </el-time-select>
         <el-date-picker
             v-else
-            v-model="item.value"
+            v-model="theValue"
             :type="getDateType()"
             @change="change"
             :size="item.config && item.config.size" 
@@ -32,7 +32,7 @@
             :format="item.config && item.config.format"
             :placeholder="item.placeholder">
         </el-date-picker>
-    </div>
+    </span>
 </template>
 <script>
 import base from '../../mixins/base.js';
@@ -41,8 +41,19 @@ export default {
     props: ['item'],
     mixins: [base],
     name: 'fddate',
+    data() {
+        return {
+            theValue: ''
+        }
+    },
+    watch: {
+        'item.value'(nd) { 
+            this.theValue = this.item.value
+        }
+    },
     methods: {
         change() {
+            this.item.value = this.theValue
             this.mixin_event({
                 type: 'change',
                 prop: this.item.prop,
@@ -57,6 +68,7 @@ export default {
         if (this.item.value === void 0) {
             this.$set(this.item, 'value', '')
         }
+        this.theValue = this.item.value
         this.defalutStyles = external.defaultStyles
         this.item.$data[this.item.prop] = this.item.value
         this.mixin_config('date') 

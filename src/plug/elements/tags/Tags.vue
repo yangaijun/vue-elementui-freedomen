@@ -1,5 +1,5 @@
 <template>
-<div>
+<span>
     <div v-if="mixin_type(item) == 'tags-create'">
         <el-tag
             :key="tag"
@@ -28,7 +28,7 @@
                 {{tag}}
         </el-tag>
     </div>
-</div>
+</span>
 </template>
 <script>
 import base from '../../mixins/base.js';

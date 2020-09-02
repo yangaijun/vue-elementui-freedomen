@@ -2,7 +2,7 @@
 
 # vue-elementui-freedomen
 
-[文档地址](http://115.159.65.195:8080/vefdoc)
+[文档地址](http://www.freedomen.cn/#/vef/start)
 
 
 

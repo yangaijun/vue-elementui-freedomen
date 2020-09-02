@@ -2,7 +2,7 @@
 <span>
     <el-autocomplete
         v-if="mixin_type(item) == 'input-remote'"
-        v-model="item.value"
+        v-model="theValue"
         :fetch-suggestions="options" 
         :placeholder="item.placeholder"
         @select="change"
@@ -22,7 +22,7 @@
     <el-input 
         v-else
         :type="inputType(mixin_type(item))" 
-        v-model="item.value"
+        v-model="theValue"
         :rows="item.config && item.config.rows"
         :size="item.config && item.config.size" 
         :minlength="item.config && item.config.minlength"
@@ -57,7 +57,7 @@
             @event="event"
         />
     </el-input>
-    </span>
+</span>
 </template>
 <script>
 import base from '../../mixins/base.js'
@@ -70,7 +70,13 @@ export default {
     name: 'fdinput',
     data() {
         return {
-            tempItem: ''
+            tempItem: '',
+            theValue: ''
+        }
+    },
+    watch: {
+        'item.value'(nd) { 
+            this.theValue = this.item.value
         }
     },
     methods: {
@@ -88,16 +94,17 @@ export default {
                 return icon
             }
         },
-        ichange(type) {
+        ichange(type) { 
             if (this.item.config && this.item.config.changeEventType) {
                 if (this.item.config.changeEventType === type) {
                     this.change()
                 }
-            } else if (type === 'change') {
+            } else if (type === 'change') { 
                 this.change()
             }
         },
         change() {
+            this.item.value = this.theValue
             this.mixin_event({
                 type: 'change',
                 prop: this.item.prop,
@@ -114,14 +121,15 @@ export default {
             this.item.options({data: this.item.$data, value: this.item.value, store: store, resolve: resolve, query: query})
         }
     },
-    created() {
+    created() { 
         if (this.item.value === void 0) {
             this.$set(this.item, 'value', '')
         } 
+        this.theValue = this.item.value
         this.item.$data[this.item.prop] = this.item.value
         this.defalutStyles = external.defaultStyles
         this.mixin_config('input') 
-        this.tempItem = this.item
+        this.tempItem = this.item 
     }
 }
 </script>

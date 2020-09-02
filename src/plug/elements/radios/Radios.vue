@@ -1,8 +1,8 @@
 <template>
-    <div>
+    <span>
         <el-radio-group
             v-if="mixin_type(item) === 'radios-button'"
-            v-model="item.value"
+            v-model="theValue"
             :size="item.config&&item.config.size"
             @change="change">
             <el-radio-button
@@ -16,8 +16,8 @@
         </el-radio-group>
         <el-radio-group
             v-else
-            v-model="item.value"
-            :size="item.config&&item.config.size"
+            v-model="theValue"
+            :size="item.config && item.config.size"
             @change="change">
             <el-radio
                 v-for="option in options"
@@ -29,7 +29,7 @@
                     {{option.label}}
             </el-radio>
         </el-radio-group>
-    </div> 
+    </span> 
 </template>
 <script>
 import base from '../../mixins/base.js';
@@ -39,7 +39,8 @@ export default {
     mixins: [base],
     data() {
         return {
-            options: []
+            options: [],
+            theValue: ''
         }
     }, 
     watch: { 
@@ -52,10 +53,14 @@ export default {
                     this.resetOptions()
             },
             deep: true
+        }, 
+        'item.value'(nd) { 
+            this.theValue = this.item.value
         } 
     }, 
     methods: {
         change() {
+            this.item.value = this.theValue
             this.mixin_event({
                 type: 'change',
                 prop: this.item.prop,
@@ -72,6 +77,7 @@ export default {
         } else {
             this.item.value = this.item.value + ''
         }
+        this.theValue = this.item.value
         this.item.$data[this.item.prop] = this.item.value 
         this.resetOptions()
         this.mixin_config('radio') 

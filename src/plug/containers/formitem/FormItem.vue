@@ -27,18 +27,18 @@
         </el-form-item>
     </el-col>
     <el-form-item :style="style()" v-else :class="errorClass()"> 
-            <span slot="label">  
-                <span v-if="hasRule()" class="el-form-item-must" style="color: #f56c6c">*</span>
-                <fd-region 
-                    v-if="Array.isArray(columns[columns.length - 1].label)"
-                    :columns="columns[columns.length - 1].label"
-                />
-                <span v-else>
-                    {{columns[columns.length - 1].label}} 
-                </span>
+        <span slot="label">  
+            <span v-if="hasRule()" class="el-form-item-must" style="color: #f56c6c">*</span>
+            <fd-region 
+                v-if="Array.isArray(columns[columns.length - 1].label)"
+                :columns="columns[columns.length - 1].label"
+            />
+            <span v-else>
+                {{columns[columns.length - 1].label}} 
             </span>
-            <slot></slot>
-        </el-form-item>
+        </span>
+        <slot></slot>
+    </el-form-item>
 </template>
 <script>
 import util from '../../utils/util.js'; 
@@ -94,6 +94,6 @@ export default {
     },
     created() {
         this.column = this.columns[this.columns.length - 1] 
-    },
+    }
 }
 </script> 

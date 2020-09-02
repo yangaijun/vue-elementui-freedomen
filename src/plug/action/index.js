@@ -1,3 +1,11 @@
+function getParams (params, row) {
+    let _ = {}
+    for (let key in params) {
+        _ [key] = params [key]
+    }
+    _.row = row
+    return _
+}
 export const search = {
     actions: {},
     rows: {},
@@ -9,13 +17,9 @@ export const search = {
         delete this.actions[key]
         delete this.rows[key]
     },
-    doAction: function (params) {   
-        for (let key in this.actions) {
-            params.row = this.rows[key]  
-            this.actions[key]({
-                ...params,
-                row: this.rows[key]
-            }) 
+    doAction: function (params) {    
+        for (let key in this.actions) {  
+            this.actions[key](getParams(params, this.rows[key])) 
         }
     }
 } 

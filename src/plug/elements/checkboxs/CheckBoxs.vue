@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <span>
         <el-checkbox-group
             v-if="mixin_type(item) == 'check-buttons'"
             :min="min()"
@@ -30,7 +30,7 @@
                     {{ option.label }}
             </el-checkbox>
         </el-checkbox-group>
-    </div>
+    </span>
 </template>
 <script>
 import base from '../../mixins/base.js';

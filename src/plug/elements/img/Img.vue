@@ -1,5 +1,6 @@
 <template>
     <el-image 
+        v-if="mixin_filter(item.filter, item.value, item.$data) || item.value"
         :preview-src-list="item.previewSrcList"
         :class="mixin_class(item.class, item.value, item.$data)"
         :style="[defalutStyles[item.type], mixin_style(item.style, item.value, item.$data)]"
