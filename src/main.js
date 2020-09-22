@@ -5,18 +5,17 @@ import App from './App'
 import router from './router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css' 
-import Hello from './components/HelloWorld.vue'
- 
+// import Hello from './components/HelloWorld.vue' 
 
 Vue.use(ElementUI)
 // import 'mavon-editor/dist/css/index.css'
 // import mavonEditor from 'mavon-editor'
 // Vue.use(mavonEditor)
-import Freedomen from './plug'
+import Freedomen, { Tinymce } from './plug'
   
-Freedomen.privileges.Authorized = function({column}) {
-  // if (column.prop == 'edit')
-  //   return false
+Freedomen.privileges.Authorized = function({column}) { 
+  if (column.prop == 'edit' || column.prop == 'tb2'|| column.prop == 'tb' || column.prop == 'i2')
+    return false
   return true
 }
 Freedomen.rules({
@@ -49,17 +48,10 @@ Freedomen.styles({
     width: '250px'
   }
 })
-Freedomen.registerElements({Hello})
+Freedomen.registerElements({Tinymce})
 
 Vue.use(Freedomen) 
-// import external from './plug/config/external'
-// external.privileges = function(column) {
-//   if (column.prop == 'm416')
-//     return false
-
-//   return true
-// }
-// console.log(external)
+ 
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

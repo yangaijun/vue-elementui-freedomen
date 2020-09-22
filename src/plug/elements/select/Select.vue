@@ -61,19 +61,6 @@ export default {
         }
     },
     watch: { 
-        item: {
-            handler (nd, od) {
-                if ( this.item.options && 
-                    (
-                        (this.mixin_type(this.item) !== 'select-remote' && typeof this.item.options === 'function') 
-                        || nd.options !== od.options
-                    )
-                ) {
-                    this.resetOptions()
-                }
-            },
-            deep: true
-        }, 
         selfValue(nd, od) { 
             if (typeof nd === 'number') 
                 this.item.value = nd + ''

@@ -9,10 +9,10 @@
     </span>
 </template>
 <script>
-import base from '../../mixins/base.js'; 
-import FdElements from '../../elements/Elements';
+import base from '../../mixins/base.js'
+import FdElements from '../../elements/Elements'
 import FdContains from '../../containers/Contains'
-import util from '../../utils/util.js';
+import util from '../../utils/util.js'
 import external from '../../config/external.js' 
 import store from '../store'
 import { names } from '../../config/const.js'
@@ -80,7 +80,10 @@ export default {
                 return this.isPlainObject(column) 
                     && this.load(column)
                     && this.Authorized(column) 
-            } else if (columnOrObj === 'column') { 
+            } else if (columnOrObj === 'column') {  
+                if (column.length && (!this.Authorized(column[column.length - 1]) || column.slice(0, column.length - 1).every(column => !this.Authorized(column))))
+                    return false
+                
                 let _t = this.isColumn(column) && this.Authorized(column) 
 
                 if (column.length && util.isContains(column[column.length - 1])) { 

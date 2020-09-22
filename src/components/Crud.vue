@@ -1,7 +1,6 @@
 <template>
     <fd-vuex>
-        <fd-form @event="event" :columns="formColumns" :data.sync="formData" @submit="submit"></fd-form>
-       
+        <fd-form @event="event" :columns="formColumns" :data.sync="formData" @submit="submit"></fd-form> 
         <!-- <fd-list 
             :data="listData"
             @event="listEvent"
@@ -14,35 +13,45 @@
                 }}
             ]"
         />  -->
+        <fd-table
+            :columns="[
+                {prop: 'i', value: 'ggggggggg', label: 'what the fuck'},
+                {prop: 'i2', value: 'esssss', label: 'sdfds'},
+                {prop: 'i3', value: 'dfaaa', label: 'vcxvcx'},
+            ]"
+            :data="[{}, {}]"
+        ></fd-table>
     </fd-vuex>
 </template>
-<script>
-export default {
+<script>  
+import  {districts} from '../plug'
+export default { 
     data() {
-        return  {
+        return  { 
             d: '',
             listData: [{}],
             formColumns: [ 
-                {type: 'select', prop: 'province', label: '省', options({resolve}) {
-                    resolve({1: '江苏', 2: '河南', 3: '山东'})
-                }},
-                {type: 'select', prop: 'city', label: '市', options({resolve, data}) {
-                    //老规矩，可以从后台取，可以是静态文件取，格式如何，自行设计
-                    resolve({
-                        1: {11: '苏州', 12: '南京'},
-                        2: {21: '郑州'},
-                        3: {31: '济南'}
-                    }[data.province])
-                }},
-                {type: 'select', prop: 'area', label: '区', options({resolve, data}) {
-                    resolve({
-                        11: '苏州AB,苏州DD',
-                        12: '南京CC,南京UU',
-                        21: '郑州VV,郑州KK',
-                        31: '济南MMM,济南LLL',
-                    }[data.city])
-                }},
-                {type: 'button', prop: '$reset', value: '重置'}
+                [
+                    {type: 'select', prop: 'province', placeholder: '省', options({resolve}) {
+                      resolve (districts[86])
+                    }},
+                    {type: 'select', prop: 'city', placeholder: '市', style: {margin: '0 8px'}, options({resolve, data}) {
+                      resolve (districts[data.province])
+                    }},
+                    {type: 'select', prop: 'district', placeholder: '区', options({resolve, data}) {
+                      resolve (districts[data.city])
+                    }},
+                    {type: 'formitem', label: '营业地址'}
+                ], 
+                {type: 'tinymce', prop: 'edit2', label: '富文本77', config: {language: 'zh', uploadImageConfig: { action: 'http://127.0.0.1:8090/fdapi/Tab/importFile', preUrl: 'https://demo-mall-1256372626.cos.ap-chengdu.myqcloud.com/' }}},
+                {type: 'amap', prop: 'editddd' },
+                {type: 'button', prop: '$reset', value: '重置'},
+                {type: 'button', prop: '$submit', value: '提交'},
+                [
+                    {type: 'input-len220', prop: 'tb', style: {width: '220px'}},
+                    {type: 'input-len220', prop: 'tb2', style: {width: '220px'}},
+                    {type: 'formitem', label: 'imya'}
+                ]
             ],
             formData: {
                  
@@ -56,9 +65,9 @@ export default {
         event(params) {
             if (params.prop == 'province') {
                 this.formData.city = ''
-                this.formData.area = ''
+                this.formData.district = ''
             } else if (params.prop == 'city') {
-                this.formData.area = ''
+                this.formData.district = ''
             }
         },
         listEvent(params) {
